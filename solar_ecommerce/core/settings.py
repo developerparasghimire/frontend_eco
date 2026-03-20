@@ -66,10 +66,10 @@ LOCAL_APPS = [
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # must be first to add CORS headers early
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'apps.middleware.InputSanitizationMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -236,7 +236,10 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
     CORS_ALLOW_CREDENTIALS = True
 else:
-    CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS')
+    # Allow origins provided via env var, otherwise fall back to Droplet frontend origin
+    CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS') or [
+        "http://138.197.11.80:3000",
+    ]
     CORS_ALLOW_CREDENTIALS = True
 
 # ──────────────────────────────────────────────
