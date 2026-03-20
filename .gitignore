@@ -1,0 +1,11 @@
+# Environment files — never commit real secrets
+.env
+.env.*
+!.env.example
+!.env.backend.example
+.env.local
+.env.production
+
+# Docker build artifacts
+solar_ecommerce/staticfiles/
+solar_ecommerce/media/
