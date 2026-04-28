@@ -1,114 +1,189 @@
-'use client';
-
 import Link from 'next/link';
-import { useState } from 'react';
+import {
+  SolariseButton,
+  SolariseFeatureCard,
+  SolariseJoinBanner,
+  SolariseMedia,
+  SolariseNewsTile,
+  SolariseOfferBanner,
+  SolariseProjectCard,
+  SolariseSectionHeader,
+  SolariseShell,
+  SolariseStarburst,
+  SolariseStatCard,
+  SolariseTestimonial,
+} from '@/components/SolariseSite';
+import {
+  homeBenefits,
+  homeServiceLinks,
+  homeStats,
+  newsCards,
+  projectCards,
+} from '@/data/solariseContent';
 
-import { subscribeNewsletter } from '@/lib/api';
-
-export default function Home() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(false);
-
-  const handleNewsletter = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!email.trim()) return;
-
-    setLoading(true);
-    setMessage('');
-    try {
-      const res = await subscribeNewsletter(email.trim());
-      setMessage(res.detail);
-      setEmail('');
-    } catch (err) {
-      const text = err instanceof Error ? err.message : 'Unable to subscribe right now.';
-      setMessage(text);
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function HomePage() {
   return (
-    <div className="min-h-screen bg-white">
-      <section className="bg-gradient-to-r from-blue-50 to-indigo-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h1 className="text-5xl font-bold text-gray-900 mb-6">EcoPlanet Solar Store</h1>
-              <p className="text-xl text-gray-600 mb-8">
-                Ecommerce platform for solar panels, inverters, batteries, and installation-ready accessories.
-              </p>
-              <div className="flex gap-4">
-                <Link
-                  href="/products"
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition"
-                >
-                  Shop Products
-                </Link>
-                <Link
-                  href="/contact"
-                  className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 font-bold py-3 px-8 rounded-lg transition"
-                >
-                  Talk to Sales
-                </Link>
-              </div>
-            </div>
-            <div className="bg-gradient-to-br from-blue-400 to-indigo-600 rounded-lg h-96 flex items-center justify-center">
-              <div className="text-white text-center">
-                <div className="text-6xl mb-4">☀️</div>
-                <p className="text-xl">Clean Energy Commerce</p>
-              </div>
-            </div>
-          </div>
+    <SolariseShell footerEmail="info@ecoplanet.com">
+      <section className="solar-container solar-home-hero">
+        <SolariseStarburst className="solar-home-hero__burst--left" tone="ghost" />
+
+        <div className="solar-home-hero__copy">
+          <h1 className="solar-title solar-title--hero">Harness the limitless power of the sun</h1>
+          <p className="solar-home-hero__text">
+            We&apos;re your trusted partner in the world of renewable energy, and we&apos;re excited to
+            introduce you to a world of possibilities.
+          </p>
+          <SolariseButton href="/services" tone="navy" size="sm">
+            Our Services
+          </SolariseButton>
+        </div>
+
+        <div aria-hidden="true" />
+        <SolariseStarburst className="solar-home-hero__burst--right" tone="ghost" />
+      </section>
+
+      <section className="solar-container solar-home-stats">
+        {homeStats.map((item) => (
+          <SolariseStatCard key={item.value} value={item.value} label={item.label} />
+        ))}
+      </section>
+
+      <section className="solar-container solar-home-grid solar-home-grid--why">
+        <div className="solar-home-copy">
+          <p className="solar-eyebrow">WHY SOLARISE</p>
+          <h2 className="solar-title solar-title--xl">
+            Our innovative spirit drives us to create visionary{' '}
+            <span className="solar-highlight">solar solutions</span>
+          </h2>
+          <p className="solar-copy solar-copy--compact">
+            At Solarise, we pride ourselves on being your premier choice for solar energy solutions.
+            When you choose us, you&apos;re choosing a partner dedicated to your satisfaction and the
+            future of clean, sustainable energy.
+          </p>
+          <SolariseButton href="/services" tone="navy" size="sm">
+            Our Services
+          </SolariseButton>
+        </div>
+
+        <div className="solar-home-features">
+          {homeBenefits.map((item) => (
+            <SolariseFeatureCard key={item.title} icon={item.icon} title={item.title} text={item.text} />
+          ))}
         </div>
       </section>
 
-      <section className="py-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-bold text-gray-900 mb-12 text-center">What You Can Buy</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-8 border border-gray-200 rounded-lg hover:shadow-lg transition">
-              <div className="text-4xl mb-4">⚡</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Solar Panels</h3>
-              <p className="text-gray-600">High-output monocrystalline and polycrystalline modules.</p>
-            </div>
-            <div className="p-8 border border-gray-200 rounded-lg hover:shadow-lg transition">
-              <div className="text-4xl mb-4">🔋</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Storage Systems</h3>
-              <p className="text-gray-600">Hybrid batteries and backup energy systems for homes and offices.</p>
-            </div>
-            <div className="p-8 border border-gray-200 rounded-lg hover:shadow-lg transition">
-              <div className="text-4xl mb-4">🛠️</div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-4">Installation Gear</h3>
-              <p className="text-gray-600">Mounting kits, charge controllers, and certified accessories.</p>
-            </div>
+      <section className="solar-container solar-home-grid solar-home-grid--about">
+        <div />
+
+        <div className="solar-home-copy">
+          <p className="solar-eyebrow">ABOUT US</p>
+          <h2 className="solar-title solar-title--xl">
+            We exist to <span className="solar-highlight">empower</span> individuals and businesses to{' '}
+            <span className="solar-highlight">embrace</span> solar energy
+          </h2>
+          <div className="solar-copy-stack">
+            <p className="solar-copy solar-copy--compact">
+              At Solarise, we&apos;re driven by a deep-rooted passion for renewable energy and a
+              commitment to a sustainable future. Our journey began with a simple but powerful idea: to
+              harness the immense power of the sun and transform it into a source of clean, accessible
+              energy for all.
+            </p>
+            <p className="solar-copy solar-copy--compact">
+              The world is facing a growing need for sustainable energy sources. Climate change and
+              environmental concerns are more pressing than ever. Solarise was founded to address these
+              challenges and offer real solutions.
+            </p>
           </div>
+          <SolariseButton href="/about" tone="navy" size="sm">
+            About Us
+          </SolariseButton>
         </div>
       </section>
 
-      <section className="bg-blue-600 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">Subscribe to Newsletter</h2>
-          <p className="text-blue-100 mb-8">Receive product launches and discounts</p>
-          <form onSubmit={handleNewsletter} className="flex gap-2 max-w-md mx-auto">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-1 px-4 py-3 rounded-lg focus:outline-none bg-white text-black"
-            />
-            <button
-              type="submit"
-              disabled={loading}
-              className="bg-white text-blue-600 hover:bg-gray-100 disabled:bg-gray-200 font-bold px-8 py-3 rounded-lg transition"
-            >
-              {loading ? 'Submitting...' : 'Subscribe'}
-            </button>
-          </form>
-          {message ? <p className="text-white mt-4">{message}</p> : null}
+      <section className="solar-container solar-home-services">
+        <SolariseStarburst className="solar-home-services__burst" tone="ghost" />
+
+        <div className="solar-home-copy">
+          <p className="solar-eyebrow">OUR SERVICES</p>
+          <h2 className="solar-title solar-title--xl">
+            Our expertise in <span className="solar-highlight">solar technology</span> ensures you get
+            the most efficient and reliable solutions, whether you&apos;re a homeowner or a business owner
+          </h2>
+        </div>
+
+        <div className="solar-chip-row">
+          {homeServiceLinks.map((item) => (
+            <Link key={item.label} href={item.href} className="solar-chip-link">
+              <span>{item.label}</span>
+              <span className="solar-chip-link__icon">
+                <ChipArrow />
+              </span>
+            </Link>
+          ))}
         </div>
       </section>
-    </div>
+
+      <section className="solar-container solar-home-projects">
+        <SolariseSectionHeader
+          eyebrow="OUR WORKS"
+          title="Recent Projects and Works"
+          buttonHref="/projects"
+          buttonLabel="See All"
+        />
+
+        <div className="solar-home-projects__grid">
+          <SolariseMedia className="solar-media--lg" />
+          <SolariseProjectCard
+            filled
+            title={projectCards[0].title}
+            meta={projectCards[0].meta}
+            href={projectCards[0].href}
+          />
+          <SolariseProjectCard
+            filled
+            title={projectCards[1].title}
+            meta={projectCards[1].meta}
+            href={projectCards[1].href}
+          />
+          <SolariseMedia />
+        </div>
+      </section>
+
+      <div className="solar-container">
+        <SolariseOfferBanner />
+        <SolariseTestimonial />
+        <SolariseJoinBanner />
+      </div>
+
+      <section className="solar-container solar-home-news">
+        <SolariseSectionHeader
+          eyebrow="NEWS"
+          title="Recent News from Eco Planet"
+          buttonHref="/news"
+          buttonLabel="See All"
+        />
+
+        <div className="solar-home-news__grid">
+          <SolariseNewsTile title={newsCards[0].title} href={newsCards[0].href} />
+          <SolariseNewsTile title={newsCards[1].title} href={newsCards[1].href} />
+          <SolariseNewsTile title="A Step-by-Step Guide to Installation" href={newsCards[2].href} />
+        </div>
+      </section>
+    </SolariseShell>
+  );
+}
+
+function ChipArrow() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 12h14" fill="none" stroke="currentColor" strokeLinecap="round" strokeWidth="2" />
+      <path
+        d="m12 5 7 7-7 7"
+        fill="none"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeWidth="2"
+      />
+    </svg>
   );
 }

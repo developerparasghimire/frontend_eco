@@ -200,7 +200,7 @@ class OrderStatusUpdateSerializer(serializers.Serializer):
 
 
 class CancelOrderSerializer(serializers.Serializer):
-    reason = serializers.CharField(required=False, default='', allow_blank=True)
+    reason = serializers.CharField(required=False, default='', allow_blank=True, max_length=500)
 
 
 class WarrantyDocumentSerializer(serializers.ModelSerializer):

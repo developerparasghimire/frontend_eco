@@ -1,6 +1,7 @@
 from rest_framework import status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.throttling import UserRateThrottle
 from rest_framework.views import APIView
 
 from apps.orders.models import Cart
@@ -31,6 +32,7 @@ class ApplyCouponView(APIView):
     """POST /api/coupons/apply/ – preview discount for current cart."""
 
     permission_classes = [IsAuthenticated]
+    throttle_classes = [UserRateThrottle]
 
     def post(self, request):
         serializer = ApplyCouponSerializer(data=request.data, context={'request': request})

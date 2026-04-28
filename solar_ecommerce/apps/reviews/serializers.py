@@ -5,6 +5,8 @@ from .models import Review
 
 class ReviewSerializer(serializers.ModelSerializer):
     user_name = serializers.CharField(source='user.full_name', read_only=True)
+    title = serializers.CharField(max_length=200, required=False, allow_blank=True, default='')
+    comment = serializers.CharField(max_length=5000, required=False, allow_blank=True, default='')
 
     class Meta:
         model = Review

@@ -4,6 +4,8 @@ from .models import ContactMessage, NewsletterSubscriber
 
 
 class ContactMessageSerializer(serializers.ModelSerializer):
+    message = serializers.CharField(max_length=10000)
+
     class Meta:
         model = ContactMessage
         fields = ('id', 'name', 'email', 'phone', 'subject', 'message', 'status', 'created_at')

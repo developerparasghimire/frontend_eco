@@ -2,10 +2,23 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from pathlib import Path
+
+
+def _load_env():
+    """Load .env.local (dev overrides) if present, without overwriting existing env vars."""
+    env_file = Path(__file__).resolve().parent / '.env.local'
+    if env_file.exists():
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(env_file, override=False)
+        except ImportError:
+            pass
 
 
 def main():
     """Run administrative tasks."""
+    _load_env()
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'core.settings')
     try:
         from django.core.management import execute_from_command_line

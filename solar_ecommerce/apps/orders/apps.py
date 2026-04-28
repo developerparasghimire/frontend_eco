@@ -5,3 +5,7 @@ class OrdersConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.orders'
     verbose_name = 'Orders'
+
+    def ready(self) -> None:
+        # Register signal handlers.
+        from . import signals  # noqa: F401

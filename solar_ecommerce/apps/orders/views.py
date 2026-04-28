@@ -21,6 +21,7 @@ from .serializers import (
     UpdateCartItemSerializer,
     WarrantyDocumentSerializer,
 )
+from .services import PayPalClient, PayPalError
 
 
 # ──────────────────────────────────────────────
@@ -40,16 +41,21 @@ class AddToCartView(APIView):
     """POST /api/orders/cart/add/"""
     permission_classes = [IsAuthenticated]
 
+    @transaction.atomic
     def post(self, request):
         serializer = AddToCartSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         data = serializer.validated_data
 
-        product = Product.objects.filter(pk=data['product'], is_active=True).first()
+        # Lock the product row to prevent oversell race conditions when two
+        # concurrent add-to-cart requests arrive for the same product.
+        product = (
+            Product.objects.select_for_update()
+            .filter(pk=data['product'], is_active=True)
+            .first()
+        )
         if not product:
             return Response({'detail': 'Product not found.'}, status=status.HTTP_404_NOT_FOUND)
-        if data['quantity'] > product.stock:
-            return Response({'detail': 'Not enough stock.'}, status=status.HTTP_400_BAD_REQUEST)
 
         cart, _ = Cart.objects.get_or_create(user=request.user)
         item, created = CartItem.objects.get_or_create(
@@ -59,8 +65,18 @@ class AddToCartView(APIView):
                 'include_installation': data['include_installation'],
             },
         )
+        # Compute the resulting total cart quantity for this product and
+        # validate it against currently available stock.
+        target_quantity = data['quantity'] if created else item.quantity + data['quantity']
+        if target_quantity > product.stock:
+            available = max(product.stock - (0 if created else item.quantity), 0)
+            return Response(
+                {'detail': f'Only {available} more in stock.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         if not created:
-            item.quantity += data['quantity']
+            item.quantity = target_quantity
             item.include_installation = data['include_installation']
             item.save(update_fields=['quantity', 'include_installation'])
 
@@ -217,6 +233,105 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
             order.save(update_fields=['status', 'cancelled_at', 'cancellation_reason'])
 
         return Response(OrderSerializer(order).data)
+
+    # ── Payments ───────────────────────────────
+
+    @action(detail=True, methods=['post'], url_path='payments/paypal/create')
+    def paypal_create(self, request, pk=None):
+        """
+        POST /api/orders/list/<id>/payments/paypal/create/
+
+        Creates a PayPal order for an unpaid local order. Returns the
+        PayPal order id for the frontend SDK / approval redirect.
+        """
+        order = self.get_object()
+        if order.user_id != request.user.id and not request.user.is_staff:
+            return Response({'detail': 'Not allowed.'}, status=status.HTTP_403_FORBIDDEN)
+        if order.payment_status == 'paid':
+            return Response({'detail': 'Order is already paid.'}, status=status.HTTP_400_BAD_REQUEST)
+        if order.payment_method != Order.PaymentMethod.PAYPAL:
+            return Response(
+                {'detail': 'This order is not configured for PayPal.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        try:
+            data = PayPalClient().create_order(order)
+        except PayPalError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        # Persist the PayPal order id so we can verify on capture
+        order.payment_id = data.get('id', '')
+        order.save(update_fields=['payment_id'])
+
+        return Response({
+            'paypal_order_id': data.get('id'),
+            'status': data.get('status'),
+            'links': data.get('links', []),
+        }, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=['post'], url_path='payments/paypal/capture')
+    def paypal_capture(self, request, pk=None):
+        """POST /api/orders/list/<id>/payments/paypal/capture/"""
+        order = self.get_object()
+        if order.user_id != request.user.id and not request.user.is_staff:
+            return Response({'detail': 'Not allowed.'}, status=status.HTTP_403_FORBIDDEN)
+        if order.payment_status == 'paid':
+            return Response({'detail': 'Order is already paid.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        paypal_order_id = (
+            request.data.get('paypal_order_id') or order.payment_id
+        )
+        if not paypal_order_id:
+            return Response(
+                {'detail': 'paypal_order_id is required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            data = PayPalClient().capture_order(paypal_order_id)
+        except PayPalError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+
+        if data.get('status') != 'COMPLETED':
+            return Response(
+                {'detail': 'PayPal capture not completed.', 'paypal': data},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        with transaction.atomic():
+            order.payment_status = 'paid'
+            order.payment_id = paypal_order_id
+            order.paid_at = timezone.now()
+            update_fields = ['payment_status', 'payment_id', 'paid_at']
+            if order.status == Order.Status.PENDING:
+                order.status = Order.Status.CONFIRMED
+                update_fields.append('status')
+            order.save(update_fields=update_fields)
+
+        return Response(OrderSerializer(order).data)
+
+    @action(detail=True, methods=['post'], url_path='payments/cod/mark-paid',
+            permission_classes=[IsAdminUser])
+    def cod_mark_paid(self, request, pk=None):
+        """
+        POST /api/orders/list/<id>/payments/cod/mark-paid/  (admin)
+
+        Marks a COD order as paid (e.g., after delivery + cash collected).
+        """
+        order = self.get_object()
+        if order.payment_method != Order.PaymentMethod.COD:
+            return Response(
+                {'detail': 'Only COD orders can be marked paid via this endpoint.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if order.payment_status == 'paid':
+            return Response({'detail': 'Order is already paid.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        order.payment_status = 'paid'
+        order.paid_at = timezone.now()
+        order.save(update_fields=['payment_status', 'paid_at'])
+        return Response(OrderSerializer(order).data)
+
 
 
 # ──────────────────────────────────────────────

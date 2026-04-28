@@ -1,20 +1,23 @@
-import type { Metadata } from "next";
-import "./globals.css";
-import { Providers } from "./providers";
+import { Outfit } from 'next/font/google';
+import './globals.css';
+import type { Metadata } from 'next';
+
+import { Providers } from '@/components/providers/Providers';
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+});
 
 export const metadata: Metadata = {
-  title: "EcoPlanet Solar | Ecommerce",
-  description: "Buy solar products, batteries, and accessories from EcoPlanet Solar.",
+  title: 'Eco Planet Solar',
+  description: 'Solar energy company website frontend',
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="antialiased flex flex-col min-h-screen">
+      <body className={outfit.className}>
         <Providers>{children}</Providers>
       </body>
     </html>

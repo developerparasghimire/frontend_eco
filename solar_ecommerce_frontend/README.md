@@ -1,46 +1,32 @@
-# EcoPlanet Solar Frontend
+# Solaris Next.js Frontend
 
-This frontend is integrated with the Django backend in `../solar_ecommerce`.
+A reusable Next.js frontend built to closely match the provided solar-energy website designs.
 
-## Backend + Frontend Setup
+## Pages included
 
-1. Start backend (`/home/paras/Documents/solar/solar_ecommerce`):
+- `/`
+- `/about`
+- `/team`
+- `/services`
+- `/services/consultation-assessment`
+- `/projects`
+- `/projects/sunset-valley-solar-farm`
+- `/contact`
+- `/news`
+- `/news/future-of-solar-energy`
 
-```bash
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py seed_data
-python manage.py runserver
-```
-
-2. Start frontend (`/home/paras/Documents/solar/solar_ecommerce_frontend`):
+## Run locally
 
 ```bash
 npm install
-NEXT_PUBLIC_API_BASE_URL=http://127.0.0.1:8000 npm run dev
+npm run dev
 ```
 
-Open `http://localhost:3000`.
-
-## Implemented Integration
-
-- Product listing reads from `GET /api/products/`.
-- Category filter reads from `GET /api/products/categories/`.
-- Add to cart calls `POST /api/orders/cart/add/` (JWT access token required).
-- Contact page sends data to `POST /api/contacts/`.
-- Newsletter form sends data to `POST /api/contacts/newsletter/`.
+Open `http://localhost:3000`
 
 ## Notes
 
-- Auth endpoints:
-  - `POST /api/auth/register/`
-  - `POST /api/auth/login/`
-- Paste access token on the Products page before using Add to Cart.
-
-## Build
-
-If Turbopack build is restricted in your environment, use webpack:
-
-```bash
-npm run build -- --webpack
-```
+- Built with the Next.js App Router inside `src/app`
+- Uses reusable components in `src/components`
+- Styling is in `src/app/globals.css`
+- Placeholder gray blocks are kept intentionally to match the provided mockups

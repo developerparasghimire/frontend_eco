@@ -13,9 +13,12 @@ from .models import Address
 from .serializers import (
     AddressSerializer,
     ChangePasswordSerializer,
+    PasswordResetConfirmSerializer,
+    PasswordResetRequestSerializer,
     RegisterSerializer,
     UserSerializer,
 )
+from .services import PasswordResetService
 
 User = get_user_model()
 
@@ -83,6 +86,47 @@ class ChangePasswordView(generics.UpdateAPIView):
         request.user.set_password(serializer.validated_data['new_password'])
         request.user.save()
         return Response({'detail': 'Password updated.'}, status=status.HTTP_200_OK)
+
+
+# ── Password reset (forgot / reset) ──────────
+
+class PasswordResetRequestView(APIView):
+    """
+    POST /api/auth/forgot-password/
+
+    Always returns 200 with a generic message to prevent account enumeration.
+    """
+    permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
+    serializer_class = PasswordResetRequestSerializer  # for schema discovery
+
+    def post(self, request):
+        serializer = PasswordResetRequestSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        email = serializer.validated_data['email']
+
+        user = User.objects.filter(email__iexact=email, is_active=True).first()
+        if user:
+            PasswordResetService.send_reset_email(user)
+
+        return Response(
+            {'detail': 'If an account exists for that email, a reset link has been sent.'},
+            status=status.HTTP_200_OK,
+        )
+
+
+class PasswordResetConfirmView(APIView):
+    """POST /api/auth/reset-password/  – consume token + set new password."""
+    permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
+    serializer_class = PasswordResetConfirmSerializer
+
+    def post(self, request):
+        serializer = PasswordResetConfirmSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({'detail': 'Password has been reset.'}, status=status.HTTP_200_OK)
+
 
 
 # ── Addresses ─────────────────────────────────

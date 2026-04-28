@@ -78,6 +78,7 @@ class Order(TimeStampedModel):
 
     class PaymentMethod(models.TextChoices):
         COD = 'cod', 'Cash on Delivery'
+        PAYPAL = 'paypal', 'PayPal'
         UPI = 'upi', 'UPI'
         CARD = 'card', 'Credit / Debit Card'
         NETBANKING = 'netbanking', 'Net Banking'

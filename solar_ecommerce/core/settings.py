@@ -27,8 +27,11 @@ if DEBUG:
     ALLOWED_HOSTS = ['*']
 else:
     ALLOWED_HOSTS = env_list('DJANGO_ALLOWED_HOSTS')
+    if not ALLOWED_HOSTS:
+        raise RuntimeError(
+            'DJANGO_ALLOWED_HOSTS environment variable is required in production.'
+        )
 
-    
 CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
 
 # ──────────────────────────────────────────────
@@ -191,6 +194,7 @@ REST_FRAMEWORK = {
         'user': '120/minute',
         'auth': '5/minute',       # login / register
         'contact': '3/minute',    # contact form / newsletter
+        'coupon': '20/minute',    # coupon code apply / preview
     },
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'EXCEPTION_HANDLER': 'apps.exceptions.custom_exception_handler',
@@ -236,10 +240,11 @@ if DEBUG:
     CORS_ALLOW_ALL_ORIGINS = True
     CORS_ALLOW_CREDENTIALS = True
 else:
-    # Allow origins provided via env var, otherwise fall back to Droplet frontend origin
-    CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS') or [
-        "http://138.197.11.80",
-    ]
+    CORS_ALLOWED_ORIGINS = env_list('CORS_ALLOWED_ORIGINS')
+    if not CORS_ALLOWED_ORIGINS:
+        raise RuntimeError(
+            'CORS_ALLOWED_ORIGINS environment variable is required in production.'
+        )
     CORS_ALLOW_CREDENTIALS = True
 
 # ──────────────────────────────────────────────
@@ -256,9 +261,10 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 
 if not DEBUG:
-    # HTTPS / HSTS
-    SECURE_SSL_REDIRECT = env_bool('DJANGO_SECURE_SSL_REDIRECT', False)
-    SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_SECURE_HSTS_SECONDS', '0'))
+    # HTTPS / HSTS — secure-by-default in production. Override via env if behind
+    # a TLS-terminating proxy that handles redirects.
+    SECURE_SSL_REDIRECT = env_bool('DJANGO_SECURE_SSL_REDIRECT', True)
+    SECURE_HSTS_SECONDS = int(os.environ.get('DJANGO_SECURE_HSTS_SECONDS', '31536000'))
     SECURE_HSTS_INCLUDE_SUBDOMAINS = SECURE_HSTS_SECONDS > 0
     SECURE_HSTS_PRELOAD = SECURE_HSTS_SECONDS > 0
 
@@ -280,6 +286,45 @@ else:
     SESSION_COOKIE_HTTPONLY = True
 
 # ──────────────────────────────────────────────
+# Email
+# ──────────────────────────────────────────────
+# Console backend in dev (prints to stdout). SMTP via env vars in production.
+if env_bool('USE_SMTP_EMAIL', not DEBUG):
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST', 'smtp.gmail.com')
+    EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
+    EMAIL_USE_TLS = env_bool('EMAIL_USE_TLS', True)
+    EMAIL_USE_SSL = env_bool('EMAIL_USE_SSL', False)
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+    EMAIL_TIMEOUT = int(os.environ.get('EMAIL_TIMEOUT', '15'))
+else:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'Solar <no-reply@solar.local>')
+SUPPORT_EMAIL = os.environ.get('SUPPORT_EMAIL', 'support@solar.local')
+
+# URL base for links rendered in outgoing emails (password reset, order confirmations)
+FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000').rstrip('/')
+
+# Password reset token lifetime (hours)
+PASSWORD_RESET_TIMEOUT_HOURS = int(os.environ.get('PASSWORD_RESET_TIMEOUT_HOURS', '2'))
+PASSWORD_RESET_TIMEOUT = PASSWORD_RESET_TIMEOUT_HOURS * 3600  # consumed by Django's token generator
+
+# ──────────────────────────────────────────────
+# Payments — PayPal
+# ──────────────────────────────────────────────
+PAYPAL_MODE = os.environ.get('PAYPAL_MODE', 'sandbox')  # 'sandbox' or 'live'
+PAYPAL_CLIENT_ID = os.environ.get('PAYPAL_CLIENT_ID', '')
+PAYPAL_CLIENT_SECRET = os.environ.get('PAYPAL_CLIENT_SECRET', '')
+PAYPAL_BASE_URL = (
+    'https://api-m.paypal.com' if PAYPAL_MODE == 'live'
+    else 'https://api-m.sandbox.paypal.com'
+)
+PAYPAL_CURRENCY = os.environ.get('PAYPAL_CURRENCY', 'USD')
+PAYPAL_REQUEST_TIMEOUT = int(os.environ.get('PAYPAL_REQUEST_TIMEOUT', '20'))
+
+# ──────────────────────────────────────────────
 # File Upload Limits
 # ──────────────────────────────────────────────
 
@@ -291,3 +336,53 @@ MAX_IMAGE_UPLOAD_SIZE = 5 * 1024 * 1024           # 5 MB
 MAX_DOCUMENT_UPLOAD_SIZE = 10 * 1024 * 1024        # 10 MB
 ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 ALLOWED_DOCUMENT_TYPES = ['application/pdf']
+
+# ──────────────────────────────────────────────
+# Logging
+# ──────────────────────────────────────────────
+# Structured logs to stdout (captured by Docker / hosting platform).
+# Production should also forward to a log aggregator (e.g. Datadog, Loki).
+_LOG_LEVEL = os.environ.get('DJANGO_LOG_LEVEL', 'DEBUG' if DEBUG else 'INFO')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': _LOG_LEVEL,
+    },
+    'loggers': {
+        'django': {'handlers': ['console'], 'level': _LOG_LEVEL, 'propagate': False},
+        'django.security': {'handlers': ['console'], 'level': 'WARNING', 'propagate': False},
+        'django.request': {'handlers': ['console'], 'level': 'WARNING', 'propagate': False},
+        'apps': {'handlers': ['console'], 'level': _LOG_LEVEL, 'propagate': False},
+    },
+}
+
+# ──────────────────────────────────────────────
+# Production startup validation
+# ──────────────────────────────────────────────
+if not DEBUG:
+    _required_prod_env = ['DJANGO_SECRET_KEY', 'DJANGO_ALLOWED_HOSTS', 'CORS_ALLOWED_ORIGINS']
+    _missing = [v for v in _required_prod_env if not os.environ.get(v)]
+    if _missing:
+        raise RuntimeError(
+            f'Missing required environment variables in production: {", ".join(_missing)}'
+        )
+    if PAYPAL_CLIENT_ID == '' or PAYPAL_CLIENT_SECRET == '':
+        import logging
+        logging.getLogger(__name__).warning(
+            'PayPal credentials are not configured; PayPal payment flows will fail.'
+        )

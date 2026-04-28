@@ -9,3 +9,21 @@
 # Docker build artifacts
 solar_ecommerce/staticfiles/
 solar_ecommerce/media/
+
+# Python virtual environments
+**/.venv/
+**/venv/
+**/__pycache__/
+**/*.pyc
+
+# Node modules
+**/node_modules/
+
+# Next.js build output
+**/.next/
+
+# SQLite database
+solar_ecommerce/db.sqlite3
+
+# tsconfig build info
+**/tsconfig.tsbuildinfo
