@@ -22,7 +22,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        return User.objects.create_user(**validated_data)
+        # Created inactive — user must click the activation link emailed to
+        # them before they can log in.
+        user = User.objects.create_user(**validated_data)
+        if user.is_active:
+            user.is_active = False
+            user.save(update_fields=['is_active'])
+        return user
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -31,9 +37,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'email', 'username', 'first_name', 'last_name',
-                  'full_name', 'phone_number', 'is_installer', 'date_joined')
-        # is_installer must be admin-managed; preventing self-elevation via PATCH /api/auth/profile/.
-        read_only_fields = ('id', 'email', 'date_joined', 'is_installer')
+                  'full_name', 'phone_number', 'is_installer', 'is_staff',
+                  'date_joined')
+        # is_installer / is_staff must be admin-managed; preventing self-elevation via PATCH /api/auth/profile/.
+        read_only_fields = ('id', 'email', 'date_joined', 'is_installer', 'is_staff')
 
 
 class ChangePasswordSerializer(serializers.Serializer):

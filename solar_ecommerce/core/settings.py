@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = [
     'corsheaders',
     'django_filters',
     'drf_spectacular',
+    'django_celery_beat',
 ]
 
 LOCAL_APPS = [
@@ -64,6 +65,8 @@ LOCAL_APPS = [
     'apps.wishlists',
     'apps.coupons',
     'apps.contacts',
+    'apps.shipping',
+    'apps.returns',
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -307,6 +310,12 @@ SUPPORT_EMAIL = os.environ.get('SUPPORT_EMAIL', 'support@solar.local')
 # URL base for links rendered in outgoing emails (password reset, order confirmations)
 FRONTEND_URL = os.environ.get('FRONTEND_URL', 'http://localhost:3000').rstrip('/')
 
+# Public origin of the Django backend (used in account-activation links sent
+# in emails — the link must hit a backend GET endpoint, then redirects back
+# to the frontend). Leave blank to fall back to FRONTEND_URL + /api/...
+# (works when Nginx proxies /api/* to Django).
+BACKEND_PUBLIC_URL = os.environ.get('BACKEND_PUBLIC_URL', 'http://localhost:8000').rstrip('/')
+
 # Password reset token lifetime (hours)
 PASSWORD_RESET_TIMEOUT_HOURS = int(os.environ.get('PASSWORD_RESET_TIMEOUT_HOURS', '2'))
 PASSWORD_RESET_TIMEOUT = PASSWORD_RESET_TIMEOUT_HOURS * 3600  # consumed by Django's token generator
@@ -323,6 +332,84 @@ PAYPAL_BASE_URL = (
 )
 PAYPAL_CURRENCY = os.environ.get('PAYPAL_CURRENCY', 'USD')
 PAYPAL_REQUEST_TIMEOUT = int(os.environ.get('PAYPAL_REQUEST_TIMEOUT', '20'))
+# Required for webhook signature verification (Developer Dashboard → Webhook ID)
+PAYPAL_WEBHOOK_ID = os.environ.get('PAYPAL_WEBHOOK_ID', '')
+
+# ──────────────────────────────────────────────
+# Payments — Stripe
+# ──────────────────────────────────────────────
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
+STRIPE_CURRENCY = os.environ.get('STRIPE_CURRENCY', 'inr').lower()
+# Smallest-unit multiplier (paise/cents). Override for zero-decimal currencies (jpy, krw).
+STRIPE_AMOUNT_MULTIPLIER = int(os.environ.get('STRIPE_AMOUNT_MULTIPLIER', '100'))
+
+# ──────────────────────────────────────────────
+# Tax & shipping defaults
+# ──────────────────────────────────────────────
+from decimal import Decimal as _Dec
+TAX_RATE_PERCENT = _Dec(os.environ.get('TAX_RATE_PERCENT', '18'))   # GST 18% default
+DEFAULT_SHIPPING_RATE = _Dec(os.environ.get('DEFAULT_SHIPPING_RATE', '0'))
+FREE_SHIPPING_ABOVE = _Dec(os.environ.get('FREE_SHIPPING_ABOVE', '50000'))
+
+# ──────────────────────────────────────────────
+# Admin alerts
+# ──────────────────────────────────────────────
+ADMIN_EMAIL = os.environ.get('ADMIN_EMAIL', '')
+LOW_STOCK_THRESHOLD = int(os.environ.get('LOW_STOCK_THRESHOLD', '5'))
+
+# ──────────────────────────────────────────────
+# Cache (Redis) — falls back to local-memory cache when REDIS_URL is unset
+# ──────────────────────────────────────────────
+REDIS_URL = os.environ.get('REDIS_URL', '')
+if REDIS_URL:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': REDIS_URL,
+            'OPTIONS': {'CLIENT_CLASS': 'django_redis.client.DefaultClient'},
+            'KEY_PREFIX': 'solar',
+            'TIMEOUT': 60 * 5,
+        }
+    }
+else:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+            'LOCATION': 'solar-default',
+        }
+    }
+
+# ──────────────────────────────────────────────
+# Celery (background tasks)
+# ──────────────────────────────────────────────
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', REDIS_URL or 'memory://')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND', REDIS_URL or 'cache+memory://')
+CELERY_TASK_ALWAYS_EAGER = env_bool('CELERY_TASK_ALWAYS_EAGER', DEBUG)  # synchronous in dev
+CELERY_TASK_EAGER_PROPAGATES = True
+CELERY_TIMEZONE = TIME_ZONE
+CELERY_TASK_TIME_LIMIT = 60
+CELERY_TASK_SOFT_TIME_LIMIT = 50
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+# ──────────────────────────────────────────────
+# Cloud media storage (S3 / DigitalOcean Spaces) — opt-in
+# ──────────────────────────────────────────────
+USE_S3 = env_bool('USE_S3', False)
+if USE_S3:
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', '')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', '')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME', '')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'ap-south-1')
+    AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL', '') or None
+    AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN', '') or None
+    AWS_DEFAULT_ACL = None  # bucket-policy controlled, never set object ACLs
+    AWS_S3_OBJECT_PARAMETERS = {'CacheControl': 'max-age=86400'}
+    AWS_QUERYSTRING_AUTH = False  # public reads via bucket policy
+    STORAGES['default'] = {'BACKEND': 'storages.backends.s3.S3Storage'}
+    if AWS_S3_CUSTOM_DOMAIN:
+        MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
 
 # ──────────────────────────────────────────────
 # File Upload Limits

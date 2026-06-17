@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import {
   SolariseButton,
   SolariseFeatureCard,
@@ -6,6 +8,19 @@ import {
   SolariseShell,
 } from '@/components/SolariseSite';
 import { aboutValueCards } from '@/data/solariseContent';
+
+export const metadata: Metadata = {
+  title: 'About Us',
+  description:
+    'Learn about Eco Planet Solar — our story, mission, and commitment to delivering clean, reliable solar energy solutions for homes and businesses across India.',
+  alternates: { canonical: '/about' },
+  openGraph: {
+    title: 'About Eco Planet Solar',
+    description:
+      'We exist to empower individuals and businesses to embrace solar energy. Learn about our story, values, and commitment to a sustainable future.',
+    url: '/about',
+  },
+};
 
 export default function AboutPage() {
   return (

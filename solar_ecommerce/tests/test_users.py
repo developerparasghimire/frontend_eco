@@ -39,9 +39,11 @@ class TestRegister:
         }
         resp = client.post(self.URL, data)
         assert resp.status_code == status.HTTP_201_CREATED
-        assert 'tokens' in resp.data
-        assert 'access' in resp.data['tokens']
-        assert User.objects.filter(email='new@test.com').exists()
+        # Activation flow: no tokens issued until the user clicks the email link.
+        assert 'tokens' not in resp.data
+        assert resp.data.get('email') == 'new@test.com'
+        user = User.objects.get(email='new@test.com')
+        assert user.is_active is False
 
     def test_register_password_mismatch(self):
         client = APIClient()

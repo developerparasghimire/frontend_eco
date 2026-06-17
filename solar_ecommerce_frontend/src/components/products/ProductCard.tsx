@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { ShoppingCart, Check, Loader2 } from 'lucide-react';
 import { useState } from 'react';
 
@@ -13,6 +12,7 @@ import { RatingStars } from '@/components/ui/RatingStars';
 import { WishlistButton } from './WishlistButton';
 import { useAddToCart } from '@/hooks/useCart';
 import { useAuthStatus } from '@/store/auth';
+import { useGuestCartStore } from '@/store/guestCart';
 
 interface ProductCardProps {
   product: ProductListItem;
@@ -20,20 +20,23 @@ interface ProductCardProps {
 }
 
 function QuickAddButton({ product }: { product: ProductListItem }) {
-  const router = useRouter();
   const status = useAuthStatus();
   const addToCart = useAddToCart();
+  const guestAdd = useGuestCartStore((s) => s.add);
   const [added, setAdded] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    setError(null);
     if (status !== 'authenticated') {
-      router.push(`/login?next=/products/${product.slug}`);
+      // Guest: store locally, no login required.
+      guestAdd(product, 1, false);
+      setAdded(true);
+      setTimeout(() => setAdded(false), 2000);
       return;
     }
-    setError(null);
     try {
       await addToCart.mutateAsync({ product: product.id, quantity: 1 });
       setAdded(true);

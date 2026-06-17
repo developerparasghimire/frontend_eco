@@ -24,3 +24,20 @@ class ReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+
+
+class ReviewAdminSerializer(serializers.ModelSerializer):
+    """Read-only admin listing — includes product + user info."""
+    user_name = serializers.CharField(source='user.full_name', read_only=True)
+    user_email = serializers.CharField(source='user.email', read_only=True)
+    product_name = serializers.CharField(source='product.name', read_only=True)
+    product_slug = serializers.CharField(source='product.slug', read_only=True)
+
+    class Meta:
+        model = Review
+        fields = (
+            'id', 'product', 'product_name', 'product_slug',
+            'user', 'user_name', 'user_email',
+            'rating', 'title', 'comment', 'created_at',
+        )
+        read_only_fields = fields

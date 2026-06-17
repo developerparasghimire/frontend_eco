@@ -1,0 +1,12 @@
+{% extends "emails/base_email.html" %}
+{% block content %}
+<h1 style="margin:0 0 12px;font-size:20px;">Refund processed</h1>
+<p style="margin:0 0 16px;color:#475569;">
+  We've issued a refund of <strong>₹{{ amount }}</strong> for order
+  <strong>{{ order.order_number }}</strong>.
+</p>
+<p style="margin:0 0 8px;color:#475569;font-size:13px;">
+  Reference: {{ reference|default:"—" }}<br>
+  Funds typically arrive within 5–7 business days.
+</p>
+{% endblock %}

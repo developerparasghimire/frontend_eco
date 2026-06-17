@@ -33,3 +33,10 @@ class NewsletterSerializer(serializers.Serializer):
             sub.is_active = True
             sub.save(update_fields=['is_active'])
         return sub
+
+
+class NewsletterSubscriberAdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = NewsletterSubscriber
+        fields = ('id', 'email', 'is_active', 'created_at', 'updated_at')
+        read_only_fields = ('id', 'email', 'created_at', 'updated_at')

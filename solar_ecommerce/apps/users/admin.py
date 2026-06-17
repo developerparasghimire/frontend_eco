@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Address
+from .models import Address, EmailVerificationOTP
 
 User = get_user_model()
 
@@ -27,3 +27,11 @@ class AddressAdmin(admin.ModelAdmin):
     list_display = ('user', 'label', 'address_type', 'city', 'is_default')
     list_filter = ('address_type', 'is_default')
     search_fields = ('user__email', 'city', 'postal_code')
+
+
+@admin.register(EmailVerificationOTP)
+class EmailVerificationOTPAdmin(admin.ModelAdmin):
+    list_display = ('user', 'code', 'is_used', 'expires_at', 'created_at')
+    list_filter = ('is_used',)
+    search_fields = ('user__email',)
+    readonly_fields = ('code', 'created_at', 'expires_at')

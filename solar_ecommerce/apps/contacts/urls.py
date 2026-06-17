@@ -5,6 +5,7 @@ from . import views
 
 router = DefaultRouter()
 router.register('admin/messages', views.ContactAdminViewSet, basename='contact-admin')
+router.register('admin/newsletter', views.NewsletterAdminViewSet, basename='newsletter-admin')
 
 urlpatterns = [
     path('', views.ContactCreateView.as_view(), name='contact'),

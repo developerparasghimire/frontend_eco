@@ -25,6 +25,7 @@ function LoginForm() {
   const router = useRouter();
   const search = useSearchParams();
   const next = search.get('next') ?? '/dashboard';
+  const activated = search.get('activated');
   const login = useAuthStore((s) => s.login);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
@@ -52,6 +53,21 @@ function LoginForm() {
       </div>
 
       <form onSubmit={onSubmit} className="space-y-4">
+        {activated === '1' ? (
+          <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">
+            Your email has been verified. You can now sign in.
+          </div>
+        ) : null}
+        {activated === 'invalid' ? (
+          <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            That activation link is invalid or has already been used. If your account is not yet active, please request a new activation email.
+          </div>
+        ) : null}
+        {search.get('verified') === '1' ? (
+          <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">
+            ✅ Email verified successfully! You can now sign in.
+          </div>
+        ) : null}
         <FormField label="Email" htmlFor="email" error={errors.email?.message}>
           <Input id="email" type="email" autoComplete="email" {...register('email')} />
         </FormField>

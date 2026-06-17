@@ -27,6 +27,8 @@ urlpatterns = [
 
     # Registration & profile
     path('register/', views.RegisterView.as_view(), name='register'),
+    path('verify-email/', views.VerifyEmailOTPView.as_view(), name='verify_email_otp'),
+    path('resend-activation/', views.ResendActivationView.as_view(), name='resend_activation'),
     path('profile/', views.ProfileView.as_view(), name='profile'),
     path('change-password/', views.ChangePasswordView.as_view(), name='change_password'),
     path('forgot-password/', views.PasswordResetRequestView.as_view(), name='forgot_password'),
@@ -34,6 +36,7 @@ urlpatterns = [
 
     # Admin dashboard
     path('admin/dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
+    path('admin/customers/', views.AdminCustomerListView.as_view(), name='admin_customers'),
 
     # Addresses
     path('', include(router.urls)),

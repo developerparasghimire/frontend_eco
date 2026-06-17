@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Heart, KeyRound, MapPin, Package, ShoppingBag, UserRound } from 'lucide-react';
+import { Heart, KeyRound, MapPin, Package, RotateCcw, ShoppingBag, Star, UserRound } from 'lucide-react';
 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { Button } from '@/components/ui/Button';
@@ -9,6 +9,8 @@ import { useAuthStore, useUser } from '@/store/auth';
 
 const TILES = [
   { href: '/dashboard/orders', title: 'Orders', desc: 'Track, review, and manage purchases.', Icon: Package },
+  { href: '/dashboard/returns', title: 'Returns', desc: 'View RMA status and history.', Icon: RotateCcw },
+  { href: '/dashboard/reviews', title: 'My reviews', desc: 'Reviews you posted on products.', Icon: Star },
   { href: '/dashboard/addresses', title: 'Addresses', desc: 'Saved shipping & billing addresses.', Icon: MapPin },
   { href: '/wishlist', title: 'Wishlist', desc: 'Items you saved for later.', Icon: Heart },
   { href: '/cart', title: 'Cart', desc: 'Review items currently in your cart.', Icon: ShoppingBag },

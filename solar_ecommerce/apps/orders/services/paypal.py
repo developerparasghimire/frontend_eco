@@ -109,3 +109,64 @@ class PayPalClient:
         if not paypal_order_id:
             raise PayPalError("PayPal order id is required.")
         return self._request("POST", f"/v2/checkout/orders/{paypal_order_id}/capture")
+
+    # ── refunds ─────────────────────────────────
+    def get_capture_id(self, paypal_order_id: str) -> str | None:
+        """Look up the capture id for a completed PayPal order."""
+        data = self._request("GET", f"/v2/checkout/orders/{paypal_order_id}")
+        for unit in data.get("purchase_units", []):
+            captures = unit.get("payments", {}).get("captures", [])
+            if captures:
+                return captures[0].get("id")
+        return None
+
+    def refund_capture(self, capture_id: str, amount: Decimal | None = None,
+                       note: str = "") -> dict[str, Any]:
+        if not capture_id:
+            raise PayPalError("PayPal capture id is required for refund.")
+        payload: dict[str, Any] = {}
+        if amount is not None:
+            payload["amount"] = {
+                "value": f"{Decimal(amount).quantize(Decimal('0.01')):.2f}",
+                "currency_code": self.currency,
+            }
+        if note:
+            payload["note_to_payer"] = note[:255]
+        return self._request(
+            "POST", f"/v2/payments/captures/{capture_id}/refund",
+            json=payload or None,
+        )
+
+    # ── webhooks ────────────────────────────────
+    def verify_webhook(self, *, headers: dict, body: str, webhook_id: str) -> bool:
+        """
+        Verify a webhook event signature with PayPal's verify-webhook-signature
+        endpoint. Returns True if PayPal confirms the signature is valid.
+        """
+        import json as _json
+
+        if not webhook_id:
+            raise PayPalError("PAYPAL_WEBHOOK_ID is not configured.")
+        try:
+            event_body = _json.loads(body) if isinstance(body, (str, bytes)) else body
+        except _json.JSONDecodeError as exc:
+            raise PayPalError("Invalid webhook body.") from exc
+
+        payload = {
+            "auth_algo": headers.get("PAYPAL-AUTH-ALGO") or headers.get("Paypal-Auth-Algo"),
+            "cert_url": headers.get("PAYPAL-CERT-URL") or headers.get("Paypal-Cert-Url"),
+            "transmission_id": headers.get("PAYPAL-TRANSMISSION-ID") or headers.get("Paypal-Transmission-Id"),
+            "transmission_sig": headers.get("PAYPAL-TRANSMISSION-SIG") or headers.get("Paypal-Transmission-Sig"),
+            "transmission_time": headers.get("PAYPAL-TRANSMISSION-TIME") or headers.get("Paypal-Transmission-Time"),
+            "webhook_id": webhook_id,
+            "webhook_event": event_body,
+        }
+        if not all(payload[k] for k in (
+                "auth_algo", "cert_url", "transmission_id",
+                "transmission_sig", "transmission_time")):
+            return False
+
+        result = self._request(
+            "POST", "/v1/notifications/verify-webhook-signature", json=payload,
+        )
+        return result.get("verification_status") == "SUCCESS"

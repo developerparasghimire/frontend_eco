@@ -79,11 +79,22 @@ class Order(TimeStampedModel):
     class PaymentMethod(models.TextChoices):
         COD = 'cod', 'Cash on Delivery'
         PAYPAL = 'paypal', 'PayPal'
+        STRIPE = 'stripe', 'Stripe'
         UPI = 'upi', 'UPI'
         CARD = 'card', 'Credit / Debit Card'
         NETBANKING = 'netbanking', 'Net Banking'
 
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name='orders')
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT,
+        related_name='orders', null=True, blank=True,
+    )
+    # Email captured for guest checkouts (when `user` is NULL). Used to
+    # send the order confirmation and to look up the order via the
+    # guest_access_token sent in that email.
+    guest_email = models.EmailField(blank=True, default='')
+    # Random token used to authorise guest access to /api/orders/<id>/
+    # and the invoice PDF without authentication.
+    guest_access_token = models.CharField(max_length=64, blank=True, default='', db_index=True)
     order_number = models.CharField(max_length=30, unique=True, editable=False)
     status = models.CharField(max_length=15, choices=Status.choices, default=Status.PENDING, db_index=True)
     payment_method = models.CharField(max_length=15, choices=PaymentMethod.choices, default=PaymentMethod.COD)
@@ -100,6 +111,9 @@ class Order(TimeStampedModel):
     subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     installation_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     discount_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    tax_rate = models.DecimalField(max_digits=5, decimal_places=2, default=0)
+    tax_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    shipping_cost = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     grand_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)
 
     # Coupon
@@ -113,6 +127,19 @@ class Order(TimeStampedModel):
     )
     payment_id = models.CharField(max_length=100, blank=True, default='', help_text='Gateway txn id')
     paid_at = models.DateTimeField(null=True, blank=True)
+
+    # Fulfilment / tracking
+    tracking_number = models.CharField(max_length=100, blank=True, default='')
+    tracking_url = models.URLField(blank=True, default='')
+    courier_name = models.CharField(max_length=100, blank=True, default='')
+    estimated_delivery_date = models.DateField(null=True, blank=True)
+    shipped_at = models.DateTimeField(null=True, blank=True)
+    delivered_at = models.DateTimeField(null=True, blank=True)
+
+    # Refund metadata
+    refund_amount = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    refunded_at = models.DateTimeField(null=True, blank=True)
+    refund_reference = models.CharField(max_length=100, blank=True, default='')
 
     # Cancellation
     cancelled_at = models.DateTimeField(null=True, blank=True)
@@ -129,7 +156,17 @@ class Order(TimeStampedModel):
     def save(self, *args, **kwargs):
         if not self.order_number:
             self.order_number = self._generate_order_number()
+        if not self.user_id and not self.guest_access_token:
+            import secrets as _secrets
+            self.guest_access_token = _secrets.token_urlsafe(32)
         super().save(*args, **kwargs)
+
+    @property
+    def customer_email(self) -> str:
+        """Email used for notifications, regardless of guest vs registered."""
+        if self.user_id:
+            return self.user.email
+        return self.guest_email
 
     @staticmethod
     def _generate_order_number():

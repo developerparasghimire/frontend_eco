@@ -1,5 +1,19 @@
+import type { Metadata } from 'next';
+
 import { SolariseNewsTile, SolariseSearchBar, SolariseShell } from '@/components/SolariseSite';
 import { newsCards } from '@/data/solariseContent';
+
+export const metadata: Metadata = {
+  title: 'Solar Energy News & Insights',
+  description:
+    'Stay up to date with the latest solar energy news, industry trends, installation guides, and sustainability insights from Eco Planet Solar.',
+  alternates: { canonical: '/news' },
+  openGraph: {
+    title: 'Solar Energy News & Insights — Eco Planet Solar',
+    description: 'Latest solar energy news, trends and installation guides from Eco Planet Solar.',
+    url: '/news',
+  },
+};
 
 export default function NewsPage() {
   return (

@@ -13,10 +13,12 @@ class IsOwner(BasePermission):
 
 
 class IsOwnerOrReadOnly(BasePermission):
-    """Read for everyone, write only for the owner."""
+    """Read for everyone, write only for the owner (or staff)."""
 
     def has_object_permission(self, request, view, obj):
         if request.method in SAFE_METHODS:
+            return True
+        if request.user and request.user.is_staff:
             return True
         return obj.user == request.user
 

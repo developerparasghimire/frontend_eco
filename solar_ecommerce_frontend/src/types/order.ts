@@ -28,7 +28,7 @@ export type OrderStatus =
   | 'delivered'
   | 'cancelled';
 
-export type PaymentMethod = 'cod' | 'paypal' | 'upi' | 'card' | 'netbanking';
+export type PaymentMethod = 'cod' | 'paypal' | 'stripe' | 'upi' | 'card' | 'netbanking';
 export type PaymentStatus = 'unpaid' | 'paid' | 'refunded';
 
 export interface OrderItem {
@@ -48,6 +48,9 @@ export interface Order {
   order_number: string;
   status: OrderStatus;
   payment_method: PaymentMethod;
+  guest_email?: string;
+  guest_access_token?: string;
+  customer_email?: string;
   shipping_full_name: string;
   shipping_phone: string;
   shipping_address: string;
@@ -59,10 +62,22 @@ export interface Order {
   installation_total: string;
   discount_amount: string;
   coupon_code: string;
+  tax_rate: string;
+  tax_amount: string;
+  shipping_cost: string;
   grand_total: string;
   payment_status: PaymentStatus;
   payment_id: string;
   paid_at: string | null;
+  tracking_number: string;
+  tracking_url: string;
+  courier_name: string;
+  estimated_delivery_date: string | null;
+  shipped_at: string | null;
+  delivered_at: string | null;
+  refund_amount: string;
+  refunded_at: string | null;
+  refund_reference: string;
   cancelled_at: string | null;
   cancellation_reason: string;
   note: string;
@@ -76,4 +91,40 @@ export interface CheckoutInput {
   payment_method: PaymentMethod;
   coupon_code?: string;
   note?: string;
+}
+
+export interface CheckoutQuote {
+  subtotal: string;
+  installation_total: string;
+  discount_amount: string;
+  tax_rate: string;
+  tax_amount: string;
+  shipping_cost: string;
+  shipping_zone: string | null;
+  shipping_eta_min: number | null;
+  shipping_eta_max: number | null;
+  grand_total: string;
+  currency: string;
+}
+
+export interface GuestCheckoutItemInput {
+  product: string;
+  quantity: number;
+  include_installation: boolean;
+}
+
+export interface GuestCheckoutInput {
+  email: string;
+  full_name: string;
+  phone: string;
+  address_line1: string;
+  address_line2?: string;
+  city: string;
+  state: string;
+  postal_code: string;
+  country: string;
+  payment_method: PaymentMethod;
+  coupon_code?: string;
+  note?: string;
+  items: GuestCheckoutItemInput[];
 }

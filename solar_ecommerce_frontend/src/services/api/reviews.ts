@@ -10,6 +10,9 @@ export const reviewsApi = {
       params: { product: productId },
     }),
 
+  mine: () =>
+    request<Paginated<Review>>({ method: 'GET', url: '/api/reviews/mine/' }),
+
   create: (data: ReviewInput) =>
     request<Review>({ method: 'POST', url: '/api/reviews/', data }),
 

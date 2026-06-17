@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import {
   SolariseButton,
   SolariseJoinBanner,
@@ -6,6 +8,23 @@ import {
   SolariseShell,
 } from '@/components/SolariseSite';
 import { servicesOverview } from '@/data/solariseContent';
+
+export const metadata: Metadata = {
+  title: 'Solar Services',
+  description:
+    'Eco Planet Solar offers residential & commercial solar panel installation, system design, maintenance, and energy consultation across India. Get started today.',
+  keywords: [
+    'solar panel installation', 'solar system design', 'rooftop solar', 'solar maintenance',
+    'commercial solar', 'residential solar', 'energy consultation',
+  ],
+  alternates: { canonical: '/services' },
+  openGraph: {
+    title: 'Solar Services — Eco Planet Solar',
+    description:
+      'From system design to installation and maintenance — Eco Planet Solar provides end-to-end solar energy services for homes and businesses.',
+    url: '/services',
+  },
+};
 
 export default function ServicesPage() {
   return (

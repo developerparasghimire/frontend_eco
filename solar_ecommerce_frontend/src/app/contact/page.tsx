@@ -1,4 +1,19 @@
+import type { Metadata } from 'next';
+
 import { SolariseButton, SolariseShell } from '@/components/SolariseSite';
+
+export const metadata: Metadata = {
+  title: 'Contact Us',
+  description:
+    'Get in touch with Eco Planet Solar for solar panel quotes, installation enquiries, or support. We are here to help you switch to clean energy.',
+  alternates: { canonical: '/contact' },
+  openGraph: {
+    title: 'Contact Eco Planet Solar',
+    description:
+      "Have questions about solar? We'd love to hear from you. Reach out for a free consultation or quote.",
+    url: '/contact',
+  },
+};
 
 export default function ContactPage() {
   return (

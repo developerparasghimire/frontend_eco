@@ -16,6 +16,16 @@ urlpatterns = [
 
     # Checkout
     path('checkout/', views.CheckoutView.as_view(), name='checkout'),
+    path('checkout/quote/', views.CheckoutQuoteView.as_view(), name='checkout_quote'),
+    path('checkout/guest/', views.GuestCheckoutView.as_view(), name='checkout_guest'),
+
+    # Guest order detail (token-protected)
+    path('guest/<str:order_number>/', views.GuestOrderDetailView.as_view(),
+         name='guest_order_detail'),
+
+    # Invoice PDF download (works for both authenticated and guest orders)
+    path('<str:order_number>/invoice.pdf', views.OrderInvoicePDFView.as_view(),
+         name='order_invoice_pdf'),
 
     # Orders & warranties via router
     path('', include(router.urls)),

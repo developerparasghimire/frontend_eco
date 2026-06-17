@@ -1,0 +1,30 @@
+{% extends "emails/base_email.html" %}
+{% block content %}
+<h1 style="margin:0 0 12px;font-size:20px;">Order {{ order.order_number }} update</h1>
+<p style="margin:0 0 16px;color:#475569;">
+  Your order status has changed:
+  <strong style="color:#0f172a;">{{ previous_status|title }} → {{ order.get_status_display }}</strong>
+</p>
+
+{% if order.tracking_number %}
+<div style="background:#f8fafc;border-radius:10px;padding:14px;margin:18px 0;">
+  <p style="margin:0 0 6px;color:#64748b;font-size:12px;">Tracking</p>
+  <p style="margin:0;font-weight:600;">
+    {{ order.courier_name|default:"Courier" }} — {{ order.tracking_number }}
+  </p>
+  {% if order.tracking_url %}
+  <p style="margin:8px 0 0;">
+    <a href="{{ order.tracking_url }}" style="color:#2563eb;">Track shipment ↗</a>
+  </p>
+  {% endif %}
+</div>
+{% endif %}
+
+<p style="margin:24px 0 0;text-align:center;">
+  <a href="{{ frontend_url }}/dashboard/orders/{{ order.id }}"
+     style="background:#2563eb;color:#ffffff;text-decoration:none;
+            padding:12px 22px;border-radius:8px;font-weight:600;display:inline-block;">
+    View order
+  </a>
+</p>
+{% endblock %}

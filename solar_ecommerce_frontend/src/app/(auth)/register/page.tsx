@@ -42,8 +42,9 @@ export default function RegisterPage() {
   const onSubmit = handleSubmit(async (values) => {
     setSubmitError(null);
     try {
-      await registerUser(values);
-      router.replace('/dashboard');
+      const res = await registerUser(values);
+      const email = res.email ?? values.email;
+      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
     } catch (err) {
       setSubmitError(formatApiError(err, 'Registration failed.'));
     }

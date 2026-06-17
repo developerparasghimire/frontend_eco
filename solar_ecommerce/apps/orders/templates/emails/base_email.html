@@ -1,0 +1,38 @@
+{# Base HTML email layout. Inline styles only — Outlook/Gmail safe. #}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>{% block title %}{{ subject|default:"Solar" }}{% endblock %}</title>
+</head>
+<body style="margin:0;padding:0;background:#f1f5f9;font-family:Helvetica,Arial,sans-serif;color:#0f172a;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f1f5f9;padding:24px 0;">
+    <tr>
+      <td align="center">
+        <table role="presentation" width="600" cellpadding="0" cellspacing="0"
+               style="background:#ffffff;border-radius:12px;overflow:hidden;max-width:600px;width:100%;">
+          <tr>
+            <td style="background:#0f172a;padding:20px 28px;color:#ffffff;">
+              <span style="font-size:18px;font-weight:600;letter-spacing:-0.01em;">Solar</span>
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:28px;font-size:14px;line-height:1.55;color:#0f172a;">
+              {% block content %}{% endblock %}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding:18px 28px;background:#f8fafc;color:#64748b;font-size:12px;line-height:1.55;text-align:center;">
+              Need help? Reply to this email or contact
+              <a href="mailto:{{ support_email }}" style="color:#2563eb;">{{ support_email }}</a>.
+              <br>
+              © {{ now|date:"Y" }} Solar. All rights reserved.
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

@@ -7,7 +7,9 @@ import { useState } from 'react';
 
 import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
 import { PayPalCheckout } from '@/components/checkout/PayPalCheckout';
+import { StripeCheckout } from '@/components/checkout/StripeCheckout';
 import { Button } from '@/components/ui/Button';
+import { InvoiceDownloadButton } from '@/components/orders/InvoiceDownloadButton';
 import { useOrder, useCancelOrder } from '@/hooks/useOrders';
 import { formatApiError } from '@/lib/errors';
 import { formatDate, formatPrice } from '@/lib/format';
@@ -110,6 +112,10 @@ function OrderDetailInner() {
 
   const needsPayPal =
     order.payment_method === 'paypal' && order.payment_status === 'unpaid' && order.status !== 'cancelled';
+  const needsStripe =
+    (order.payment_method === 'stripe' || order.payment_method === 'card') &&
+    order.payment_status === 'unpaid' &&
+    order.status !== 'cancelled';
   const isCod = order.payment_method === 'cod';
 
   return (
@@ -157,6 +163,62 @@ function OrderDetailInner() {
               <div className="mt-4">
                 <PayPalCheckout order={order} onCaptured={() => void refetch()} />
               </div>
+            </section>
+          ) : null}
+
+          {needsStripe ? (
+            <section className="rounded-2xl border border-slate-200 bg-white p-6">
+              <h2 className="text-base font-semibold text-slate-900">Complete payment</h2>
+              <p className="mt-1 text-sm text-slate-500">
+                Pay securely with your card or UPI — powered by Stripe.
+              </p>
+              <div className="mt-4">
+                <StripeCheckout order={order} onPaid={() => void refetch()} />
+              </div>
+            </section>
+          ) : null}
+
+          {order.tracking_number ? (
+            <section className="rounded-2xl border border-slate-200 bg-white p-6 text-sm">
+              <h2 className="text-base font-semibold text-slate-900">Tracking</h2>
+              <dl className="mt-3 grid gap-2 sm:grid-cols-2">
+                {order.courier_name ? (
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-slate-400">Courier</dt>
+                    <dd className="font-medium text-slate-900">{order.courier_name}</dd>
+                  </div>
+                ) : null}
+                <div>
+                  <dt className="text-xs uppercase tracking-wide text-slate-400">Tracking number</dt>
+                  <dd className="font-mono text-slate-900">{order.tracking_number}</dd>
+                </div>
+                {order.estimated_delivery_date ? (
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-slate-400">Estimated delivery</dt>
+                    <dd className="font-medium text-slate-900">
+                      {formatDate(order.estimated_delivery_date)}
+                    </dd>
+                  </div>
+                ) : null}
+                {order.shipped_at ? (
+                  <div>
+                    <dt className="text-xs uppercase tracking-wide text-slate-400">Shipped</dt>
+                    <dd className="font-medium text-slate-900">
+                      {formatDate(order.shipped_at)}
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+              {order.tracking_url ? (
+                <a
+                  href={order.tracking_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-brand-600 hover:underline"
+                >
+                  Track shipment →
+                </a>
+              ) : null}
             </section>
           ) : null}
 
@@ -216,10 +278,28 @@ function OrderDetailInner() {
                 <dd className="font-medium">− {formatPrice(order.discount_amount)}</dd>
               </div>
             ) : null}
+            <div className="flex justify-between">
+              <dt className="text-slate-600">Shipping</dt>
+              <dd className="font-medium text-slate-900">
+                {Number(order.shipping_cost) === 0 ? 'Free' : formatPrice(order.shipping_cost)}
+              </dd>
+            </div>
+            {Number(order.tax_amount) > 0 ? (
+              <div className="flex justify-between">
+                <dt className="text-slate-600">Tax ({Number(order.tax_rate)}%)</dt>
+                <dd className="font-medium text-slate-900">{formatPrice(order.tax_amount)}</dd>
+              </div>
+            ) : null}
             <div className="flex justify-between border-t border-slate-200 pt-3 text-base">
               <dt className="font-semibold text-slate-900">Total</dt>
               <dd className="font-semibold text-slate-900">{formatPrice(order.grand_total)}</dd>
             </div>
+            {order.payment_status === 'refunded' && Number(order.refund_amount) > 0 ? (
+              <div className="flex justify-between border-t border-slate-200 pt-3 text-sm text-slate-600">
+                <dt>Refunded</dt>
+                <dd className="font-medium">{formatPrice(order.refund_amount)}</dd>
+              </div>
+            ) : null}
           </dl>
 
           <div className="border-t border-slate-200 pt-4 text-xs text-slate-500">
@@ -245,6 +325,15 @@ function OrderDetailInner() {
           >
             All orders
           </Link>
+          <InvoiceDownloadButton orderNumber={order.order_number} />
+          {order.status === 'delivered' ? (
+            <Link
+              href={`/dashboard/orders/${order.id}/return`}
+              className="block text-center text-sm text-brand-600 hover:underline"
+            >
+              Request a return
+            </Link>
+          ) : null}
         </aside>
       </div>
     </div>

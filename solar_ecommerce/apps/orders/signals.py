@@ -1,15 +1,36 @@
-"""Order signals — sends transactional emails on lifecycle changes."""
+"""Order signals — dispatches transactional emails on lifecycle changes."""
 from __future__ import annotations
+
+import logging
 
 from django.db.models.signals import post_save, pre_save
 from django.dispatch import receiver
 
 from .models import Order
-from .services import send_order_confirmation_email, send_order_status_update_email
+from .tasks import (
+    send_order_confirmation_email_task,
+    send_order_status_update_email_task,
+)
 
+logger = logging.getLogger(__name__)
 
 # Track previous status for emitting status-change emails.
 _PREVIOUS_STATUS_ATTR = '_previous_status'
+
+
+def _dispatch_task(task, *args):
+    """Dispatch a Celery task with a synchronous fallback if the broker is unavailable."""
+    try:
+        task.delay(*args)
+    except Exception as exc:
+        logger.warning(
+            'Celery broker unavailable (%s); running %s synchronously.',
+            exc, task.name,
+        )
+        try:
+            task(*args)
+        except Exception:
+            logger.exception('Synchronous fallback for %s also failed.', task.name)
 
 
 @receiver(pre_save, sender=Order)
@@ -27,11 +48,10 @@ def _capture_previous_status(sender, instance: Order, **kwargs):
 @receiver(post_save, sender=Order)
 def _send_lifecycle_emails(sender, instance: Order, created: bool, **kwargs):
     if created:
-        send_order_confirmation_email(instance)
+        _dispatch_task(send_order_confirmation_email_task, str(instance.pk))
         return
 
     previous = getattr(instance, _PREVIOUS_STATUS_ATTR, None)
     if previous and previous != instance.status:
-        # Render previous human-readable label
         previous_display = dict(Order.Status.choices).get(previous, previous)
-        send_order_status_update_email(instance, previous_status=previous_display)
+        _dispatch_task(send_order_status_update_email_task, str(instance.pk), previous_display)

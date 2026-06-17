@@ -13,10 +13,12 @@ import { useAddresses } from '@/hooks/useAddresses';
 import { useCheckout } from '@/hooks/useOrders';
 import { formatApiError } from '@/lib/errors';
 import { formatPrice } from '@/lib/format';
+import { ordersApi } from '@/services/api/orders';
+import type { CheckoutQuote, PaymentMethod } from '@/types/order';
 import type { CouponPreview } from '@/types/coupon';
-import type { PaymentMethod } from '@/types/order';
 
 const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string }> = [
+  { value: 'stripe', label: 'Card (Stripe)', hint: 'Visa, Mastercard, RuPay, UPI via Stripe' },
   { value: 'paypal', label: 'PayPal', hint: 'Pay securely with PayPal Checkout' },
   { value: 'cod', label: 'Cash on delivery', hint: 'Pay when your order arrives' },
 ];
@@ -28,10 +30,12 @@ function CheckoutInner() {
   const checkout = useCheckout();
 
   const [addressId, setAddressId] = useState<string | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('paypal');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('stripe');
   const [coupon, setCoupon] = useState<CouponPreview | null>(null);
   const [note, setNote] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [quote, setQuote] = useState<CheckoutQuote | null>(null);
+  const [quoteLoading, setQuoteLoading] = useState(false);
 
   useEffect(() => {
     if (!addressId && addrPage?.results.length) {
@@ -39,6 +43,33 @@ function CheckoutInner() {
       setAddressId(def.id);
     }
   }, [addrPage, addressId]);
+
+  // Live tax + shipping quote when address or coupon changes.
+  useEffect(() => {
+    if (!addressId) {
+      setQuote(null);
+      return;
+    }
+    let cancelled = false;
+    setQuoteLoading(true);
+    const t = setTimeout(async () => {
+      try {
+        const q = await ordersApi.quote({
+          address_id: addressId,
+          coupon_code: coupon?.coupon || undefined,
+        });
+        if (!cancelled) setQuote(q);
+      } catch {
+        if (!cancelled) setQuote(null);
+      } finally {
+        if (!cancelled) setQuoteLoading(false);
+      }
+    }, 250);
+    return () => {
+      cancelled = true;
+      clearTimeout(t);
+    };
+  }, [addressId, coupon]);
 
   const totals = useMemo(() => {
     const c = cart.data;
@@ -175,9 +206,32 @@ function CheckoutInner() {
                   <dd className="font-medium">− {formatPrice(totals.discount)}</dd>
                 </div>
               ) : null}
+              <div className="flex justify-between">
+                <dt className="text-slate-600">
+                  Shipping
+                  {quote?.shipping_eta_min && quote?.shipping_eta_max ? (
+                    <span className="ml-1 text-xs text-slate-400">
+                      ({quote.shipping_eta_min}–{quote.shipping_eta_max} days)
+                    </span>
+                  ) : null}
+                </dt>
+                <dd className="font-medium text-slate-900">
+                  {quote ? (Number(quote.shipping_cost) === 0 ? 'Free' : formatPrice(quote.shipping_cost)) : quoteLoading ? '…' : '—'}
+                </dd>
+              </div>
+              <div className="flex justify-between">
+                <dt className="text-slate-600">
+                  Tax{quote ? ` (${Number(quote.tax_rate)}%)` : ''}
+                </dt>
+                <dd className="font-medium text-slate-900">
+                  {quote ? formatPrice(quote.tax_amount) : quoteLoading ? '…' : '—'}
+                </dd>
+              </div>
               <div className="flex justify-between border-t border-slate-200 pt-3 text-base">
                 <dt className="font-semibold text-slate-900">Total</dt>
-                <dd className="font-semibold text-slate-900">{formatPrice(totals.grand)}</dd>
+                <dd className="font-semibold text-slate-900">
+                  {quoteLoading ? '…' : quote ? formatPrice(quote.grand_total) : formatPrice(totals.grand)}
+                </dd>
               </div>
             </dl>
           ) : null}
@@ -188,10 +242,14 @@ function CheckoutInner() {
             block
             size="lg"
             loading={checkout.isPending}
-            disabled={!addressId}
+            disabled={!addressId || quoteLoading}
             onClick={placeOrder}
           >
-            {paymentMethod === 'paypal' ? 'Continue to PayPal' : 'Place order'}
+            {paymentMethod === 'paypal'
+              ? 'Continue to PayPal'
+              : paymentMethod === 'stripe'
+              ? 'Continue to payment'
+              : 'Place order'}
           </Button>
           <p className="text-center text-xs text-slate-500">
             You&apos;ll review and confirm payment on the next step.

@@ -7,6 +7,7 @@ export interface User {
   full_name: string;
   phone_number: string;
   is_installer: boolean;
+  is_staff: boolean;
   date_joined: string;
 }
 
@@ -18,6 +19,13 @@ export interface AuthTokens {
 export interface AuthResponse {
   user: User;
   tokens: AuthTokens;
+}
+
+/** Response from POST /api/auth/register/ — no tokens until the user
+ *  clicks the activation link emailed to them. */
+export interface RegisterResponse {
+  detail: string;
+  email: string;
 }
 
 export interface Address {

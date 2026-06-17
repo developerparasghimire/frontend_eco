@@ -1,12 +1,15 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Heart, ShoppingCart, User, Menu, X, Home } from 'lucide-react';
+import { Heart, ShoppingCart, User, Menu, X, Home, Search, GitCompare } from 'lucide-react';
 
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
-import { useAuthStatus } from '@/store/auth';
+import { useAuthStatus, useAuthStore } from '@/store/auth';
+import { useCompareStore } from '@/store/compare';
+import { useGuestCartStore } from '@/store/guestCart';
 
 function Badge({ count }: { count: number }) {
   if (count <= 0) return null;
@@ -18,13 +21,25 @@ function Badge({ count }: { count: number }) {
 }
 
 export function ShopHeader() {
+  const router = useRouter();
   const status = useAuthStatus();
+  const user = useAuthStore((s) => s.user);
   const cart = useCart();
   const wishlist = useWishlist();
+  const compareCount = useCompareStore((s) => s.slugs.length);
+  const guestCartCount = useGuestCartStore((s) => s.lines.reduce((sum, l) => sum + l.quantity, 0));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [query, setQuery] = useState('');
 
-  const cartCount = cart.data?.total_items ?? 0;
+  const cartCount = status === 'authenticated' ? cart.data?.total_items ?? 0 : guestCartCount;
   const wishCount = wishlist.data?.count ?? 0;
+
+  const submitSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const q = query.trim();
+    router.push(q ? `/products?search=${encodeURIComponent(q)}` : '/products');
+    setMobileOpen(false);
+  };
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200 bg-white/95 backdrop-blur shadow-sm">
@@ -45,8 +60,25 @@ export function ShopHeader() {
 
         {/* Desktop nav */}
         <nav className="hidden sm:flex items-center gap-1">
+          <form onSubmit={submitSearch} className="mr-2 hidden md:flex items-center">
+            <label className="relative">
+              <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search products…"
+                aria-label="Search products"
+                className="h-8 w-56 rounded-full border border-slate-200 bg-slate-50 pl-8 pr-3 text-sm focus:border-brand-500 focus:bg-white focus:outline-none"
+              />
+            </label>
+          </form>
           <Link href="/products" className="rounded-md px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
             Products
+          </Link>
+          <Link href="/compare" aria-label="Compare" className="relative rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
+            <GitCompare size={18} />
+            <Badge count={compareCount} />
           </Link>
           <Link href="/wishlist" aria-label="Wishlist" className="relative rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
             <Heart size={18} />
@@ -59,6 +91,11 @@ export function ShopHeader() {
           <Link href={status === 'authenticated' ? '/dashboard' : '/login'} aria-label="Account" className="rounded-md p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition-colors">
             <User size={18} />
           </Link>
+          {user?.is_staff ? (
+            <Link href="/ecoplanet-admin" className="ml-1 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700">
+              Admin
+            </Link>
+          ) : null}
         </nav>
 
         {/* Mobile: icons + hamburger */}
@@ -84,15 +121,36 @@ export function ShopHeader() {
       {/* Mobile drawer */}
       {mobileOpen && (
         <div className="sm:hidden border-t border-slate-100 bg-white px-4 py-3 space-y-1">
+          <form onSubmit={submitSearch} className="px-1 pb-2">
+            <label className="relative block">
+              <Search size={14} className="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="search"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search products…"
+                aria-label="Search products"
+                className="h-9 w-full rounded-full border border-slate-200 bg-slate-50 pl-8 pr-3 text-sm"
+              />
+            </label>
+          </form>
           <Link href="/" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
             <Home size={15} /> Back to main site
           </Link>
           <Link href="/products" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
             Browse Products
           </Link>
+          <Link href="/compare" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
+            <GitCompare size={15} /> Compare ({compareCount})
+          </Link>
           <Link href={status === 'authenticated' ? '/dashboard' : '/login'} onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
             <User size={15} /> {status === 'authenticated' ? 'Dashboard' : 'Login'}
           </Link>
+          {user?.is_staff ? (
+            <Link href="/ecoplanet-admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-2.5 text-sm font-medium text-white">
+              Admin dashboard
+            </Link>
+          ) : null}
         </div>
       )}
     </header>

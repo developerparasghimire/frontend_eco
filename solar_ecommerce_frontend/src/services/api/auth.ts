@@ -7,8 +7,8 @@ import { request } from '@/services/http';
 import type {
   Address,
   AddressInput,
-  AuthResponse,
   AuthTokens,
+  RegisterResponse,
   User,
 } from '@/types/auth';
 import type { Paginated } from '@/types/api';
@@ -28,7 +28,13 @@ export interface LoginInput {
 
 export const authApi = {
   register: (data: RegisterInput) =>
-    request<AuthResponse>({ method: 'POST', url: '/api/auth/register/', data }),
+    request<RegisterResponse>({ method: 'POST', url: '/api/auth/register/', data }),
+
+  verifyEmail: (email: string, code: string) =>
+    request<{ detail: string }>({ method: 'POST', url: '/api/auth/verify-email/', data: { email, code } }),
+
+  resendActivation: (email: string) =>
+    request<{ detail: string }>({ method: 'POST', url: '/api/auth/resend-activation/', data: { email } }),
 
   login: (data: LoginInput) =>
     request<AuthTokens>({ method: 'POST', url: '/api/auth/login/', data }),

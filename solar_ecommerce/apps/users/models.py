@@ -1,7 +1,11 @@
 import uuid
+import random
+import string
+from datetime import timedelta
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 
 from apps.base import TimeStampedModel
 
@@ -63,3 +67,44 @@ class Address(TimeStampedModel):
                 is_default=True,
             ).exclude(pk=self.pk).update(is_default=False)
         super().save(*args, **kwargs)
+
+
+class EmailVerificationOTP(models.Model):
+    """One-time 6-digit code emailed to users at registration."""
+
+    OTP_EXPIRY_MINUTES = 10
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='email_otps')
+    code = models.CharField(max_length=6)
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    is_used = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f'OTP for {self.user.email}'
+
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.expires_at:
+            self.expires_at = timezone.now() + timedelta(minutes=self.OTP_EXPIRY_MINUTES)
+        super().save(*args, **kwargs)
+
+    @property
+    def is_valid(self):
+        return not self.is_used and timezone.now() <= self.expires_at
+
+    @classmethod
+    def generate_code(cls):
+        return ''.join(random.choices(string.digits, k=6))
+
+    @classmethod
+    def create_for_user(cls, user):
+        # Invalidate all previous OTPs for this user
+        cls.objects.filter(user=user, is_used=False).update(is_used=True)
+        return cls.objects.create(
+            user=user,
+            code=cls.generate_code(),
+            expires_at=timezone.now() + timedelta(minutes=cls.OTP_EXPIRY_MINUTES),
+        )

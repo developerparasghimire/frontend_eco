@@ -178,7 +178,9 @@ class TestCheckoutWithCoupon:
         assert resp.status_code == status.HTTP_201_CREATED
         assert resp.data['coupon_code'] == coupon.code
         assert Decimal(resp.data['discount_amount']) == Decimal('1000.00')
-        assert Decimal(resp.data['grand_total']) == Decimal('9000.00')
+        # 10000 - 1000 discount = 9000 taxable; +18% GST = 1620; shipping free (>0 below threshold = 0 default)
+        expected_total = Decimal('9000') + Decimal(resp.data['tax_amount']) + Decimal(resp.data['shipping_cost'])
+        assert Decimal(resp.data['grand_total']) == expected_total
 
         # Usage recorded
         assert CouponUsage.objects.filter(coupon=coupon, user=user).exists()

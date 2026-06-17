@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+
 import {
   SolariseMedia,
   SolariseOfferBanner,
@@ -6,6 +8,19 @@ import {
   SolariseShell,
 } from '@/components/SolariseSite';
 import { projectCards } from '@/data/solariseContent';
+
+export const metadata: Metadata = {
+  title: 'Solar Projects & Case Studies',
+  description:
+    'Explore completed solar energy projects by Eco Planet Solar — from residential rooftop installations to large-scale commercial and solar farm deployments.',
+  alternates: { canonical: '/projects' },
+  openGraph: {
+    title: 'Solar Projects & Case Studies — Eco Planet Solar',
+    description:
+      'Residential rooftop installations to large-scale solar farms. See how Eco Planet Solar powers real communities.',
+    url: '/projects',
+  },
+};
 
 export default function ProjectsPage() {
   return (

@@ -1,12 +1,12 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/Button';
 import { useAddToCart } from '@/hooks/useCart';
 import { formatApiError } from '@/lib/errors';
 import { useAuthStatus } from '@/store/auth';
+import { useGuestCartStore } from '@/store/guestCart';
 import type { ProductDetail } from '@/types/product';
 
 interface AddToCartButtonProps {
@@ -14,17 +14,21 @@ interface AddToCartButtonProps {
 }
 
 export function AddToCartButton({ product }: AddToCartButtonProps) {
-  const router = useRouter();
   const status = useAuthStatus();
   const addToCart = useAddToCart();
+  const guestAdd = useGuestCartStore((s) => s.add);
   const [qty, setQty] = useState(1);
   const [withInstall, setWithInstall] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [guestAdded, setGuestAdded] = useState(false);
 
   const onAdd = async () => {
     setError(null);
+    setGuestAdded(false);
     if (status !== 'authenticated') {
-      router.push(`/login?next=/products/${product.slug}`);
+      // Guest path — store in localStorage cart, no login required.
+      guestAdd(product, qty, withInstall);
+      setGuestAdded(true);
       return;
     }
     try {
@@ -78,6 +82,9 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
         </Button>
         {addToCart.isSuccess && !error ? (
           <span className="text-sm font-medium text-emerald-600">Added!</span>
+        ) : null}
+        {guestAdded ? (
+          <span className="text-sm font-medium text-emerald-600">Added to cart!</span>
         ) : null}
       </div>
 

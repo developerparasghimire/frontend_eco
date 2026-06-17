@@ -19,7 +19,7 @@ interface AuthState {
 
   hydrate: () => Promise<void>;
   login: (input: LoginInput) => Promise<void>;
-  register: (input: RegisterInput) => Promise<void>;
+  register: (input: RegisterInput) => Promise<{ detail: string; email: string }>;
   logout: () => Promise<void>;
   setUser: (user: User | null) => void;
 }
@@ -52,9 +52,11 @@ export const useAuthStore = create<AuthState>((set) => ({
   },
 
   register: async (input) => {
-    const { tokens, user } = await authApi.register(input);
-    tokenStore.set(tokens.access, tokens.refresh);
-    set({ user, status: 'authenticated' });
+    // Backend creates the account inactive and emails an activation link.
+    // No tokens are issued until the user verifies their email.
+    const res = await authApi.register(input);
+    set({ user: null, status: 'unauthenticated' });
+    return res;
   },
 
   logout: async () => {

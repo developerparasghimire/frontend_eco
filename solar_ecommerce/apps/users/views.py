@@ -18,7 +18,7 @@ from .serializers import (
     RegisterSerializer,
     UserSerializer,
 )
-from .services import PasswordResetService
+from .services import AccountActivationService, PasswordResetService
 
 User = get_user_model()
 
@@ -26,7 +26,11 @@ User = get_user_model()
 # ── Authentication ────────────────────────────
 
 class RegisterView(generics.CreateAPIView):
-    """POST /api/auth/register/"""
+    """POST /api/auth/register/
+
+    Creates an inactive user and emails a 6-digit OTP code. The user must
+    enter the code on the verification page before they can log in.
+    """
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
     throttle_classes = [AuthRateThrottle]
@@ -35,14 +39,63 @@ class RegisterView(generics.CreateAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        refresh = RefreshToken.for_user(user)
+        AccountActivationService.send_activation_email(user)
         return Response({
-            'user': UserSerializer(user).data,
-            'tokens': {
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            },
+            'detail': (
+                'Account created. We just sent a 6-digit activation code to '
+                f'{user.email}. Please check your inbox (and spam folder) '
+                'and enter the code to verify your email before signing in.'
+            ),
+            'email': user.email,
         }, status=status.HTTP_201_CREATED)
+
+
+class VerifyEmailOTPView(APIView):
+    """POST /api/auth/verify-email/  – {"email": "...", "code": "123456"}
+
+    Verifies the 6-digit OTP sent on registration and activates the account.
+    """
+    permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
+
+    def post(self, request):
+        email = (request.data.get('email') or '').strip()
+        code = (request.data.get('code') or '').strip()
+        if not email or not code:
+            return Response(
+                {'detail': 'Both email and code are required.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        user = AccountActivationService.verify_otp(email, code)
+        if user is None:
+            return Response(
+                {'detail': 'Invalid or expired activation code.'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            {'detail': 'Email verified successfully. You can now log in.'},
+            status=status.HTTP_200_OK,
+        )
+
+
+class ResendActivationView(APIView):
+    """POST /api/auth/resend-activation/  – {"email": "..."}
+
+    Always returns 200 to prevent account enumeration.
+    """
+    permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
+
+    def post(self, request):
+        email = (request.data.get('email') or '').strip()
+        if email:
+            user = User.objects.filter(email__iexact=email, is_active=False).first()
+            if user:
+                AccountActivationService.send_activation_email(user)
+        return Response(
+            {'detail': 'If a matching inactive account exists, a new activation code has been sent.'},
+            status=status.HTTP_200_OK,
+        )
 
 
 class LogoutView(APIView):
@@ -169,10 +222,14 @@ class AdminDashboardView(APIView):
         )
 
         # Product & category stats
+        low_stock_threshold = getattr(settings, 'LOW_STOCK_THRESHOLD', 5)
         product_stats = {
             'total_products': Product.objects.count(),
             'active_products': Product.objects.filter(is_active=True).count(),
             'out_of_stock': Product.objects.filter(stock=0, is_active=True).count(),
+            'low_stock': Product.objects.filter(
+                is_active=True, stock__gt=0, stock__lte=low_stock_threshold,
+            ).count(),
             'featured_products': Product.objects.filter(is_featured=True).count(),
             'total_categories': Category.objects.filter(is_active=True).count(),
         }
@@ -201,3 +258,21 @@ class AdminDashboardView(APIView):
             'customers': customer_stats,
             'support': support_stats,
         })
+
+
+class AdminCustomerListView(generics.ListAPIView):
+    """GET /api/auth/admin/customers/ – paginated list of non-staff users."""
+    permission_classes = [IsAdminUser]
+    serializer_class = UserSerializer
+
+    def get_queryset(self):
+        qs = User.objects.filter(is_staff=False).order_by('-date_joined')
+        search = self.request.query_params.get('search')
+        if search:
+            qs = qs.filter(
+                Q(email__icontains=search)
+                | Q(username__icontains=search)
+                | Q(first_name__icontains=search)
+                | Q(last_name__icontains=search)
+            )
+        return qs

@@ -9,6 +9,7 @@ from .serializers import (
     ContactMessageAdminSerializer,
     ContactMessageSerializer,
     NewsletterSerializer,
+    NewsletterSubscriberAdminSerializer,
 )
 
 
@@ -64,3 +65,18 @@ class NewsletterUnsubscribeView(APIView):
         if updated:
             return Response({'detail': 'You have been unsubscribed.'})
         return Response({'detail': 'Email not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+
+class NewsletterAdminViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet,
+):
+    """Admin list/toggle/delete for newsletter subscribers."""
+    queryset = NewsletterSubscriber.objects.all().order_by('-created_at')
+    serializer_class = NewsletterSubscriberAdminSerializer
+    permission_classes = [IsAdminUser]
+    filterset_fields = ['is_active']
+    search_fields = ['email']

@@ -3,6 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from django.http import StreamingHttpResponse
+
+import csv
+import io
 
 from apps.permissions import IsAdminOrReadOnly
 
@@ -86,3 +90,123 @@ class ProductViewSet(viewsets.ModelViewSet):
             .prefetch_related('images')[:6]
         )
         return Response(ProductListSerializer(qs, many=True, context={'request': request}).data)
+
+    # ── CSV export (admin) ────────────────
+    @action(detail=False, methods=['get'], url_path='export-csv',
+            permission_classes=[IsAdminUser])
+    def export_csv(self, request):
+        """GET /api/products/export-csv/ – streams a product catalogue CSV."""
+        fieldnames = [
+            'sku', 'name', 'slug', 'category_slug', 'brand', 'price',
+            'discount_percent', 'stock', 'capacity', 'warranty_years',
+            'installation_available', 'installation_fee', 'is_active',
+            'is_featured', 'tags',
+        ]
+
+        def row_iter():
+            buffer = io.StringIO()
+            writer = csv.DictWriter(buffer, fieldnames=fieldnames)
+            writer.writeheader()
+            yield buffer.getvalue()
+            buffer.seek(0); buffer.truncate(0)
+
+            for p in Product.objects.select_related('category').iterator(chunk_size=500):
+                writer.writerow({
+                    'sku': p.sku,
+                    'name': p.name,
+                    'slug': p.slug,
+                    'category_slug': p.category.slug if p.category_id else '',
+                    'brand': p.brand,
+                    'price': p.price,
+                    'discount_percent': p.discount_percent,
+                    'stock': p.stock,
+                    'capacity': p.capacity,
+                    'warranty_years': p.warranty_years,
+                    'installation_available': p.installation_available,
+                    'installation_fee': p.installation_fee,
+                    'is_active': p.is_active,
+                    'is_featured': p.is_featured,
+                    'tags': p.tags,
+                })
+                yield buffer.getvalue()
+                buffer.seek(0); buffer.truncate(0)
+
+        response = StreamingHttpResponse(row_iter(), content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="products.csv"'
+        return response
+
+    # ── CSV import (admin) ────────────────
+    @action(detail=False, methods=['post'], url_path='import-csv',
+            permission_classes=[IsAdminUser],
+            parser_classes=[parsers.MultiPartParser])
+    def import_csv(self, request):
+        """
+        POST /api/products/import-csv/  multipart `file=<csv>`
+
+        Upserts by `sku`. Returns counts. Categories must already exist
+        (looked up by `category_slug`). Booleans accept true/false/1/0.
+        """
+        upload = request.FILES.get('file')
+        if not upload:
+            return Response({'detail': 'CSV file required (field "file").'},
+                            status=http_status.HTTP_400_BAD_REQUEST)
+
+        try:
+            text = upload.read().decode('utf-8-sig')
+        except UnicodeDecodeError:
+            return Response({'detail': 'File must be UTF-8 encoded.'},
+                            status=http_status.HTTP_400_BAD_REQUEST)
+
+        reader = csv.DictReader(io.StringIO(text))
+        created = updated = skipped = 0
+        errors: list[str] = []
+
+        def _bool(v: str) -> bool:
+            return str(v).strip().lower() in ('1', 'true', 'yes', 'y')
+
+        for idx, row in enumerate(reader, start=2):
+            sku = (row.get('sku') or '').strip()
+            if not sku:
+                skipped += 1
+                errors.append(f'Row {idx}: missing sku')
+                continue
+            cat_slug = (row.get('category_slug') or '').strip()
+            category = Category.objects.filter(slug=cat_slug).first() if cat_slug else None
+            if cat_slug and not category:
+                skipped += 1
+                errors.append(f'Row {idx}: category "{cat_slug}" not found')
+                continue
+
+            defaults = {
+                'name': (row.get('name') or '').strip(),
+                'brand': (row.get('brand') or '').strip(),
+                'price': row.get('price') or 0,
+                'discount_percent': row.get('discount_percent') or 0,
+                'stock': row.get('stock') or 0,
+                'capacity': (row.get('capacity') or '').strip(),
+                'warranty_years': row.get('warranty_years') or 0,
+                'installation_available': _bool(row.get('installation_available')),
+                'installation_fee': row.get('installation_fee') or 0,
+                'is_active': _bool(row.get('is_active')) if row.get('is_active') is not None else True,
+                'is_featured': _bool(row.get('is_featured')),
+                'tags': (row.get('tags') or '').strip(),
+            }
+            if category:
+                defaults['category'] = category
+
+            try:
+                _, was_created = Product.objects.update_or_create(
+                    sku=sku, defaults=defaults,
+                )
+                created += int(was_created)
+                updated += int(not was_created)
+            except Exception as exc:  # noqa: BLE001
+                skipped += 1
+                errors.append(f'Row {idx} ({sku}): {exc}')
+
+        return Response({
+            'created': created,
+            'updated': updated,
+            'skipped': skipped,
+            'errors': errors[:50],
+        })

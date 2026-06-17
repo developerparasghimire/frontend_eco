@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   SolariseButton,
@@ -21,9 +22,71 @@ import {
   projectCards,
 } from '@/data/solariseContent';
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+
+export const metadata: Metadata = {
+  title: 'Eco Planet Solar — Harness the Power of the Sun',
+  description:
+    'Eco Planet Solar provides premium solar panels, inverters, and complete rooftop installation for homes and businesses across India. Get a free quote today.',
+  alternates: { canonical: '/' },
+  openGraph: {
+    title: 'Eco Planet Solar — Harness the Power of the Sun',
+    description:
+      'Premium solar panels, inverters & complete rooftop installation packages. Trusted by thousands across India.',
+    url: '/',
+    type: 'website',
+  },
+};
+
+const organizationLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'Eco Planet Solar',
+  url: SITE_URL,
+  logo: `${SITE_URL}/logo.png`,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+62-1234-5678',
+    contactType: 'customer service',
+    email: 'info@ecoplanet.com',
+    areaServed: 'IN',
+    availableLanguage: ['English', 'Hindi'],
+  },
+  sameAs: [
+    'https://www.facebook.com/ecoplanetsolar',
+    'https://www.instagram.com/ecoplanetsolar',
+    'https://twitter.com/EcoPlanetSolar',
+  ],
+};
+
+const websiteLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Eco Planet Solar',
+  url: SITE_URL,
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE_URL}/products?search={search_term_string}`,
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+
 export default function HomePage() {
   return (
     <SolariseShell footerEmail="info@ecoplanet.com">
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationLd) }}
+      />
+      <script
+        type="application/ld+json"
+        // eslint-disable-next-line react/no-danger
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+      />
       <section className="solar-container solar-home-hero">
         <SolariseStarburst className="solar-home-hero__burst--left" tone="ghost" />
 
