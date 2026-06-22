@@ -9,6 +9,19 @@ export default function Footer() {
             <span>in</span>
             <span>𝕏</span>
           </div>
+          <a
+            href="https://profiles.eco/ecoplanet?ref=tm"
+            rel="noopener"
+            className="inline-block mt-3"
+            aria-label=".eco profile for ecoplanet.eco"
+          >
+            <img
+              className="eco-trustmark"
+              alt=".eco profile for ecoplanet.eco"
+              src="https://trust.profiles.eco/ecoplanet/eco-button.svg?color=%239F1744"
+              style={{ maxWidth: '4rem' }}
+            />
+          </a>
         </div>
 
         <div>

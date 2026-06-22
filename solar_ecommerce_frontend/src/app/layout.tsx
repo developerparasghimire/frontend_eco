@@ -2,8 +2,6 @@ import { Outfit } from 'next/font/google';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Toaster } from 'sonner';
-import Script from 'next/script';
-
 import { Providers } from '@/components/providers/Providers';
 import { CookieBanner } from '@/components/ui/CookieBanner';
 
@@ -77,12 +75,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>{children}</Providers>
         <Toaster position="bottom-right" richColors closeButton />
         <CookieBanner />
-        {/* .eco domain trustmark — required by the .eco registry to keep DNS active */}
-        <Script
-          src="https://profiles.eco/dist/eco-trustmark.js"
-          data-eco-name="ecoplanet"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
