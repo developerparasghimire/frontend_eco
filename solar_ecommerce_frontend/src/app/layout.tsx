@@ -75,6 +75,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>{children}</Providers>
         <Toaster position="bottom-right" richColors closeButton />
         <CookieBanner />
+        <a
+          href="https://profiles.eco/ecoplanet?ref=tm"
+          rel="noopener"
+          style={{ position: 'fixed', bottom: '1rem', right: '1rem', zIndex: 9999 }}
+          aria-label=".eco profile for ecoplanet.eco"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            className="eco-trustmark"
+            alt=".eco profile for ecoplanet.eco"
+            src="https://trust.profiles.eco/ecoplanet/eco-button.svg?color=%239F1744"
+            style={{ maxWidth: '4rem' }}
+          />
+        </a>
       </body>
     </html>
   );
