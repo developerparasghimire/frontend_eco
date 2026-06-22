@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Solar Shop — Panels, Inverters & Batteries',
   description:
-    'Browse Eco Planet Solar's full range of high-efficiency solar panels, inverters, batteries and accessories. Free shipping on qualifying orders across India.',
+    "Browse Eco Planet Solar's full range of high-efficiency solar panels, inverters, batteries and accessories. Free shipping on qualifying orders across India.",
   keywords: [
     'buy solar panels', 'solar inverter', 'solar battery', 'solar accessories',
     'best solar panels India', 'solar shop online', 'rooftop solar kit',
