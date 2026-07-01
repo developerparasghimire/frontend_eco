@@ -93,6 +93,20 @@ export const ordersApi = {
       params: { token },
     }),
 
+  guestStripeCreate: (orderNumber: string, token: string) =>
+    request<{ client_secret: string; payment_intent_id: string; publishable_key: string }>({
+      method: 'POST',
+      url: `/api/orders/guest/${orderNumber}/stripe/create/`,
+      params: { token },
+    }),
+
+  guestStripeConfirm: (orderNumber: string, token: string) =>
+    request<Order>({
+      method: 'POST',
+      url: `/api/orders/guest/${orderNumber}/stripe/confirm/`,
+      params: { token },
+    }),
+
   // ── Invoice PDF ────────────────────────────
   // Download invoice as a Blob (uses axios interceptor for JWT). For guest
   // orders pass the access token; the backend treats it as proof of access.

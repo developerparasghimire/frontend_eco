@@ -195,6 +195,83 @@ class GuestOrderDetailView(APIView):
         return Response(OrderSerializer(order).data)
 
 
+class GuestStripeCreateView(APIView):
+    """POST /api/orders/guest/<order_number>/stripe/create/?token=<token>
+
+    Creates a Stripe PaymentIntent for a guest order. Authenticated via
+    the guest_access_token query param, no JWT required.
+    """
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request, order_number):
+        token = request.query_params.get('token', '')
+        if not token:
+            return Response({'detail': 'Missing token.'}, status=status.HTTP_400_BAD_REQUEST)
+        order = Order.objects.filter(
+            order_number=order_number, guest_access_token=token, user=None,
+        ).first()
+        if not order:
+            return Response({'detail': 'Order not found.'}, status=status.HTTP_404_NOT_FOUND)
+        if order.payment_status == 'paid':
+            return Response({'detail': 'Order is already paid.'}, status=status.HTTP_400_BAD_REQUEST)
+        if order.payment_method not in (Order.PaymentMethod.STRIPE, Order.PaymentMethod.CARD):
+            return Response({'detail': 'Order is not configured for Stripe.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            intent = StripeClient().create_payment_intent(order)
+        except StripeError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+        order.payment_id = intent['id']
+        order.save(update_fields=['payment_id'])
+        from django.conf import settings as _settings
+        return Response({
+            'client_secret': intent['client_secret'],
+            'payment_intent_id': intent['id'],
+            'publishable_key': _settings.STRIPE_PUBLISHABLE_KEY,
+        }, status=status.HTTP_201_CREATED)
+
+
+class GuestStripeConfirmView(APIView):
+    """POST /api/orders/guest/<order_number>/stripe/confirm/?token=<token>
+
+    Verifies PaymentIntent status with Stripe and marks the order paid.
+    Authenticated via the guest_access_token query param.
+    """
+    permission_classes = [AllowAny]
+    authentication_classes = []
+
+    def post(self, request, order_number):
+        token = request.query_params.get('token', '')
+        if not token:
+            return Response({'detail': 'Missing token.'}, status=status.HTTP_400_BAD_REQUEST)
+        order = Order.objects.filter(
+            order_number=order_number, guest_access_token=token, user=None,
+        ).first()
+        if not order:
+            return Response({'detail': 'Order not found.'}, status=status.HTTP_404_NOT_FOUND)
+        if not order.payment_id:
+            return Response({'detail': 'No PaymentIntent associated.'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            intent = StripeClient().retrieve_payment_intent(order.payment_id)
+        except StripeError as exc:
+            return Response({'detail': str(exc)}, status=status.HTTP_502_BAD_GATEWAY)
+        if intent['status'] != 'succeeded':
+            return Response(
+                {'detail': f'Payment not completed (status={intent["status"]}).'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if order.payment_status != 'paid':
+            with transaction.atomic():
+                order.payment_status = 'paid'
+                order.paid_at = timezone.now()
+                update_fields = ['payment_status', 'paid_at']
+                if order.status == Order.Status.PENDING:
+                    order.status = Order.Status.CONFIRMED
+                    update_fields.append('status')
+                order.save(update_fields=update_fields)
+        return Response(OrderSerializer(order).data)
+
+
 class OrderInvoicePDFView(APIView):
     """GET /api/orders/<order_number>/invoice.pdf[?token=...]
 

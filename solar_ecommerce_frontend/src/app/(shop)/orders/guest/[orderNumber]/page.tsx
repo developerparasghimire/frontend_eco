@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
 
 import { InvoiceDownloadButton } from '@/components/orders/InvoiceDownloadButton';
+import { StripeCheckout } from '@/components/checkout/StripeCheckout';
 import { ordersApi } from '@/services/api/orders';
 import { formatDate, formatPrice } from '@/lib/format';
 import type { Order } from '@/types/order';
@@ -170,6 +171,21 @@ export default function GuestOrderPage() {
             <p>Payment: {order.payment_method.toUpperCase()}</p>
             <p>Status: {order.payment_status}</p>
           </div>
+
+          {(order.payment_method === 'stripe' || order.payment_method === 'card') &&
+           order.payment_status === 'unpaid' && order.status !== 'cancelled' ? (
+            <div className="border-t border-slate-200 pt-4">
+              <p className="mb-3 text-sm font-medium text-slate-900">Complete your payment</p>
+              <StripeCheckout
+                order={order}
+                guestToken={token}
+                onPaid={() => {
+                  ordersApi.guestDetail(order.order_number, token).then(setOrder).catch(() => {});
+                }}
+              />
+            </div>
+          ) : null}
+
           <InvoiceDownloadButton orderNumber={order.order_number} guestToken={token} />
           <p className="text-center text-xs text-slate-500">
             Want to track returns and reorder easily?{' '}

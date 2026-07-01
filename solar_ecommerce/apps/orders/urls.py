@@ -22,6 +22,10 @@ urlpatterns = [
     # Guest order detail (token-protected)
     path('guest/<str:order_number>/', views.GuestOrderDetailView.as_view(),
          name='guest_order_detail'),
+    path('guest/<str:order_number>/stripe/create/', views.GuestStripeCreateView.as_view(),
+         name='guest_stripe_create'),
+    path('guest/<str:order_number>/stripe/confirm/', views.GuestStripeConfirmView.as_view(),
+         name='guest_stripe_confirm'),
 
     # Invoice PDF download (works for both authenticated and guest orders)
     path('<str:order_number>/invoice.pdf', views.OrderInvoicePDFView.as_view(),

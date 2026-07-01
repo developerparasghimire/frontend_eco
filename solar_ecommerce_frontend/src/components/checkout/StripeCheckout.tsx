@@ -26,6 +26,8 @@ import type { Order } from '@/types/order';
 interface StripeCheckoutProps {
   order: Order;
   onPaid: () => void;
+  /** For guest orders — the guest_access_token from the order URL */
+  guestToken?: string;
 }
 
 let _stripePromise: Promise<Stripe | null> | null = null;
@@ -34,7 +36,7 @@ function getStripe(publishableKey: string) {
   return _stripePromise;
 }
 
-function PaymentForm({ order, onPaid }: StripeCheckoutProps) {
+function PaymentForm({ order, onPaid, guestToken }: StripeCheckoutProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [submitting, setSubmitting] = useState(false);
@@ -59,7 +61,11 @@ function PaymentForm({ order, onPaid }: StripeCheckoutProps) {
         return;
       }
       // Tell our backend to verify intent status (webhook will also do this).
-      await ordersApi.stripeConfirm(order.id);
+      if (guestToken) {
+        await ordersApi.guestStripeConfirm(order.order_number, guestToken);
+      } else {
+        await ordersApi.stripeConfirm(order.id);
+      }
       toast.success('Payment received');
       onPaid();
     } catch (err) {
@@ -80,7 +86,7 @@ function PaymentForm({ order, onPaid }: StripeCheckoutProps) {
   );
 }
 
-export function StripeCheckout({ order, onPaid }: StripeCheckoutProps) {
+export function StripeCheckout({ order, onPaid, guestToken }: StripeCheckoutProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [stripeP, setStripeP] = useState<Promise<Stripe | null> | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -89,7 +95,9 @@ export function StripeCheckout({ order, onPaid }: StripeCheckoutProps) {
     let cancelled = false;
     (async () => {
       try {
-        const data = await ordersApi.stripeCreate(order.id);
+        const data = guestToken
+          ? await ordersApi.guestStripeCreate(order.order_number, guestToken)
+          : await ordersApi.stripeCreate(order.id);
         if (cancelled) return;
         setClientSecret(data.client_secret);
         setStripeP(getStripe(data.publishable_key));
@@ -115,7 +123,7 @@ export function StripeCheckout({ order, onPaid }: StripeCheckoutProps) {
         appearance: { theme: 'stripe' },
       }}
     >
-      <PaymentForm order={order} onPaid={onPaid} />
+      <PaymentForm order={order} onPaid={onPaid} guestToken={guestToken} />
     </Elements>
   );
 }

@@ -51,7 +51,7 @@ class StripeClient:
                     'user_id': str(order.user_id),
                 },
                 description=f'Solar order {order.order_number}',
-                automatic_payment_methods={'enabled': True},
+                payment_method_types=['card'],
             )
         except stripe.error.StripeError as exc:
             logger.exception('Stripe PaymentIntent.create failed')
