@@ -156,6 +156,7 @@ class GuestCheckoutView(APIView):
     emailed to the guest for future reference.
     """
     permission_classes = [AllowAny]
+    authentication_classes = []  # skip JWT auth so a stale browser token doesn't cause 401
 
     def post(self, request):
         serializer = GuestCheckoutSerializer(data=request.data, context={'request': request})
@@ -180,6 +181,7 @@ class GuestOrderDetailView(APIView):
     confirmation page and to render invoice download links.
     """
     permission_classes = [AllowAny]
+    authentication_classes = []  # skip JWT auth so a stale browser token doesn't cause 401
 
     def get(self, request, order_number):
         token = request.query_params.get('token', '')
