@@ -15,7 +15,7 @@ class User(AbstractUser):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(max_length=15, blank=True, default='')
+    phone_number = models.CharField(max_length=20, blank=True, default='')
     is_installer = models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -43,7 +43,7 @@ class Address(TimeStampedModel):
     label = models.CharField(max_length=50, default='Home')
     address_type = models.CharField(max_length=10, choices=AddressType.choices, default=AddressType.SHIPPING)
     full_name = models.CharField(max_length=120)
-    phone = models.CharField(max_length=15)
+    phone = models.CharField(max_length=20)
     address_line1 = models.CharField(max_length=255)
     address_line2 = models.CharField(max_length=255, blank=True, default='')
     city = models.CharField(max_length=100)

@@ -17,7 +17,7 @@ const schema = z.object({
   label: z.string().min(1, 'Required').max(50),
   address_type: z.enum(['shipping', 'billing']),
   full_name: z.string().min(1, 'Required').max(120),
-  phone: z.string().min(5, 'Required').max(15),
+  phone: z.string().min(5, 'Required').max(20),
   address_line1: z.string().min(1, 'Required'),
   address_line2: z.string(),
   city: z.string().min(1, 'Required'),

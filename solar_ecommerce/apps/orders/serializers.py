@@ -334,7 +334,7 @@ class GuestCheckoutSerializer(serializers.Serializer):
     """
     email = serializers.EmailField()
     full_name = serializers.CharField(max_length=120)
-    phone = serializers.CharField(max_length=15)
+    phone = serializers.CharField(max_length=20)
     address_line1 = serializers.CharField(max_length=255)
     address_line2 = serializers.CharField(max_length=255, required=False, allow_blank=True, default='')
     city = serializers.CharField(max_length=100)

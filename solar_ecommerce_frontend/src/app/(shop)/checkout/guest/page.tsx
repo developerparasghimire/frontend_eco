@@ -24,7 +24,7 @@ const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string
 const schema = z.object({
   email: z.string().email('Enter a valid email'),
   full_name: z.string().min(2, 'Required').max(120),
-  phone: z.string().min(7, 'Required').max(15),
+  phone: z.string().min(7, 'Required').max(20),
   address_line1: z.string().min(3, 'Required').max(255),
   address_line2: z.string().max(255).optional().or(z.literal('')),
   city: z.string().min(2, 'Required').max(100),

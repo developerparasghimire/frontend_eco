@@ -17,7 +17,7 @@ const schema = z
   .object({
     email: z.string().email('Enter a valid email'),
     username: z.string().min(3, 'Min 3 characters').max(150),
-    phone_number: z.string().max(15).optional(),
+    phone_number: z.string().max(20).optional(),
     password: z.string().min(8, 'Min 8 characters'),
     password2: z.string(),
   })
