@@ -409,11 +409,16 @@ function GuestCartView() {
             href="/checkout/guest"
             className="inline-flex h-12 w-full items-center justify-center rounded-xl bg-green-600 px-6 text-base font-semibold text-white transition-colors hover:bg-green-700 shadow-sm"
           >
-            Continue as guest →
+            Proceed to checkout →
           </Link>
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <span className="flex-1 border-t border-slate-200" />
+            or
+            <span className="flex-1 border-t border-slate-200" />
+          </div>
           <Link
             href="/login?next=/checkout"
-            className="block text-center text-sm font-medium text-brand-600 hover:underline"
+            className="inline-flex h-10 w-full items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-6 text-sm font-semibold text-brand-700 hover:bg-brand-100 transition-colors"
           >
             Sign in for faster checkout
           </Link>

@@ -6,6 +6,7 @@ import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CreditCard, Truck, ChevronRight, ShoppingCart, MapPin, Wallet } from 'lucide-react';
 
 import { Button } from '@/components/ui/Button';
 import { FormField } from '@/components/ui/FormField';
@@ -16,9 +17,19 @@ import { ordersApi } from '@/services/api/orders';
 import { useGuestCartStore } from '@/store/guestCart';
 import type { PaymentMethod } from '@/types/order';
 
-const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string }> = [
-  { value: 'stripe', label: 'Card (Stripe)', hint: 'Visa, Mastercard, RuPay, UPI via Stripe' },
-  { value: 'cod', label: 'Cash on delivery', hint: 'Pay when your order arrives' },
+const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string; icon: React.ReactNode }> = [
+  {
+    value: 'stripe',
+    label: 'Card / Stripe',
+    hint: 'Visa, Mastercard, RuPay, UPI',
+    icon: <CreditCard size={18} className="text-brand-600" />,
+  },
+  {
+    value: 'cod',
+    label: 'Cash on delivery',
+    hint: 'Pay when your order arrives',
+    icon: <Truck size={18} className="text-slate-500" />,
+  },
 ];
 
 const schema = z.object({
@@ -35,6 +46,37 @@ const schema = z.object({
 });
 
 type FormValues = z.infer<typeof schema>;
+
+function CheckoutSteps({ current }: { current: 1 | 2 | 3 }) {
+  const steps = [
+    { n: 1, label: 'Cart', icon: <ShoppingCart size={14} /> },
+    { n: 2, label: 'Details', icon: <MapPin size={14} /> },
+    { n: 3, label: 'Payment', icon: <Wallet size={14} /> },
+  ];
+  return (
+    <nav className="flex items-center gap-1 text-xs font-medium mb-8">
+      {steps.map((s, i) => (
+        <span key={s.n} className="flex items-center gap-1">
+          <span
+            className={`flex items-center gap-1.5 rounded-full px-3 py-1 ${
+              s.n < current
+                ? 'bg-emerald-100 text-emerald-700'
+                : s.n === current
+                ? 'bg-brand-600 text-white'
+                : 'bg-slate-100 text-slate-400'
+            }`}
+          >
+            {s.icon}
+            {s.label}
+          </span>
+          {i < steps.length - 1 ? (
+            <ChevronRight size={12} className="text-slate-300 shrink-0" />
+          ) : null}
+        </span>
+      ))}
+    </nav>
+  );
+}
 
 export default function GuestCheckoutPage() {
   const router = useRouter();
@@ -85,8 +127,6 @@ export default function GuestCheckoutPage() {
           include_installation: l.include_installation,
         })),
       });
-      // Persist the guest token in sessionStorage so the confirmation
-      // page can load the order detail.
       try {
         sessionStorage.setItem(
           `guest_order_${order.order_number}`,
@@ -109,11 +149,14 @@ export default function GuestCheckoutPage() {
   if (lines.length === 0) {
     return (
       <div className="container max-w-3xl py-16 text-center">
+        <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 mx-auto">
+          <ShoppingCart size={28} className="text-slate-400" />
+        </div>
         <h1 className="text-2xl font-semibold text-slate-900">Your cart is empty</h1>
         <p className="mt-2 text-sm text-slate-500">Add items before checking out.</p>
         <Link
           href="/products"
-          className="mt-6 inline-block rounded-lg bg-brand-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-brand-700"
+          className="mt-6 inline-flex items-center gap-2 rounded-xl bg-brand-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 transition-colors"
         >
           Browse products
         </Link>
@@ -122,69 +165,96 @@ export default function GuestCheckoutPage() {
   }
 
   return (
-    <div className="container max-w-6xl py-10">
-      <h1 className="text-2xl font-semibold text-slate-900">Guest checkout</h1>
-      <p className="mt-1 text-sm text-slate-500">
-        No account required. We&apos;ll email your invoice and order updates.{' '}
-        <Link href="/login?next=/checkout" className="text-brand-600 hover:underline">
-          Have an account? Sign in
-        </Link>
-      </p>
+    <div className="container max-w-6xl py-8 sm:py-10">
+      <CheckoutSteps current={2} />
 
-      <form onSubmit={onSubmit} className="mt-8 grid gap-8 lg:grid-cols-[1fr_360px]">
-        <div className="space-y-6">
-          <section>
-            <h2 className="mb-3 text-base font-semibold text-slate-900">Contact</h2>
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-900">Checkout</h1>
+          <p className="mt-0.5 text-sm text-slate-500">
+            No account needed.{' '}
+            <Link href="/login?next=/checkout" className="text-brand-600 hover:underline font-medium">
+              Sign in for faster checkout
+            </Link>
+          </p>
+        </div>
+        <Link
+          href="/cart"
+          className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-700 transition-colors"
+        >
+          <ChevronRight size={14} className="rotate-180" />
+          Back to cart
+        </Link>
+      </div>
+
+      <form onSubmit={onSubmit} className="grid gap-6 lg:grid-cols-[1fr_360px]">
+        <div className="space-y-5">
+          {/* Section 1: Contact */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white">1</span>
+              Contact information
+            </h2>
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Email" htmlFor="g_email" error={errors.email?.message}>
-                <Input id="g_email" type="email" autoComplete="email" {...register('email')} />
+              <div className="sm:col-span-2">
+                <FormField label="Email address" htmlFor="g_email" error={errors.email?.message}>
+                  <Input id="g_email" type="email" autoComplete="email" placeholder="you@example.com" {...register('email')} />
+                </FormField>
+              </div>
+              <FormField label="Full name" htmlFor="g_name" error={errors.full_name?.message}>
+                <Input id="g_name" autoComplete="name" placeholder="John Doe" {...register('full_name')} />
               </FormField>
-              <FormField label="Phone" htmlFor="g_phone" error={errors.phone?.message}>
-                <Input id="g_phone" autoComplete="tel" {...register('phone')} />
+              <FormField label="Phone number" htmlFor="g_phone" error={errors.phone?.message}>
+                <Input id="g_phone" autoComplete="tel" placeholder="+1 (555) 000-0000" {...register('phone')} />
               </FormField>
             </div>
           </section>
 
-          <section>
-            <h2 className="mb-3 text-base font-semibold text-slate-900">Shipping address</h2>
+          {/* Section 2: Shipping address */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white">2</span>
+              Shipping address
+            </h2>
             <div className="grid gap-4 sm:grid-cols-2">
-              <FormField label="Full name" htmlFor="g_name" error={errors.full_name?.message}>
-                <Input id="g_name" autoComplete="name" {...register('full_name')} />
-              </FormField>
-              <FormField label="Country" htmlFor="g_country" error={errors.country?.message}>
-                <Input id="g_country" {...register('country')} />
-              </FormField>
-              <FormField
-                label="Address line 1"
-                htmlFor="g_addr1"
-                error={errors.address_line1?.message}
-              >
-                <Input id="g_addr1" autoComplete="address-line1" {...register('address_line1')} />
-              </FormField>
-              <FormField label="Address line 2 (optional)" htmlFor="g_addr2">
-                <Input id="g_addr2" autoComplete="address-line2" {...register('address_line2')} />
-              </FormField>
+              <div className="sm:col-span-2">
+                <FormField label="Address line 1" htmlFor="g_addr1" error={errors.address_line1?.message}>
+                  <Input id="g_addr1" autoComplete="address-line1" placeholder="Street address, building, apt…" {...register('address_line1')} />
+                </FormField>
+              </div>
+              <div className="sm:col-span-2">
+                <FormField label="Address line 2 (optional)" htmlFor="g_addr2">
+                  <Input id="g_addr2" autoComplete="address-line2" placeholder="Floor, suite, landmark…" {...register('address_line2')} />
+                </FormField>
+              </div>
               <FormField label="City" htmlFor="g_city" error={errors.city?.message}>
-                <Input id="g_city" autoComplete="address-level2" {...register('city')} />
+                <Input id="g_city" autoComplete="address-level2" placeholder="City" {...register('city')} />
               </FormField>
-              <FormField label="State" htmlFor="g_state" error={errors.state?.message}>
-                <Input id="g_state" autoComplete="address-level1" {...register('state')} />
+              <FormField label="State / Province" htmlFor="g_state" error={errors.state?.message}>
+                <Input id="g_state" autoComplete="address-level1" placeholder="State" {...register('state')} />
               </FormField>
               <FormField label="Postal code" htmlFor="g_zip" error={errors.postal_code?.message}>
-                <Input id="g_zip" autoComplete="postal-code" {...register('postal_code')} />
+                <Input id="g_zip" autoComplete="postal-code" placeholder="PIN / ZIP" {...register('postal_code')} />
+              </FormField>
+              <FormField label="Country" htmlFor="g_country" error={errors.country?.message}>
+                <Input id="g_country" autoComplete="country-name" {...register('country')} />
               </FormField>
             </div>
           </section>
 
-          <section>
-            <h2 className="mb-3 text-base font-semibold text-slate-900">Payment method</h2>
-            <ul className="grid gap-2 sm:grid-cols-2">
+          {/* Section 3: Payment method */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+            <h2 className="mb-4 flex items-center gap-2 text-base font-semibold text-slate-900">
+              <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white">3</span>
+              Payment method
+            </h2>
+            <ul className="grid gap-3 sm:grid-cols-2">
               {PAYMENT_OPTIONS.map((opt) => (
                 <li key={opt.value}>
                   <label
-                    className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 text-sm ${
+                    className={`flex cursor-pointer items-center gap-3 rounded-xl border-2 p-4 text-sm transition-all ${
                       paymentMethod === opt.value
-                        ? 'border-brand-500 bg-brand-50/40 ring-2 ring-brand-200'
+                        ? 'border-brand-500 bg-brand-50/60 shadow-sm'
                         : 'border-slate-200 bg-white hover:border-slate-300'
                     }`}
                   >
@@ -193,69 +263,114 @@ export default function GuestCheckoutPage() {
                       name="g_payment"
                       checked={paymentMethod === opt.value}
                       onChange={() => setPaymentMethod(opt.value)}
-                      className="mt-0.5 h-4 w-4 text-brand-600"
+                      className="sr-only"
                     />
-                    <div>
+                    <span
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${
+                        paymentMethod === opt.value ? 'bg-brand-100' : 'bg-slate-100'
+                      }`}
+                    >
+                      {opt.icon}
+                    </span>
+                    <div className="flex-1 min-w-0">
                       <p className="font-semibold text-slate-900">{opt.label}</p>
-                      <p className="text-xs text-slate-500">{opt.hint}</p>
+                      <p className="text-xs text-slate-500 leading-snug">{opt.hint}</p>
                     </div>
+                    <span
+                      className={`ml-auto h-4 w-4 shrink-0 rounded-full border-2 flex items-center justify-center ${
+                        paymentMethod === opt.value ? 'border-brand-600' : 'border-slate-300'
+                      }`}
+                    >
+                      {paymentMethod === opt.value ? (
+                        <span className="h-2 w-2 rounded-full bg-brand-600" />
+                      ) : null}
+                    </span>
                   </label>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section>
-            <h2 className="mb-3 text-base font-semibold text-slate-900">Order note (optional)</h2>
+          {/* Section 4: Order note */}
+          <section className="rounded-2xl border border-slate-200 bg-white p-5 sm:p-6">
+            <h2 className="mb-3 text-sm font-semibold text-slate-700">Order note (optional)</h2>
             <textarea
               {...register('note')}
-              rows={3}
-              placeholder="Delivery instructions, gate code, etc."
-              className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200"
+              rows={2}
+              placeholder="Delivery instructions, gate code, special requests…"
+              className="w-full rounded-lg border border-slate-300 bg-white p-3 text-sm focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200 resize-none"
             />
           </section>
         </div>
 
-        <aside className="h-fit space-y-5 rounded-2xl border border-slate-200 bg-white p-6">
-          <h2 className="text-lg font-semibold text-slate-900">Order summary</h2>
-          <ul className="space-y-2 text-sm">
-            {lines.map((l) => (
-              <li key={l.product} className="flex justify-between gap-3">
-                <span className="text-slate-600">
-                  {l.snapshot.name}
-                  <span className="text-slate-400"> × {l.quantity}</span>
-                </span>
-                <span className="font-medium text-slate-900">
-                  {formatPrice(Number(l.snapshot.discounted_price) * l.quantity)}
-                </span>
-              </li>
-            ))}
-          </ul>
-          <dl className="space-y-2 border-t border-slate-200 pt-4 text-sm">
-            <div className="flex justify-between">
-              <dt className="text-slate-600">Subtotal</dt>
-              <dd className="font-medium text-slate-900">{formatPrice(summary.subtotal)}</dd>
-            </div>
-            {summary.installation > 0 ? (
+        {/* Sidebar */}
+        <aside className="h-fit space-y-0 rounded-2xl border border-slate-200 bg-white overflow-hidden">
+          <div className="p-5 sm:p-6">
+            <h2 className="text-base font-semibold text-slate-900 mb-4">Order summary</h2>
+            <ul className="space-y-3">
+              {lines.map((l) => {
+                const lineTotal =
+                  Number(l.snapshot.discounted_price) * l.quantity +
+                  (l.include_installation ? Number(l.snapshot.installation_fee) * l.quantity : 0);
+                return (
+                  <li key={l.product} className="flex items-center gap-3 text-sm">
+                    <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+                      {l.snapshot.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={l.snapshot.image} alt={l.snapshot.name} className="h-full w-full object-cover" />
+                      ) : null}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium text-slate-900 line-clamp-1">{l.snapshot.name}</p>
+                      <p className="text-xs text-slate-400">
+                        Qty {l.quantity}
+                        {l.include_installation ? ' · incl. install' : ''}
+                      </p>
+                    </div>
+                    <p className="shrink-0 font-medium text-slate-900">{formatPrice(lineTotal)}</p>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+
+          <div className="border-t border-slate-100 bg-slate-50 px-5 py-4 sm:px-6 space-y-2">
+            <dl className="space-y-1.5 text-sm">
               <div className="flex justify-between">
-                <dt className="text-slate-600">Installation</dt>
-                <dd className="font-medium text-slate-900">{formatPrice(summary.installation)}</dd>
+                <dt className="text-slate-500">Subtotal</dt>
+                <dd className="font-medium text-slate-900">{formatPrice(summary.subtotal)}</dd>
+              </div>
+              {summary.installation > 0 ? (
+                <div className="flex justify-between">
+                  <dt className="text-slate-500">Installation</dt>
+                  <dd className="font-medium text-slate-900">{formatPrice(summary.installation)}</dd>
+                </div>
+              ) : null}
+              <div className="flex justify-between text-xs text-slate-400">
+                <dt>Shipping &amp; tax</dt>
+                <dd>Calculated at next step</dd>
+              </div>
+            </dl>
+            <div className="flex justify-between border-t border-slate-200 pt-3 text-base font-bold">
+              <span className="text-slate-900">Estimated total</span>
+              <span className="text-slate-900">{formatPrice(summary.grand)}</span>
+            </div>
+          </div>
+
+          <div className="px-5 py-4 sm:px-6 space-y-3">
+            {submitError ? (
+              <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                {submitError}
               </div>
             ) : null}
-            <div className="flex justify-between border-t border-slate-200 pt-3 text-base">
-              <dt className="font-semibold text-slate-900">Estimated total</dt>
-              <dd className="font-semibold text-slate-900">{formatPrice(summary.grand)}</dd>
-            </div>
-            <p className="text-xs text-slate-500">
-              Tax and shipping calculated on the next step.
+            <Button type="submit" block size="lg" loading={isSubmitting}>
+              {paymentMethod === 'stripe' ? 'Continue to payment →' : 'Place order →'}
+            </Button>
+            <p className="text-center text-xs text-slate-400">
+              By ordering you agree to our{' '}
+              <Link href="/terms" className="underline hover:text-slate-600">terms of service</Link>
             </p>
-          </dl>
-
-          {submitError ? <p className="text-sm text-red-600">{submitError}</p> : null}
-
-          <Button type="submit" block size="lg" loading={isSubmitting}>
-            {paymentMethod === 'stripe' ? 'Continue to payment' : 'Place order'}
-          </Button>
+          </div>
         </aside>
       </form>
     </div>
