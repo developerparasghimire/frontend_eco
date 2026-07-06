@@ -21,9 +21,12 @@ export default function TeamPage() {
       <section className="solar-container solar-spacer solar-spacer--xl" />
 
       <section className="solar-container solar-team-grid">
-        {teamMembers.map(([name, role, active]) => (
+        {teamMembers.map(([name, role, active, image]) => (
           <div key={name} className="solar-team-slot">
-            <SolariseMedia />
+            <SolariseMedia
+              src={image}
+              alt={`${name} — ${role}`}
+            />
             <SolariseTeamCard name={name} role={role} active={Boolean(active)} />
           </div>
         ))}

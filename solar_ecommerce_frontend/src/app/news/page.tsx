@@ -25,11 +25,11 @@ export default function NewsPage() {
       </section>
 
       <section className="solar-container solar-news-list">
-        <SolariseNewsTile featured title={newsCards[0].title} href={newsCards[0].href} />
+        <SolariseNewsTile featured title={newsCards[0].title} href={newsCards[0].href} image={newsCards[0].image} />
 
         <div className="solar-news-grid">
           {newsCards.slice(1).map((item) => (
-            <SolariseNewsTile key={item.title} title={item.title} href={item.href} />
+            <SolariseNewsTile key={item.title} title={item.title} href={item.href} image={item.image} />
           ))}
         </div>
       </section>

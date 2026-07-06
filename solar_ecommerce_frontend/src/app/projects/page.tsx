@@ -33,11 +33,15 @@ export default function ProjectsPage() {
 
       <section className="solar-container solar-project-list">
         <div className="solar-project-list__row">
-          <SolariseMedia />
+          <SolariseMedia
+            src={projectCards[0].image}
+            alt={projectCards[0].title}
+          />
           <SolariseProjectCard
             title={projectCards[0].title}
             meta={projectCards[0].meta}
             href={projectCards[0].href}
+            image={projectCards[0].image}
             accent
           />
         </div>
@@ -47,17 +51,25 @@ export default function ProjectsPage() {
             title={projectCards[1].title}
             meta={projectCards[1].meta}
             href={projectCards[1].href}
+            image={projectCards[1].image}
             accent
           />
-          <SolariseMedia />
+          <SolariseMedia
+            src={projectCards[1].image}
+            alt={projectCards[1].title}
+          />
         </div>
 
         <div className="solar-project-list__row">
-          <SolariseMedia />
+          <SolariseMedia
+            src={projectCards[2].image}
+            alt={projectCards[2].title}
+          />
           <SolariseProjectCard
             title={projectCards[2].title}
             meta={projectCards[2].meta}
             href={projectCards[2].href}
+            image={projectCards[2].image}
             accent
           />
         </div>

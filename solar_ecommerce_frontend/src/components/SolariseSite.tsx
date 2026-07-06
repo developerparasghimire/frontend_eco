@@ -238,10 +238,24 @@ export function SolariseSearchBar({
 
 interface SolariseMediaProps {
   className?: string;
+  src?: string;
+  alt?: string;
 }
 
-export function SolariseMedia({ className = '' }: SolariseMediaProps) {
-  return <div className={cx('solar-media', className)} aria-hidden="true" />;
+export function SolariseMedia({ className = '', src, alt = '' }: SolariseMediaProps) {
+  return (
+    <div className={cx('solar-media', className)} aria-hidden={!src}>
+      {src ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={src}
+          alt={alt}
+          loading="lazy"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      ) : null}
+    </div>
+  );
 }
 
 // ─── Feature card ─────────────────────────────────────────────────────────────
@@ -307,6 +321,7 @@ interface SolariseProjectCardProps {
   accent?: boolean;
   ctaLabel?: string;
   className?: string;
+  image?: string;
 }
 
 export function SolariseProjectCard({
@@ -317,6 +332,7 @@ export function SolariseProjectCard({
   accent = false,
   ctaLabel = 'Check the Project',
   className = '',
+  image,
 }: SolariseProjectCardProps) {
   return (
     <article
@@ -325,22 +341,24 @@ export function SolariseProjectCard({
         filled ? 'solar-project-card--filled' : 'solar-project-card--outline',
         className,
       )}
+      style={image ? { backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
     >
-      <div className="solar-project-card__inner">
-        <h3 className="solar-card-title">{title}</h3>
+      {image ? <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(15,20,40,0.45) 0%, rgba(15,20,40,0.72) 100%)', borderRadius: 'inherit' }} /> : null}
+      <div className="solar-project-card__inner" style={{ position: 'relative', zIndex: 1 }}>
+        <h3 className="solar-card-title" style={image ? { color: '#fff' } : undefined}>{title}</h3>
         <div className="solar-project-card__meta">
           {meta.map((line) => (
-            <span key={line} className="solar-card-meta">
+            <span key={line} className="solar-card-meta" style={image ? { color: 'rgba(255,255,255,0.82)' } : undefined}>
               {line}
             </span>
           ))}
         </div>
-        <SolariseButton href={href} tone={filled ? 'green' : 'navy'} size="sm">
+        <SolariseButton href={href} tone="green" size="sm">
           {ctaLabel}
         </SolariseButton>
       </div>
 
-      {filled || accent ? <SolariseStarburst className="solar-project-card__burst" tone="accent" /> : null}
+      {!image && (filled || accent) ? <SolariseStarburst className="solar-project-card__burst" tone="accent" /> : null}
     </article>
   );
 }
@@ -352,6 +370,7 @@ interface SolariseNewsTileProps {
   href?: string;
   featured?: boolean;
   className?: string;
+  image?: string;
 }
 
 export function SolariseNewsTile({
@@ -359,11 +378,16 @@ export function SolariseNewsTile({
   href = '/news/future-of-solar-energy',
   featured = false,
   className = '',
+  image,
 }: SolariseNewsTileProps) {
   return (
-    <article className={cx('solar-news-tile', featured && 'solar-news-tile--featured', className)}>
-      <div className="solar-news-tile__content">
-        <h3 className="solar-card-title">{title}</h3>
+    <article
+      className={cx('solar-news-tile', featured && 'solar-news-tile--featured', className)}
+      style={image ? { backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+    >
+      {image ? <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,16,35,0.85) 0%, rgba(10,16,35,0.25) 100%)', borderRadius: 'inherit' }} /> : null}
+      <div className="solar-news-tile__content" style={{ position: 'relative', zIndex: 1 }}>
+        <h3 className="solar-card-title" style={image ? { color: '#fff' } : undefined}>{title}</h3>
         <SolariseButton href={href} tone="green" size="sm">
           Read More
         </SolariseButton>

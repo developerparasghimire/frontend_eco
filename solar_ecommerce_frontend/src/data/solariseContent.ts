@@ -39,11 +39,13 @@ export interface ProjectCardData {
   title: string;
   href: string;
   meta: string[];
+  image?: string;
 }
 
 export interface NewsCardData {
   title: string;
   href: string;
+  image?: string;
 }
 
 export interface ProductCardData {
@@ -153,18 +155,18 @@ export const aboutValueCards: FeatureItem[] = [
   },
 ];
 
-/** [name, role, active?] */
-export type TeamMemberTuple = [string, string, boolean?];
+/** [name, role, active?, image?] */
+export type TeamMemberTuple = [string, string, boolean?, string?];
 
 export const teamMembers: TeamMemberTuple[] = [
-  ['Jose Ziemann', 'CEO (Chief Executive Officer)'],
-  ['Harvey Franey', 'COO (Chief Operating Officer)', true],
-  ['Louise Jacobson', 'CFO (Chief Financial Officer)'],
-  ['Marshall Mante', 'Chief Sustainability Officer'],
-  ['Amelia Rutherford', 'Solar Energy Project Manager'],
-  ['Darrin Conn', 'Solar Installation Technician'],
-  ['Jason VonRueden', 'Solar Design Engineer'],
-  ['Shelly Hoppe', 'Solar Research Scientist'],
+  ['Jose Ziemann', 'CEO (Chief Executive Officer)', false, 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=80'],
+  ['Harvey Franey', 'COO (Chief Operating Officer)', true, 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80'],
+  ['Louise Jacobson', 'CFO (Chief Financial Officer)', false, 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80'],
+  ['Marshall Mante', 'Chief Sustainability Officer', false, 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80'],
+  ['Amelia Rutherford', 'Solar Energy Project Manager', false, 'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=400&q=80'],
+  ['Darrin Conn', 'Solar Installation Technician', false, 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80'],
+  ['Jason VonRueden', 'Solar Design Engineer', false, 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=80'],
+  ['Shelly Hoppe', 'Solar Research Scientist', false, 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80'],
 ];
 
 export const servicesOverview: ServiceOverview[] = [
@@ -215,34 +217,62 @@ export const projectCards: ProjectCardData[] = [
     title: 'Sunset Valley Solar Farm',
     href: '/projects/sunset-valley-solar-farm',
     meta: ['Completion Date: May 2023', 'Capacity: 2 Megawatts', 'Location: Sunset Valley'],
+    image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=900&q=80',
   },
   {
-    title: 'GreenTech Elementary Sch...',
+    title: 'GreenTech Elementary School',
     href: '/projects',
     meta: [
       'Completion Date: September 2022',
       'Capacity: 50 Kilowatts',
-      'Location: GreenTech Elementary School, Urbanville',
+      'Location: Urbanville',
     ],
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=900&q=80',
   },
   {
-    title: 'Solar Oasis Community Ce...',
+    title: 'Solar Oasis Community Centre',
     href: '/projects',
     meta: ['Completion Date: July 2022', 'Capacity: 1.2 Megawatts', 'Location: Oasisville'],
+    image: 'https://images.unsplash.com/photo-1548337138-e87d889cc369?w=900&q=80',
   },
 ];
 
 export const newsCards: NewsCardData[] = [
-  { title: 'The Future of Solar Energy: Innovations and Trends', href: '/news/future-of-solar-energy' },
+  {
+    title: 'The Future of Solar Energy: Innovations and Trends',
+    href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=900&q=80',
+  },
   {
     title: 'Solar Power and Sustainability: Reducing Your Carbon Footprint',
     href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=700&q=80',
   },
-  { title: 'A Step by Step Guide to Installation', href: '/news/future-of-solar-energy' },
-  { title: 'The Solar Power Revolution: Impactful Success Stories', href: '/news/future-of-solar-energy' },
-  { title: 'Green Energy Legislation: A Bright Future for Solar', href: '/news/future-of-solar-energy' },
-  { title: 'Cutting-Edge Solar Tech: Innovations That Matter', href: '/news/future-of-solar-energy' },
-  { title: 'Environmental Benefits of Solar: A Closer Look', href: '/news/future-of-solar-energy' },
+  {
+    title: 'A Step by Step Guide to Installation',
+    href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=700&q=80',
+  },
+  {
+    title: 'The Solar Power Revolution: Impactful Success Stories',
+    href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=700&q=80',
+  },
+  {
+    title: 'Green Energy Legislation: A Bright Future for Solar',
+    href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=700&q=80',
+  },
+  {
+    title: 'Cutting-Edge Solar Tech: Innovations That Matter',
+    href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1548337138-e87d889cc369?w=700&q=80',
+  },
+  {
+    title: 'Environmental Benefits of Solar: A Closer Look',
+    href: '/news/future-of-solar-energy',
+    image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=700&q=80',
+  },
 ];
 
 export const sunsetValleyProject = {

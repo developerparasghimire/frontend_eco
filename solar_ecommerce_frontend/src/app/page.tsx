@@ -101,7 +101,14 @@ export default function HomePage() {
           </SolariseButton>
         </div>
 
-        <div aria-hidden="true" />
+        <div aria-hidden="true" style={{ position: 'relative', overflow: 'hidden', borderRadius: 38, minHeight: 420 }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=80"
+            alt="Solar panels on a rooftop"
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', borderRadius: 38 }}
+          />
+        </div>
         <SolariseStarburst className="solar-home-hero__burst--right" tone="ghost" />
       </section>
 
@@ -136,7 +143,10 @@ export default function HomePage() {
       </section>
 
       <section className="solar-container solar-home-grid solar-home-grid--about">
-        <div />
+        <SolariseMedia
+          src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&q=80"
+          alt="Solar panels on a home rooftop"
+        />
 
         <div className="solar-home-copy">
           <p className="solar-eyebrow">ABOUT US</p>
@@ -195,20 +205,29 @@ export default function HomePage() {
         />
 
         <div className="solar-home-projects__grid">
-          <SolariseMedia className="solar-media--lg" />
+          <SolariseMedia
+            className="solar-media--lg"
+            src="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=900&q=80"
+            alt="Large solar farm"
+          />
           <SolariseProjectCard
             filled
             title={projectCards[0].title}
             meta={projectCards[0].meta}
             href={projectCards[0].href}
+            image={projectCards[0].image}
           />
           <SolariseProjectCard
             filled
             title={projectCards[1].title}
             meta={projectCards[1].meta}
             href={projectCards[1].href}
+            image={projectCards[1].image}
           />
-          <SolariseMedia />
+          <SolariseMedia
+            src="https://images.unsplash.com/photo-1548337138-e87d889cc369?w=700&q=80"
+            alt="Solar installation team"
+          />
         </div>
       </section>
 
@@ -227,9 +246,9 @@ export default function HomePage() {
         />
 
         <div className="solar-home-news__grid">
-          <SolariseNewsTile title={newsCards[0].title} href={newsCards[0].href} />
-          <SolariseNewsTile title={newsCards[1].title} href={newsCards[1].href} />
-          <SolariseNewsTile title="A Step-by-Step Guide to Installation" href={newsCards[2].href} />
+          <SolariseNewsTile title={newsCards[0].title} href={newsCards[0].href} image={newsCards[0].image} />
+          <SolariseNewsTile title={newsCards[1].title} href={newsCards[1].href} image={newsCards[1].image} />
+          <SolariseNewsTile title={newsCards[2].title} href={newsCards[2].href} image={newsCards[2].image} />
         </div>
       </section>
     </SolariseShell>

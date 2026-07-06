@@ -28,7 +28,10 @@ export default function AboutPage() {
       <section className="solar-container solar-spacer solar-spacer--xl" />
 
       <section className="solar-container solar-about-story">
-        <div />
+        <SolariseMedia
+          src="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=900&q=80"
+          alt="Aerial view of a large solar farm"
+        />
 
         <div className="solar-about-story__copy">
           <p className="solar-eyebrow">OUR STORY</p>
@@ -85,7 +88,10 @@ export default function AboutPage() {
       </section>
 
       <section className="solar-container solar-about-mission">
-        <SolariseMedia />
+        <SolariseMedia
+          src="https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=900&q=80"
+          alt="Solar installation technician working on rooftop"
+        />
 
         <div className="solar-about-mission__copy">
           <p className="solar-eyebrow">OUR MISSION</p>
