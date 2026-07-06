@@ -39,6 +39,7 @@ CSRF_TRUSTED_ORIGINS = env_list('CSRF_TRUSTED_ORIGINS')
 # ──────────────────────────────────────────────
 
 DJANGO_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -456,6 +457,138 @@ LOGGING = {
         'django.request': {'handlers': ['console'], 'level': 'WARNING', 'propagate': False},
         'apps': {'handlers': ['console'], 'level': _LOG_LEVEL, 'propagate': False},
     },
+}
+
+# ──────────────────────────────────────────────
+# Django Jazzmin — Admin UI customisation
+# ──────────────────────────────────────────────
+JAZZMIN_SETTINGS = {
+    # Title / branding
+    "site_title": "EcoPlanet Solar Admin",
+    "site_header": "EcoPlanet Solar",
+    "site_brand": "🌿 EcoPlanet Solar",
+    "site_logo": None,
+    "login_logo": None,
+    "login_logo_dark": None,
+    "site_logo_classes": "img-circle",
+    "site_icon": None,
+    "welcome_sign": "Welcome to the EcoPlanet Solar Admin Panel",
+    "copyright": "© EcoPlanet Solar Pvt. Ltd.",
+
+    # Top search
+    "search_model": ["products.Product", "orders.Order", "users.User"],
+
+    # Top-bar links
+    "topmenu_links": [
+        {"name": "Dashboard", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "🛍 Products", "model": "products.Product"},
+        {"name": "📦 Orders", "model": "orders.Order"},
+        {"name": "👥 Customers", "model": "users.User"},
+        {"name": "🌐 Visit Site", "url": "/", "new_window": True},
+    ],
+
+    # User menu links
+    "usermenu_links": [
+        {"name": "My Profile", "url": "admin:users_user_change", "icon": "fas fa-user"},
+    ],
+
+    # Sidebar
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": ["auth"],
+    "hide_models": [],
+
+    # App/model ordering in sidebar
+    "order_with_respect_to": [
+        "products",
+        "orders",
+        "users",
+        "coupons",
+        "reviews",
+        "contacts",
+        "shipping",
+        "returns",
+    ],
+
+    # Model icons (FontAwesome 5)
+    "icons": {
+        "auth.user": "fas fa-user-shield",
+        "auth.Group": "fas fa-users",
+        "products": "fas fa-solar-panel",
+        "products.Category": "fas fa-tags",
+        "products.Product": "fas fa-solar-panel",
+        "products.ProductImage": "fas fa-images",
+        "orders": "fas fa-shopping-cart",
+        "orders.Order": "fas fa-shopping-cart",
+        "orders.OrderItem": "fas fa-list-ul",
+        "orders.Cart": "fas fa-shopping-basket",
+        "orders.CartItem": "fas fa-minus-circle",
+        "orders.WarrantyDocument": "fas fa-file-certificate",
+        "users": "fas fa-users",
+        "users.User": "fas fa-user-circle",
+        "users.Address": "fas fa-map-marker-alt",
+        "users.EmailVerificationOTP": "fas fa-key",
+        "reviews": "fas fa-star",
+        "reviews.Review": "fas fa-star",
+        "coupons": "fas fa-ticket-alt",
+        "coupons.Coupon": "fas fa-percent",
+        "coupons.CouponUsage": "fas fa-receipt",
+        "contacts": "fas fa-envelope",
+        "contacts.ContactMessage": "fas fa-envelope-open-text",
+        "contacts.NewsletterSubscriber": "fas fa-bell",
+        "shipping": "fas fa-truck",
+        "shipping.ShippingZone": "fas fa-map",
+        "returns": "fas fa-undo",
+        "returns.ReturnRequest": "fas fa-undo-alt",
+        "returns.ReturnItem": "fas fa-box-open",
+    },
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+
+    # UI options
+    "related_modal_active": True,
+    "custom_css": None,
+    "custom_js": None,
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+    "changeform_format": "horizontal_tabs",
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+    },
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+    "brand_colour": "navbar-success",
+    "accent": "accent-teal",
+    "navbar": "navbar-success navbar-dark",
+    "no_navbar_border": False,
+    "navbar_fixed": True,
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,
+    "sidebar": "sidebar-dark-success",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": True,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": False,
+    "theme": "default",
+    "dark_mode_theme": None,
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-outline-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
+    "actions_sticky_top": True,
 }
 
 # ──────────────────────────────────────────────
