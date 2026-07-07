@@ -2,6 +2,7 @@ import {
   SolariseButton,
   SolariseFeatureCard,
   SolariseOfferBanner,
+  SolarisePageHero,
   SolariseProcessSection,
   SolariseShell,
 } from '@/components/SolariseSite';
@@ -9,17 +10,14 @@ import { serviceDetailValueCards } from '@/data/solariseContent';
 
 export default function ServiceDetailPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.com">
-      <section className="solar-container solar-service-hero">
-        <div className="solar-service-hero__box">
-          <h1>Consultation &amp; Assessment</h1>
-          <p>
-            We begin by assessing your property to determine its solar potential. We analyze factors such
-            as roof orientation, shading, and energy consumption to design a system that meets your
-            specific needs.
-          </p>
-        </div>
-      </section>
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="OUR SERVICES"
+        title="Consultation & Assessment"
+        subtitle="We assess your property to determine its solar potential — analyzing roof orientation, shading, and energy consumption to design a system tailored to your needs."
+        image="https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=1600&q=80"
+        height="md"
+      />
 
       <section className="solar-container solar-service-detail">
         <div className="solar-heading-wrap">

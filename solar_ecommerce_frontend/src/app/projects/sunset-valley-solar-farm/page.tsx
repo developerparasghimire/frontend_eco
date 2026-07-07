@@ -1,4 +1,4 @@
-import { SolariseOfferBanner, SolariseShell, SolariseStarburst } from '@/components/SolariseSite';
+import { SolariseOfferBanner, SolarisePageHero, SolariseShell } from '@/components/SolariseSite';
 import {
   sunsetValleyProject,
   sunsetValleyProjectSections,
@@ -6,16 +6,14 @@ import {
 
 export default function ProjectDetailPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.com">
-      <section className="solar-container solar-spacer solar-spacer--lg" />
-
-      <section className="solar-container solar-project-detail-hero">
-        <div className="solar-project-detail-hero__box">
-          <h1>{sunsetValleyProject.title}</h1>
-          <p>{sunsetValleyProject.metaLine}</p>
-          <SolariseStarburst className="solar-project-detail-hero__burst" tone="accent" />
-        </div>
-      </section>
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="PROJECT CASE STUDY"
+        title={sunsetValleyProject.title}
+        subtitle={sunsetValleyProject.metaLine}
+        image="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=1600&q=80"
+        height="md"
+      />
 
       <section className="solar-container">
         <div className="solar-text-panel">

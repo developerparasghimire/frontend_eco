@@ -4,6 +4,7 @@ import {
   SolariseButton,
   SolariseJoinBanner,
   SolariseMedia,
+  SolarisePageHero,
   SolariseProcessSection,
   SolariseShell,
 } from '@/components/SolariseSite';
@@ -28,15 +29,21 @@ export const metadata: Metadata = {
 
 export default function ServicesPage() {
   return (
-    <SolariseShell footerEmail="info@solarise.com">
-      <section className="solar-container solar-spacer solar-spacer--lg" />
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="OUR SERVICES"
+        title="Expert solar solutions for every home and business"
+        subtitle="From consultation and design to full installation and ongoing maintenance — we handle every step of your solar journey."
+        image="https://images.unsplash.com/photo-1611365892117-00ac5ef43c90?w=1600&q=80"
+        height="lg"
+      />
 
       <section className="solar-container solar-services-intro">
         <div className="solar-services-intro__heading">
-          <h1 className="solar-title solar-title--xl">
+          <h2 className="solar-title solar-title--xl">
             Our expertise in <span className="solar-highlight">solar technology</span> ensures you get
             the most efficient and reliable solutions, whether you&apos;re a homeowner or a business owner
-          </h1>
+          </h2>
         </div>
 
         <div className="solar-services-list">

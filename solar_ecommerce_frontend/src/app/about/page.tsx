@@ -5,6 +5,7 @@ import {
   SolariseFeatureCard,
   SolariseJoinBanner,
   SolariseMedia,
+  SolarisePageHero,
   SolariseShell,
 } from '@/components/SolariseSite';
 import { aboutValueCards } from '@/data/solariseContent';
@@ -24,8 +25,14 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <SolariseShell footerEmail="info@solarise.com">
-      <section className="solar-container solar-spacer solar-spacer--xl" />
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="ABOUT US"
+        title="Empowering India through clean solar energy"
+        subtitle="We exist to make solar power accessible, reliable, and affordable for every home and business — one installation at a time."
+        image="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=1600&q=80"
+        height="lg"
+      />
 
       <section className="solar-container solar-about-story">
         <SolariseMedia

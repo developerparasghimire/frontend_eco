@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import {
   SolariseMedia,
   SolariseOfferBanner,
+  SolarisePageHero,
   SolariseProjectCard,
   SolariseSearchBar,
   SolariseShell,
@@ -24,8 +25,14 @@ export const metadata: Metadata = {
 
 export default function ProjectsPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.com">
-      <section className="solar-container solar-spacer solar-spacer--lg" />
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="OUR PROJECTS"
+        title="Real solar installations powering real communities"
+        subtitle="From rooftop home systems to utility-scale solar farms — explore our completed projects across India."
+        image="https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1600&q=80"
+        height="lg"
+      />
 
       <section className="solar-container">
         <SolariseSearchBar />

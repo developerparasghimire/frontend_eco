@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 
-import { SolariseNewsTile, SolariseSearchBar, SolariseShell } from '@/components/SolariseSite';
+import { SolariseNewsTile, SolarisePageHero, SolariseSearchBar, SolariseShell } from '@/components/SolariseSite';
 import { newsCards } from '@/data/solariseContent';
 
 export const metadata: Metadata = {
@@ -17,8 +17,14 @@ export const metadata: Metadata = {
 
 export default function NewsPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.com">
-      <section className="solar-container solar-spacer solar-spacer--lg" />
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="NEWS & INSIGHTS"
+        title="Stay ahead with the latest in solar energy"
+        subtitle="Industry trends, installation guides, and sustainability insights — all in one place."
+        image="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80"
+        height="sm"
+      />
 
       <section className="solar-container">
         <SolariseSearchBar placeholder="Search News Title..." actionText="Find News" />

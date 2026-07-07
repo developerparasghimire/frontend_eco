@@ -239,6 +239,39 @@ function FooterColumn({ title, links }: FooterColumnProps) {
   );
 }
 
+// ─── Page Hero ───────────────────────────────────────────────────────────────
+
+interface SolarisePageHeroProps {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  image: string;
+  height?: 'sm' | 'md' | 'lg';
+  align?: 'left' | 'center';
+}
+
+export function SolarisePageHero({
+  eyebrow,
+  title,
+  subtitle,
+  image,
+  height = 'md',
+  align = 'left',
+}: SolarisePageHeroProps) {
+  return (
+    <section className={cx('solar-page-hero', `solar-page-hero--${height}`, align === 'center' && 'solar-page-hero--center')}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={image} alt="" className="solar-page-hero__img" aria-hidden="true" />
+      <div className="solar-page-hero__overlay" />
+      <div className="solar-container solar-page-hero__content">
+        {eyebrow ? <p className="solar-eyebrow solar-eyebrow--light">{eyebrow}</p> : null}
+        <h1 className="solar-page-hero__title">{title}</h1>
+        {subtitle ? <p className="solar-page-hero__sub">{subtitle}</p> : null}
+      </div>
+    </section>
+  );
+}
+
 // ─── Button ──────────────────────────────────────────────────────────────────
 
 interface SolariseButtonProps {

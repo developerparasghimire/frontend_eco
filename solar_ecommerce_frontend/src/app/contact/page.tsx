@@ -45,6 +45,13 @@ export default function ContactPage() {
   return (
     <SolariseShell footerEmail="info@ecoplanet.eco">
       <section className="solar-contact-hero">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=1600&q=80"
+          alt=""
+          aria-hidden="true"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.22 }}
+        />
         <div className="solar-container solar-contact-hero__inner">
           <div className="solar-contact-heading">
             <p className="solar-eyebrow solar-eyebrow--light solar-eyebrow--center">CONTACT US</p>

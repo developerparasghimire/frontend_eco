@@ -1,15 +1,15 @@
-import { SolariseNewsTile, SolariseShell } from '@/components/SolariseSite';
+import { SolariseNewsTile, SolarisePageHero, SolariseShell } from '@/components/SolariseSite';
 import { newsCards } from '@/data/solariseContent';
 
 export default function NewsDetailPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.com">
-      <section className="solar-container solar-news-detail-hero">
-        <div className="solar-news-detail-hero__box">
-          <h1>The Future of Solar Energy: Innovations and Trends</h1>
-          <p>Posted on October 23rd 2023 &nbsp; • &nbsp; Written by Amanda Nithe</p>
-        </div>
-      </section>
+    <SolariseShell footerEmail="info@ecoplanet.eco">
+      <SolarisePageHero
+        eyebrow="OCTOBER 23, 2023  ·  WRITTEN BY AMANDA NITHE"
+        title="The Future of Solar Energy: Innovations and Trends"
+        image="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1600&q=80"
+        height="md"
+      />
 
       <section className="solar-container solar-news-detail-layout">
         <aside className="solar-toc">
@@ -80,7 +80,7 @@ export default function NewsDetailPage() {
 
         <div className="solar-related__grid">
           {newsCards.slice(1, 4).map((item) => (
-            <SolariseNewsTile key={item.title} title={item.title} href={item.href} />
+            <SolariseNewsTile key={item.title} title={item.title} href={item.href} image={item.image} />
           ))}
         </div>
       </section>
