@@ -2,6 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
+import { GoogleLogin } from '@react-oauth/google';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Suspense, useState } from 'react';
@@ -27,7 +28,9 @@ function LoginForm() {
   const next = search.get('next') ?? '/dashboard';
   const activated = search.get('activated');
   const login = useAuthStore((s) => s.login);
+  const googleLogin = useAuthStore((s) => s.googleLogin);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
   const {
     register,
@@ -45,12 +48,55 @@ function LoginForm() {
     }
   });
 
+  const onGoogleSuccess = async (credentialResponse: { credential?: string }) => {
+    if (!credentialResponse.credential) return;
+    setGoogleLoading(true);
+    setSubmitError(null);
+    try {
+      await googleLogin(credentialResponse.credential);
+      router.replace(next);
+    } catch (err) {
+      setSubmitError(formatApiError(err, 'Google sign-in failed. Please try again.'));
+    } finally {
+      setGoogleLoading(false);
+    }
+  };
+
+  const hasGoogleClientId = Boolean(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
+
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold text-slate-900">Welcome back</h1>
-        <p className="mt-1 text-sm text-slate-500">Sign in to your Solar account.</p>
+        <p className="mt-1 text-sm text-slate-500">Sign in to your EcoPlanet Solar account.</p>
       </div>
+
+      {/* Google Sign-In */}
+      {hasGoogleClientId && (
+        <div>
+          <div className="flex justify-center">
+            <GoogleLogin
+              onSuccess={onGoogleSuccess}
+              onError={() => setSubmitError('Google sign-in failed. Please try again.')}
+              useOneTap={false}
+              text="signin_with"
+              shape="rectangular"
+              width="100%"
+            />
+          </div>
+          {googleLoading && (
+            <p className="mt-2 text-center text-sm text-slate-500">Signing in with Google…</p>
+          )}
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-slate-200" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-white px-2 text-slate-400">or continue with email</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       <form onSubmit={onSubmit} className="space-y-4">
         {activated === '1' ? (
@@ -60,7 +106,7 @@ function LoginForm() {
         ) : null}
         {activated === 'invalid' ? (
           <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
-            That activation link is invalid or has already been used. If your account is not yet active, please request a new activation email.
+            That activation link is invalid or has already been used.
           </div>
         ) : null}
         {search.get('verified') === '1' ? (
@@ -68,6 +114,7 @@ function LoginForm() {
             ✅ Email verified successfully! You can now sign in.
           </div>
         ) : null}
+
         <FormField label="Email" htmlFor="email" error={errors.email?.message}>
           <Input id="email" type="email" autoComplete="email" {...register('email')} />
         </FormField>

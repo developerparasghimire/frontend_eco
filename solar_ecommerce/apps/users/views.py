@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth import get_user_model
 from django.db.models import Sum, Count, Q, Avg
 from django.utils import timezone
@@ -258,6 +260,68 @@ class AdminDashboardView(APIView):
             'customers': customer_stats,
             'support': support_stats,
         })
+
+
+class GoogleLoginView(APIView):
+    """POST /api/auth/google/  – {"credential": "<Google ID token>"}
+
+    Verifies the Google ID token, then creates or retrieves the matching user
+    and returns a JWT access/refresh pair exactly like the normal login view.
+    """
+    permission_classes = [AllowAny]
+    throttle_classes = [AuthRateThrottle]
+
+    def post(self, request):
+        credential = (request.data.get('credential') or '').strip()
+        if not credential:
+            return Response({'detail': 'credential is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        client_id = os.environ.get('GOOGLE_CLIENT_ID', '')
+        if not client_id:
+            return Response({'detail': 'Google login is not configured on this server.'}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+        try:
+            from google.oauth2 import id_token
+            from google.auth.transport import requests as google_requests
+            idinfo = id_token.verify_oauth2_token(credential, google_requests.Request(), client_id)
+        except ValueError as exc:
+            return Response({'detail': f'Invalid Google token: {exc}'}, status=status.HTTP_400_BAD_REQUEST)
+
+        email = idinfo.get('email', '').lower()
+        if not email or not idinfo.get('email_verified'):
+            return Response({'detail': 'Google account email is not verified.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        first_name = idinfo.get('given_name', '')
+        last_name = idinfo.get('family_name', '')
+
+        user, created = User.objects.get_or_create(
+            email=email,
+            defaults={
+                'username': email.split('@')[0],
+                'first_name': first_name,
+                'last_name': last_name,
+                'is_active': True,
+            },
+        )
+        if created:
+            user.set_unusable_password()
+            user.save(update_fields=['password'])
+        elif not user.is_active:
+            user.is_active = True
+            user.save(update_fields=['is_active'])
+
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            'access': str(refresh.access_token),
+            'refresh': str(refresh),
+            'user': {
+                'id': str(user.id),
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'is_staff': user.is_staff,
+            },
+        }, status=status.HTTP_200_OK)
 
 
 class AdminCustomerListView(generics.ListAPIView):

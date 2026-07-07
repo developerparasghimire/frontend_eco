@@ -90,7 +90,7 @@ export function ProductForm({ initial }: Props) {
     onSuccess: (product) => {
       toast.success(initial ? 'Product updated' : 'Product created');
       void qc.invalidateQueries({ queryKey: ['admin', 'products'] });
-      router.push(`/ecoplanet-admin/products/${product.slug}/edit`);
+      router.push(`/admin-eco/products/${product.slug}/edit`);
     },
     onError: (e) => toast.error(formatApiError(e, 'Save failed.')),
   });
@@ -100,7 +100,7 @@ export function ProductForm({ initial }: Props) {
     onSuccess: () => {
       toast.success('Product deleted');
       void qc.invalidateQueries({ queryKey: ['admin', 'products'] });
-      router.push('/ecoplanet-admin/products');
+      router.push('/admin-eco/products');
     },
     onError: (e) => toast.error(formatApiError(e, 'Delete failed.')),
   });
@@ -346,7 +346,7 @@ export function ProductForm({ initial }: Props) {
           <Button
             type="button"
             variant="outline"
-            onClick={() => router.push('/ecoplanet-admin/products')}
+            onClick={() => router.push('/admin-eco/products')}
           >
             Cancel
           </Button>

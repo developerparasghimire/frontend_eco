@@ -16,7 +16,7 @@ export function AdminGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (status === 'unauthenticated') {
-      router.replace('/login?next=/ecoplanet-admin');
+      router.replace('/login?next=/admin-eco');
       return;
     }
     if (status === 'authenticated' && user && !user.is_staff) {

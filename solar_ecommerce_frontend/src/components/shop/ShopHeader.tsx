@@ -92,7 +92,7 @@ export function ShopHeader() {
             <User size={18} />
           </Link>
           {user?.is_staff ? (
-            <Link href="/ecoplanet-admin" className="ml-1 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700">
+            <Link href="/admin-eco" className="ml-1 rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700">
               Admin
             </Link>
           ) : null}
@@ -147,7 +147,7 @@ export function ShopHeader() {
             <User size={15} /> {status === 'authenticated' ? 'Dashboard' : 'Login'}
           </Link>
           {user?.is_staff ? (
-            <Link href="/ecoplanet-admin" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-2.5 text-sm font-medium text-white">
+            <Link href="/admin-eco" onClick={() => setMobileOpen(false)} className="flex items-center gap-2 rounded-lg bg-slate-900 px-3 py-2.5 text-sm font-medium text-white">
               Admin dashboard
             </Link>
           ) : null}

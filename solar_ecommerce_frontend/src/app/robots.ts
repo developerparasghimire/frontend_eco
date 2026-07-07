@@ -10,7 +10,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
         disallow: [
           '/dashboard/',
-          '/ecoplanet-admin/',
+          '/admin-eco/',
           '/checkout/',
           '/cart/',
           '/wishlist/',

@@ -27,6 +27,9 @@ export interface LoginInput {
 }
 
 export const authApi = {
+  googleLogin: (credential: string) =>
+    request<AuthTokens & { user: User }>({ method: 'POST', url: '/api/auth/google/', data: { credential } }),
+
   register: (data: RegisterInput) =>
     request<RegisterResponse>({ method: 'POST', url: '/api/auth/register/', data }),
 

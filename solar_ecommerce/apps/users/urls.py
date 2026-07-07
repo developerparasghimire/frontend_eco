@@ -34,6 +34,9 @@ urlpatterns = [
     path('forgot-password/', views.PasswordResetRequestView.as_view(), name='forgot_password'),
     path('reset-password/', views.PasswordResetConfirmView.as_view(), name='reset_password'),
 
+    # Google OAuth
+    path('google/', views.GoogleLoginView.as_view(), name='google_login'),
+
     # Admin dashboard
     path('admin/dashboard/', views.AdminDashboardView.as_view(), name='admin_dashboard'),
     path('admin/customers/', views.AdminCustomerListView.as_view(), name='admin_customers'),

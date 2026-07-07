@@ -127,6 +127,46 @@ textarea {
   font-size: 11px;
 }
 
+.solar-header__auth {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.solar-nav__link--auth {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1272a5;
+}
+
+.solar-nav__logout {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+.solar-nav__logout:hover {
+  opacity: 0.75;
+}
+
+.solar-mobile-nav__link--btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  padding: 0;
+  color: #ef4444;
+}
+
 .solar-header__cta {
   position: absolute;
   top: 50%;

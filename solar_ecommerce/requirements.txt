@@ -17,6 +17,9 @@ psycopg2-binary>=2.9
 # Payments
 stripe>=10.0,<13.0
 
+# Google OAuth (verify Google ID tokens server-side)
+google-auth>=2.28,<3.0
+
 # PDF generation (invoices / receipts)
 reportlab>=4.0,<5.0
 

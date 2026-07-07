@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
 import type {
   FeatureItem,
@@ -13,6 +14,7 @@ import {
   primaryNavLinks,
   processSteps,
 } from '@/data/solariseContent';
+import { useAuthStore, useUser } from '@/store/auth';
 
 function cx(...classNames: (string | boolean | undefined | null)[]): string {
   return classNames.filter(Boolean).join(' ');
@@ -44,6 +46,14 @@ export function SolariseShell({
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const user = useUser();
+  const logout = useAuthStore((s) => s.logout);
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await logout();
+    router.push('/');
+  };
 
   return (
     <header className="solar-header">
@@ -57,6 +67,29 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+
+        {/* Desktop auth links */}
+        <div className="solar-header__auth">
+          {user ? (
+            <>
+              {user.is_staff && (
+                <Link href="/admin-eco" className="solar-nav__link solar-nav__link--auth">
+                  Admin
+                </Link>
+              )}
+              <Link href="/dashboard" className="solar-nav__link solar-nav__link--auth">
+                {user.first_name || user.email.split('@')[0]}
+              </Link>
+              <button type="button" onClick={handleLogout} className="solar-nav__link solar-nav__link--auth solar-nav__logout">
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className="solar-nav__link solar-nav__link--auth">
+              Login
+            </Link>
+          )}
+        </div>
 
         {/* Mobile hamburger */}
         <button
@@ -85,6 +118,19 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          {user ? (
+            <>
+              {user.is_staff && (
+                <Link href="/admin-eco" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Admin Panel</Link>
+              )}
+              <Link href="/dashboard" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>My Account</Link>
+              <button type="button" onClick={() => { setOpen(false); void handleLogout(); }} className="solar-mobile-nav__link solar-mobile-nav__link--btn">
+                Logout
+              </button>
+            </>
+          ) : (
+            <Link href="/login" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Login</Link>
+          )}
           <SolariseButton href="/contact" tone="green" size="sm" className="solar-mobile-nav__cta">
             Contact Us
           </SolariseButton>
@@ -102,6 +148,25 @@ interface SiteFooterProps {
 }
 
 export function SiteFooter({ email, phone }: SiteFooterProps) {
+  const [nEmail, setNEmail] = useState('');
+  const [nState, setNState] = useState<'idle' | 'loading' | 'ok' | 'err'>('idle');
+
+  const handleSubscribe = async () => {
+    const val = nEmail.trim();
+    if (!val || !/\S+@\S+\.\S+/.test(val)) return;
+    setNState('loading');
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || ''}/api/contacts/newsletter/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: val }),
+      });
+      setNState(res.ok ? 'ok' : 'err');
+    } catch {
+      setNState('err');
+    }
+  };
+
   return (
     <footer className="solar-footer">
       <div className="solar-container solar-footer__grid">
@@ -131,10 +196,25 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
 
         <div className="solar-footer__column">
           <h3>Subscribe for any updates</h3>
-          <div className="solar-subscribe-row" role="group" aria-label="Subscribe for updates">
-            <input type="email" placeholder="Your Email" aria-label="Email address" />
-            <button type="button">Subscribe</button>
-          </div>
+          {nState === 'ok' ? (
+            <p style={{ color: '#22c55e', fontSize: 14 }}>Thank you for subscribing!</p>
+          ) : (
+            <div className="solar-subscribe-row" role="group" aria-label="Subscribe for updates">
+              <input
+                type="email"
+                placeholder="Your Email"
+                aria-label="Email address"
+                value={nEmail}
+                onChange={(e) => setNEmail(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
+                disabled={nState === 'loading'}
+              />
+              <button type="button" onClick={handleSubscribe} disabled={nState === 'loading'}>
+                {nState === 'loading' ? '...' : 'Subscribe'}
+              </button>
+            </div>
+          )}
+          {nState === 'err' && <p style={{ color: '#ef4444', fontSize: 12, marginTop: 4 }}>Something went wrong. Try again.</p>}
         </div>
       </div>
     </footer>
@@ -168,6 +248,7 @@ interface SolariseButtonProps {
   size?: 'sm' | 'md';
   className?: string;
   type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
 }
 
 export function SolariseButton({
@@ -177,6 +258,7 @@ export function SolariseButton({
   size = 'md',
   className = '',
   type = 'button',
+  disabled = false,
 }: SolariseButtonProps) {
   const classes = cx('solar-btn', `solar-btn--${tone}`, size === 'sm' && 'solar-btn--sm', className);
 
@@ -198,7 +280,7 @@ export function SolariseButton({
   }
 
   return (
-    <button type={type} className={classes}>
+    <button type={type} className={classes} disabled={disabled} style={disabled ? { opacity: 0.6, cursor: 'not-allowed' } : undefined}>
       {content}
     </button>
   );
