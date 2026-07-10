@@ -127,6 +127,33 @@ textarea {
   font-size: 11px;
 }
 
+.solar-header__logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.solar-logo-img {
+  height: 48px;
+  width: auto;
+  display: block;
+}
+
+.solar-footer__logo {
+  height: 44px;
+  width: auto;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.solar-mobile-nav__logo {
+  display: flex;
+  align-items: center;
+  padding: 4px 0 16px;
+  border-bottom: 1px solid rgba(39,70,124,0.1);
+  margin-bottom: 8px;
+}
+
 .solar-header__auth {
   position: absolute;
   top: 50%;

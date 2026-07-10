@@ -39,9 +39,12 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     <AdminGuard>
       <div className="flex min-h-screen bg-slate-50">
         <aside className="hidden w-60 shrink-0 border-r border-slate-200 bg-white lg:block">
-          <div className="px-6 py-6">
-            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Admin</p>
-            <p className="mt-1 text-base font-semibold text-slate-900">Eco Planet Solar</p>
+          <div className="px-6 py-5 border-b border-slate-100">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <Link href="/">
+              <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 32, width: 'auto', marginBottom: 8 }} />
+            </Link>
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Admin Panel</p>
           </div>
           <nav className="px-3 pb-6">
             <Sidebar />

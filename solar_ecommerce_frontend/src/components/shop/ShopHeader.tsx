@@ -53,8 +53,8 @@ export function ShopHeader() {
           </Link>
           <span className="text-slate-300">|</span>
           <Link href="/products" className="flex items-center gap-2">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-green-600 text-white text-xs font-bold">S</span>
-            <span className="text-sm font-semibold tracking-tight text-slate-900">Solar Shop</span>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 28, width: 'auto' }} />
           </Link>
         </div>
 

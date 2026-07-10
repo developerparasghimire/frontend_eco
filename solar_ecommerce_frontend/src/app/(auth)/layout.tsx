@@ -6,8 +6,9 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
         <div className="container flex h-16 items-center justify-between">
-          <Link href="/" className="text-lg font-semibold text-slate-900">
-            Solar
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <Link href="/">
+            <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 36, width: 'auto', display: 'block' }} />
           </Link>
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-900">
             Back to site
