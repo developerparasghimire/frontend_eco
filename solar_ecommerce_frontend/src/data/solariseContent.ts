@@ -71,6 +71,7 @@ export const primaryNavLinks: NavLink[] = [
   { href: '/products', label: 'Shop' },
   { href: '/projects', label: 'Projects' },
   { href: '/news', label: 'News' },
+  { href: '/contact', label: 'Contact Us' },
 ];
 
 export const footerCompanyLinks: FooterLink[] = [

@@ -86,14 +86,14 @@ textarea {
   position: relative;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   min-height: 86px;
 }
 
 .solar-nav {
   display: flex;
   align-items: center;
-  gap: 64px;
+  gap: 32px;
 }
 
 .solar-nav__link {
@@ -155,13 +155,10 @@ textarea {
 }
 
 .solar-header__auth {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
   display: flex;
   align-items: center;
   gap: 16px;
+  flex-shrink: 0;
 }
 
 .solar-nav__link--auth {
@@ -195,10 +192,7 @@ textarea {
 }
 
 .solar-header__cta {
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
+  flex-shrink: 0;
 }
 
 .solar-btn {

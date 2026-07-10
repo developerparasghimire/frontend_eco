@@ -68,14 +68,12 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        {/* Logo — centred between nav and auth */}
-        <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Eco Planet Solar" className="solar-logo-img" />
-        </Link>
-
-        {/* Desktop auth links */}
+        {/* Desktop auth — logo + login/user */}
         <div className="solar-header__auth">
+          <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo.png" alt="Eco Planet Solar" className="solar-logo-img" />
+          </Link>
           {user ? (
             <>
               {user.is_staff && (
@@ -91,9 +89,9 @@ export function SiteHeader() {
               </button>
             </>
           ) : (
-            <Link href="/login" className="solar-nav__link solar-nav__link--auth">
+            <SolariseButton href="/login" tone="navy" size="sm" className="solar-header__cta solar-header__cta--desktop">
               Login
-            </Link>
+            </SolariseButton>
           )}
         </div>
 
@@ -110,10 +108,6 @@ export function SiteHeader() {
             <span />
           </span>
         </button>
-
-        <SolariseButton href="/contact" tone="green" size="sm" className="solar-header__cta solar-header__cta--desktop">
-          Contact Us
-        </SolariseButton>
       </div>
 
       {/* Mobile drawer */}
@@ -141,9 +135,6 @@ export function SiteHeader() {
           ) : (
             <Link href="/login" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Login</Link>
           )}
-          <SolariseButton href="/contact" tone="green" size="sm" className="solar-mobile-nav__cta">
-            Contact Us
-          </SolariseButton>
         </nav>
       )}
     </header>
