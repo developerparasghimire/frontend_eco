@@ -58,6 +58,12 @@ export function SiteHeader() {
   return (
     <header className="solar-header">
       <div className="solar-container solar-header__inner">
+        {/* Logo — left side */}
+        <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo.png" alt="Eco Planet Solar" className="solar-logo-img" />
+        </Link>
+
         {/* Desktop nav */}
         <nav className="solar-nav solar-nav--desktop" aria-label="Primary">
           {primaryNavLinks.map((item) => (
@@ -68,12 +74,8 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        {/* Desktop auth — logo + login/user */}
+        {/* Desktop auth */}
         <div className="solar-header__auth">
-          <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Eco Planet Solar" className="solar-logo-img" />
-          </Link>
           {user ? (
             <>
               {user.is_staff && (
