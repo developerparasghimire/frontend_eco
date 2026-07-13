@@ -42,7 +42,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
           <div className="px-6 py-5 border-b border-slate-100">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <Link href="/">
-              <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 32, width: 'auto', marginBottom: 8 }} />
+              <img src="/logoonly.png" alt="Eco Planet Solar" style={{ height: 32, width: 'auto', marginBottom: 8 }} />
             </Link>
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Admin Panel</p>
           </div>

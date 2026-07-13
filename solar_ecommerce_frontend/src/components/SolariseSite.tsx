@@ -61,7 +61,7 @@ export function SiteHeader() {
         {/* Logo — left side */}
         <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logo.png" alt="Eco Planet Solar" className="solar-logo-img" />
+          <img src="/logoonly.png" alt="Eco Planet Solar" className="solar-logo-img" />
         </Link>
 
         {/* Desktop nav */}
@@ -117,7 +117,7 @@ export function SiteHeader() {
         <nav className="solar-mobile-nav" aria-label="Mobile navigation">
           <Link href="/" onClick={() => setOpen(false)} className="solar-mobile-nav__logo">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 36 }} />
+            <img src="/logoonly.png" alt="Eco Planet Solar" style={{ height: 36 }} />
           </Link>
           {primaryNavLinks.map((item) => (
             <Link key={item.label} href={item.href} className="solar-mobile-nav__link" onClick={() => setOpen(false)}>
@@ -176,7 +176,7 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
         <div className="solar-footer__brand">
           <Link href="/" aria-label="Eco Planet Solar home">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Eco Planet Solar" className="solar-footer__logo" />
+            <img src="/logoonly.png" alt="Eco Planet Solar" className="solar-footer__logo" />
           </Link>
           <p>Your trusted partner in the world of renewable energy</p>
           <div className="solar-footer__socials">

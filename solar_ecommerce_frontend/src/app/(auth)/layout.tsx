@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
         <div className="container flex h-16 items-center justify-between">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <Link href="/">
-            <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 36, width: 'auto', display: 'block' }} />
+            <img src="/logoonly.png" alt="Eco Planet Solar" style={{ height: 36, width: 'auto', display: 'block' }} />
           </Link>
           <Link href="/" className="text-sm text-slate-500 hover:text-slate-900">
             Back to site

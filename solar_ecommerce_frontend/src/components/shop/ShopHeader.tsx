@@ -54,7 +54,7 @@ export function ShopHeader() {
           <span className="text-slate-300">|</span>
           <Link href="/products" className="flex items-center gap-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logo.png" alt="Eco Planet Solar" style={{ height: 28, width: 'auto' }} />
+            <img src="/logoonly.png" alt="Eco Planet Solar" style={{ height: 28, width: 'auto' }} />
           </Link>
         </div>
 
