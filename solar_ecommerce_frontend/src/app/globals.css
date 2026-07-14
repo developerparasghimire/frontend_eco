@@ -2253,3 +2253,103 @@ textarea {
     gap: 10px;
   }
 }
+
+/* ── Mobile-specific overrides ─────────────────────────────────────── */
+@media (max-width: 860px) {
+  /* Hide auth links on mobile (hamburger handles them) */
+  .solar-header__auth {
+    display: none;
+  }
+
+  /* Buttons: smaller and full-width-friendly on mobile */
+  .solar-btn {
+    font-size: 15px;
+    padding: 7px 8px 7px 14px;
+    max-width: 100%;
+  }
+
+  .solar-btn__icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  /* Page hero: reduce height and font on mobile */
+  .solar-page-hero--lg { min-height: 280px; }
+  .solar-page-hero--md { min-height: 220px; }
+  .solar-page-hero--sm { min-height: 160px; }
+
+  .solar-page-hero__title {
+    font-size: clamp(24px, 7vw, 38px);
+  }
+
+  .solar-page-hero__sub {
+    font-size: 14px;
+  }
+
+  .solar-page-hero__content {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  /* Home hero image: hide on very small screens to save space */
+  .solar-home-hero__img-wrap {
+    min-height: 240px;
+  }
+
+  /* Stats: 2 columns on mobile */
+  .solar-home-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  /* Feature cards: single column */
+  .solar-feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Team grid: 2 columns */
+  .solar-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Footer: tighten spacing */
+  .solar-footer__column h3 {
+    font-size: 14px;
+  }
+
+  /* Subscribe row: stack vertically */
+  .solar-subscribe-row {
+    gap: 8px;
+  }
+
+  /* Logo in navbar: slightly smaller */
+  .solar-logo-img {
+    height: 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Team grid: single column on very small */
+  .solar-team-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stats: single column on very small */
+  .solar-home-stats {
+    grid-template-columns: 1fr;
+  }
+
+  /* Reduce all buttons further */
+  .solar-btn {
+    font-size: 13px;
+    padding: 6px 7px 6px 12px;
+  }
+
+  /* Page hero: minimal height */
+  .solar-page-hero--lg,
+  .solar-page-hero--md { min-height: 180px; }
+
+  .solar-page-hero__title {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+}
