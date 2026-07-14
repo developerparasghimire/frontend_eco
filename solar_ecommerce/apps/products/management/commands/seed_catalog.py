@@ -402,7 +402,7 @@ CATALOG = [
         'description': (
             'Sungrow SH10RS — a Residential Hybrid Single Phase Inverter rated at 10 kW. '
             'Supports up to 20,000 Wp PV input and lithium-ion batteries (80–460 V). '
-            'From the world's largest inverter manufacturer.'
+            'From the world\'s largest inverter manufacturer.'
         ),
         'technical_description': (
             'Brand: Sungrow | Series: SH RS Series | Model: SH10RS | '
