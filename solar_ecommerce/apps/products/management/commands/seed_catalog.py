@@ -324,7 +324,7 @@ CATALOG = [
         'description': (
             'Sungrow SBH100 — a High Voltage Energy Storage Battery with 5.0 kWh per module '
             'and 563.2 V nominal voltage. Scale up to 40.0 kWh (8 modules). 100% Depth of '
-            'Discharge for maximum energy utilisation. Built by the world's largest inverter manufacturer.'
+            'Discharge for maximum energy utilisation. Built by the world\'s largest inverter manufacturer.'
         ),
         'technical_description': (
             'Brand: Sungrow | Series: SBH Series | Model: SBH100 | '
