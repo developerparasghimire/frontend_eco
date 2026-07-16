@@ -30,6 +30,7 @@ export interface ProductListItem {
   capacity: string;
   brand: string;
   is_featured: boolean;
+  is_active: boolean;
   in_stock: boolean;
   average_rating: number;
   review_count: number;

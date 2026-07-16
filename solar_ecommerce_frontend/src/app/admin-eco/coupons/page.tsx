@@ -42,7 +42,7 @@ export default function AdminCouponsPage() {
   });
 
   const remove = useMutation({
-    mutationFn: (id: string) => couponsApi.remove(id),
+    mutationFn: (code: string) => couponsApi.remove(code),
     onSuccess: () => {
       toast.success('Coupon deleted');
       void qc.invalidateQueries({ queryKey: ['admin', 'coupons'] });
@@ -180,7 +180,7 @@ export default function AdminCouponsPage() {
                   <td className="px-4 py-3">
                     <button
                       onClick={() => {
-                        if (confirm(`Delete coupon ${c.code}?`)) remove.mutate(c.id);
+                        if (confirm(`Delete coupon ${c.code}?`)) remove.mutate(c.code);
                       }}
                       className="text-xs font-medium text-red-600 hover:underline"
                     >

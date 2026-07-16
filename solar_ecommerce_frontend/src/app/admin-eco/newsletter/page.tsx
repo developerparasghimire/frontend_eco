@@ -42,8 +42,9 @@ export default function AdminNewsletterPage() {
     onError: (e) => toast.error(formatApiError(e, 'Delete failed.')),
   });
 
-  const exportCsv = () => {
-    const rows = data?.results ?? [];
+  const exportCsv = async () => {
+    const allData = await newsletterAdminApi.list({ page_size: 9999 });
+    const rows = allData.results;
     const csv = [
       'email,is_active,created_at',
       ...rows.map((r) =>
@@ -64,7 +65,7 @@ export default function AdminNewsletterPage() {
       <div className="flex flex-wrap items-start justify-between gap-3">
         <h1 className="text-2xl font-semibold text-slate-900">Newsletter subscribers</h1>
         <button
-          onClick={exportCsv}
+          onClick={() => void exportCsv()}
           disabled={!data?.results?.length}
           className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-50"
         >

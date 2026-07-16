@@ -13,13 +13,12 @@ import {
 import { formatApiError } from '@/lib/errors';
 import { formatDate } from '@/lib/format';
 
-const STATUS_OPTIONS: ContactStatus[] = ['new', 'in_progress', 'resolved', 'spam'];
+const STATUS_OPTIONS: ContactStatus[] = ['new', 'in_progress', 'resolved'];
 
 const STATUS_BADGE: Record<ContactStatus, string> = {
   new: 'bg-amber-100 text-amber-800',
   in_progress: 'bg-blue-100 text-blue-800',
   resolved: 'bg-emerald-100 text-emerald-800',
-  spam: 'bg-slate-200 text-slate-600',
 };
 
 export default function AdminMessagesPage() {

@@ -67,7 +67,7 @@ export function ProductForm({ initial }: Props) {
         installation_fee: initial.installation_fee,
         tags: initial.tags,
         is_featured: initial.is_featured,
-        is_active: true,
+        is_active: initial.is_active,
       });
     }
   }, [initial]);

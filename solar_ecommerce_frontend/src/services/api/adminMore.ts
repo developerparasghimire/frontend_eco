@@ -6,7 +6,7 @@ import { request } from '@/services/http';
 import type { Paginated } from '@/types/api';
 
 // ── Contact messages ──────────────────────────
-export type ContactStatus = 'new' | 'in_progress' | 'resolved' | 'spam';
+export type ContactStatus = 'new' | 'in_progress' | 'resolved';
 
 export interface ContactMessage {
   id: string;
@@ -51,7 +51,7 @@ export interface NewsletterSubscriber {
 }
 
 export const newsletterAdminApi = {
-  list: (params?: { is_active?: boolean; search?: string; page?: number }) =>
+  list: (params?: { is_active?: boolean; search?: string; page?: number; page_size?: number }) =>
     request<Paginated<NewsletterSubscriber>>({
       method: 'GET',
       url: '/api/contacts/admin/newsletter/',

@@ -16,10 +16,11 @@ import { formatPrice } from '@/lib/format';
 export default function AdminProductsPage() {
   const fileRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
+  const [page, setPage] = useState(1);
 
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ['admin', 'products'],
-    queryFn: () => productsApi.list({ page: 1 }),
+  const { data, isLoading, isError, refetch } = useQuery({
+    queryKey: ['admin', 'products', page],
+    queryFn: () => productsApi.list({ page }),
   });
 
   const handleExport = async () => {
@@ -111,6 +112,12 @@ export default function AdminProductsPage() {
                   ))}
                 </tr>
               ))
+            ) : isError ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-red-500">
+                  Failed to load products. Please try again.
+                </td>
+              </tr>
             ) : (
               data?.results.map((p) => (
                 <tr key={p.id} className="hover:bg-slate-50">
@@ -139,6 +146,26 @@ export default function AdminProductsPage() {
           </tbody>
         </table>
       </div>
+
+      {data && (data.previous || data.next) ? (
+        <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
+          <button
+            disabled={!data.previous}
+            onClick={() => setPage((p) => p - 1)}
+            className="rounded-lg border border-slate-200 bg-white px-4 py-2 disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <span>Page {page}</span>
+          <button
+            disabled={!data.next}
+            onClick={() => setPage((p) => p + 1)}
+            className="rounded-lg border border-slate-200 bg-white px-4 py-2 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }

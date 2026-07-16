@@ -25,7 +25,8 @@ export const cartApi = {
 };
 
 export const ordersApi = {
-  list: () => request<Paginated<Order>>({ method: 'GET', url: '/api/orders/list/' }),
+  list: (params?: { status?: string; page?: number }) =>
+    request<Paginated<Order>>({ method: 'GET', url: '/api/orders/list/', params }),
 
   detail: (id: string) =>
     request<Order>({ method: 'GET', url: `/api/orders/list/${id}/` }),

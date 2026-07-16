@@ -33,8 +33,8 @@ export const couponsApi = {
   list: () => request<Paginated<AdminCoupon>>({ method: 'GET', url: '/api/coupons/' }),
   create: (data: Partial<AdminCouponInput>) =>
     request<AdminCoupon>({ method: 'POST', url: '/api/coupons/', data }),
-  update: (id: string, data: Partial<AdminCouponInput>) =>
-    request<AdminCoupon>({ method: 'PATCH', url: `/api/coupons/${id}/`, data }),
-  remove: (id: string) =>
-    request<void>({ method: 'DELETE', url: `/api/coupons/${id}/` }),
+  update: (code: string, data: Partial<AdminCouponInput>) =>
+    request<AdminCoupon>({ method: 'PATCH', url: `/api/coupons/${code}/`, data }),
+  remove: (code: string) =>
+    request<void>({ method: 'DELETE', url: `/api/coupons/${code}/` }),
 };

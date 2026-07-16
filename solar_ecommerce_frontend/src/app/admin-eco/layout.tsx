@@ -35,6 +35,12 @@ const NAV = [
 ];
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+
+  if (pathname === '/admin-eco/login') {
+    return <>{children}</>;
+  }
+
   return (
     <AdminGuard>
       <div className="flex min-h-screen bg-slate-50">

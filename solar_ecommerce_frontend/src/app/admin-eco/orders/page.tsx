@@ -30,14 +30,24 @@ const STATUS_TONE: Record<string, string> = {
 
 export default function AdminOrdersPage() {
   const [filter, setFilter] = useState<OrderStatus | 'all'>('all');
-  const { data, isLoading } = useQuery({
-    queryKey: ['admin', 'orders'],
-    queryFn: () => ordersApi.list(),
+  const [page, setPage] = useState(1);
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['admin', 'orders', filter, page],
+    queryFn: () =>
+      ordersApi.list({
+        status: filter === 'all' ? undefined : filter,
+        page,
+      }),
     staleTime: 30_000,
   });
 
-  const orders: Order[] =
-    (data?.results ?? []).filter((o) => filter === 'all' || o.status === filter);
+  const orders: Order[] = data?.results ?? [];
+
+  const handleFilterChange = (s: OrderStatus | 'all') => {
+    setFilter(s);
+    setPage(1);
+  };
 
   return (
     <div>
@@ -48,7 +58,7 @@ export default function AdminOrdersPage() {
           <button
             key={s}
             type="button"
-            onClick={() => setFilter(s)}
+            onClick={() => handleFilterChange(s)}
             className={`rounded-full px-3 py-1 text-xs font-medium capitalize transition ${
               filter === s
                 ? 'bg-slate-900 text-white'
@@ -83,10 +93,16 @@ export default function AdminOrdersPage() {
                   ))}
                 </tr>
               ))
+            ) : isError ? (
+              <tr>
+                <td colSpan={6} className="px-4 py-8 text-center text-red-500">
+                  Failed to load orders. Please try again.
+                </td>
+              </tr>
             ) : orders.length === 0 ? (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
-                  No orders match this filter.
+                  No orders found.
                 </td>
               </tr>
             ) : (
@@ -125,6 +141,26 @@ export default function AdminOrdersPage() {
           </tbody>
         </table>
       </div>
+
+      {data && (data.previous || data.next) ? (
+        <div className="mt-4 flex items-center justify-between text-sm text-slate-600">
+          <button
+            disabled={!data.previous}
+            onClick={() => setPage((p) => p - 1)}
+            className="rounded-lg border border-slate-200 bg-white px-4 py-2 disabled:opacity-40"
+          >
+            Previous
+          </button>
+          <span>Page {page}</span>
+          <button
+            disabled={!data.next}
+            onClick={() => setPage((p) => p + 1)}
+            className="rounded-lg border border-slate-200 bg-white px-4 py-2 disabled:opacity-40"
+          >
+            Next
+          </button>
+        </div>
+      ) : null}
     </div>
   );
 }
