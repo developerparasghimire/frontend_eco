@@ -18,11 +18,11 @@ export const metadata: Metadata = {
     template: '%s | Eco Planet Solar',
   },
   description:
-    'Shop high-efficiency solar panels, inverters and complete home installation packages from Eco Planet Solar. Trusted by thousands across India.',
+    'Shop high-efficiency solar panels, inverters and complete home installation packages from Eco Planet Solar. Trusted by homeowners and businesses across Australia.',
   metadataBase: new URL(SITE_URL),
   keywords: [
     'solar panels', 'solar energy', 'solar installation', 'inverter',
-    'home solar system', 'rooftop solar', 'renewable energy India', 'Eco Planet Solar',
+    'home solar system', 'rooftop solar', 'renewable energy Australia', 'Eco Planet Solar',
   ],
   authors: [{ name: 'Eco Planet Solar', url: SITE_URL }],
   creator: 'Eco Planet Solar',
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   openGraph: {
     siteName: 'Eco Planet Solar',
     type: 'website',
-    locale: 'en_IN',
+    locale: 'en_AU',
     url: SITE_URL,
     title: 'Eco Planet Solar — Premium Solar Panels & Installation',
     description:

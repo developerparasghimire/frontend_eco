@@ -50,7 +50,7 @@ export function AddressForm({ initial, onSuccess, onCancel }: Props) {
     defaultValues: {
       label: 'Home',
       address_type: 'shipping',
-      country: 'India',
+      country: 'Australia',
       address_line2: '',
       is_default: false,
       full_name: '',

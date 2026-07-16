@@ -16,7 +16,7 @@ import { formatApiError } from '@/lib/errors';
 const EMPTY: Partial<ShippingZoneInput> = {
   name: '',
   states: '',
-  country: 'India',
+  country: 'Australia',
   rate: '0',
   free_above: null,
   estimated_days_min: 3,

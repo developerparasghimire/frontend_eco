@@ -85,7 +85,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         image: (product.images ?? []).map((i) => i.image).filter(Boolean),
         offers: {
           '@type': 'Offer',
-          priceCurrency: 'INR',
+          priceCurrency: 'AUD',
           price: product.discounted_price || product.price,
           availability: product.in_stock
             ? 'https://schema.org/InStock'

@@ -94,7 +94,7 @@ export default function GuestCheckoutPage() {
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
-    defaultValues: { country: 'India' },
+    defaultValues: { country: 'Australia' },
   });
 
   const summary = useMemo(
@@ -118,7 +118,7 @@ export default function GuestCheckoutPage() {
         city: values.city,
         state: values.state,
         postal_code: values.postal_code,
-        country: values.country || 'India',
+        country: values.country || 'Australia',
         payment_method: paymentMethod,
         note: values.note || undefined,
         items: lines.map((l) => ({

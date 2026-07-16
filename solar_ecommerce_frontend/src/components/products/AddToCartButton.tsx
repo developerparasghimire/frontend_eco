@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/Button';
 import { useAddToCart } from '@/hooks/useCart';
 import { formatApiError } from '@/lib/errors';
+import { formatPrice } from '@/lib/format';
 import { useAuthStatus } from '@/store/auth';
 import { useGuestCartStore } from '@/store/guestCart';
 import type { ProductDetail } from '@/types/product';
@@ -29,6 +30,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       // Guest path — store in localStorage cart, no login required.
       guestAdd(product, qty, withInstall);
       setGuestAdded(true);
+      setTimeout(() => setGuestAdded(false), 2000);
       return;
     }
     try {
@@ -67,7 +69,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
             onChange={(e) => setWithInstall(e.target.checked)}
             className="h-4 w-4 rounded border-slate-300 text-brand-600 focus:ring-brand-300"
           />
-          Add installation (+${Number(product.installation_fee).toFixed(2)} per unit)
+          Add installation (+{formatPrice(product.installation_fee)} per unit)
         </label>
       ) : null}
 

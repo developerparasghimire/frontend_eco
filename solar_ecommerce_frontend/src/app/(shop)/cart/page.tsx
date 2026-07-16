@@ -72,6 +72,14 @@ function CartView() {
     return <div className="mx-auto max-w-5xl px-4 py-12 text-sm text-slate-500">Loading cart…</div>;
   }
 
+  if (cart.isError) {
+    return (
+      <div className="mx-auto max-w-5xl px-4 py-12 text-sm text-red-600">
+        Failed to load cart. Please refresh the page.
+      </div>
+    );
+  }
+
   const items = cart.data?.items ?? [];
 
   if (items.length === 0) {

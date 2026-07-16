@@ -2,10 +2,10 @@
  * Format a numeric/string price as USD.
  * Backend serializes DecimalField as a string ("1234.50").
  */
-export function formatPrice(value: string | number, currency = 'USD'): string {
+export function formatPrice(value: string | number, currency = 'AUD'): string {
   const n = typeof value === 'string' ? Number(value) : value;
   if (!Number.isFinite(n)) return '—';
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat('en-AU', {
     style: 'currency',
     currency,
     maximumFractionDigits: 2,

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import {
   AlertTriangle,
   CheckCircle2,
-  IndianRupee,
+  DollarSign,
   Mail,
   Package,
   ShoppingBag,
@@ -37,7 +37,7 @@ export default function AdminDashboardPage() {
             <Stat
               label="Revenue (paid)"
               value={formatPrice(data.orders.total_revenue)}
-              icon={IndianRupee}
+              icon={DollarSign}
               accent="emerald"
             />
             <Stat label="Orders" value={data.orders.total_orders} icon={ShoppingBag} accent="brand" />
