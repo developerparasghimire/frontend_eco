@@ -134,7 +134,7 @@ textarea {
 }
 
 .solar-logo-img {
-  height: 40px;
+  height: 48px;
   width: auto;
   display: block;
 }
@@ -2183,11 +2183,7 @@ textarea {
   }
 
   .solar-footer {
-    padding: 58px 0 74px;
-  }
-
-  .solar-footer__grid {
-    grid-template-columns: 1fr;
+    display: none;
   }
 
   .solar-contact-map {
@@ -2233,8 +2229,7 @@ textarea {
   .solar-service-row,
   .solar-project-list__row,
   .solar-project-list__row--alt,
-  .solar-news-detail-layout,
-  .solar-footer__grid {
+  .solar-news-detail-layout {
     grid-template-columns: 1fr;
   }
 
@@ -2261,16 +2256,49 @@ textarea {
     display: none;
   }
 
-  /* Buttons: smaller and full-width-friendly on mobile */
+  /* Buttons: compact, touch-friendly, no overflow on mobile */
   .solar-btn {
-    font-size: 15px;
-    padding: 7px 8px 7px 14px;
+    font-size: 14px;
+    padding: 6px 7px 6px 14px;
+    gap: 8px;
     max-width: 100%;
+    width: auto;
+  }
+
+  .solar-btn--sm {
+    font-size: 13px;
+    padding-left: 12px;
   }
 
   .solar-btn__icon {
-    width: 28px;
-    height: 28px;
+    width: 26px;
+    height: 26px;
+  }
+
+  .solar-btn__icon svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  /* Offer / Join banners: let button sit naturally at start */
+  .solar-offer .solar-btn,
+  .solar-join .solar-btn {
+    margin-top: 18px;
+    width: fit-content;
+  }
+
+  /* Hero copy button: full width on mobile for easy tap */
+  .solar-home-hero__copy .solar-btn {
+    margin-top: 16px;
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Project cards / news tiles: prevent button overflow */
+  .solar-project-card .solar-btn,
+  .solar-news-tile .solar-btn {
+    width: 100%;
+    justify-content: space-between;
   }
 
   /* Page hero: reduce height and font on mobile */
@@ -2322,9 +2350,9 @@ textarea {
     gap: 8px;
   }
 
-  /* Logo in navbar: slightly smaller */
+  /* Logo in navbar: slightly smaller on mobile */
   .solar-logo-img {
-    height: 32px;
+    height: 38px;
   }
 }
 
