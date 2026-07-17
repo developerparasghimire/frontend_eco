@@ -2119,12 +2119,12 @@ textarea {
   }
 
   .solar-spacer {
-    height: 170px;
+    height: 80px;
   }
 
   .solar-spacer--lg,
   .solar-spacer--xl {
-    height: 220px;
+    height: 100px;
   }
 
   .solar-home-hero {
@@ -2319,9 +2319,10 @@ textarea {
     padding-bottom: 32px;
   }
 
-  /* Home hero image: hide on very small screens to save space */
+  /* Home hero image: constrain height on mobile, override inline style */
   .solar-home-hero__img-wrap {
-    min-height: 240px;
+    min-height: 200px !important;
+    border-radius: 24px !important;
   }
 
   /* Stats: 2 columns on mobile */
@@ -2354,6 +2355,55 @@ textarea {
   .solar-logo-img {
     height: 38px;
   }
+
+  /* Hide left starburst that overlays hero text on mobile */
+  .solar-home-hero__burst--left {
+    display: none;
+  }
+
+  /* Reduce massive section bottom padding on mobile */
+  .solar-home-stats { padding-bottom: 36px; }
+  .solar-home-grid--why,
+  .solar-home-grid--about { padding-bottom: 36px; }
+  .solar-home-services { padding-bottom: 36px; }
+  .solar-home-projects { padding-bottom: 36px; }
+  .solar-home-news { padding-bottom: 36px; }
+
+  /* Media/card min-heights: more compact on mobile */
+  .solar-media,
+  .solar-media--sm { min-height: 200px; }
+  .solar-media--lg { min-height: 250px; }
+  .solar-news-tile { min-height: 200px; padding: 24px; }
+  .solar-news-tile--featured { min-height: 260px; }
+  .solar-project-card { min-height: 240px; padding: 28px 20px; }
+  .solar-process-card { min-height: 200px; padding: 24px 18px 18px; }
+
+  /* Chip row: 2 columns with tighter sizing */
+  .solar-chip-row { grid-template-columns: repeat(2, 1fr); margin-top: 24px; gap: 10px; }
+  .solar-chip-link { font-size: 14px; padding: 8px 8px 8px 12px; min-height: 42px; }
+  .solar-chip-link__icon { width: 26px; height: 26px; }
+  .solar-chip-link__icon svg { width: 12px; height: 12px; }
+
+  /* Feature cards: tighter padding */
+  .solar-feature-card { padding: 16px 18px; gap: 12px; }
+
+  /* Stat card numbers: mobile-appropriate size */
+  .solar-stat-card strong { font-size: clamp(26px, 7vw, 38px); }
+  .solar-stat-card { min-height: 120px; padding: 24px 18px 16px; }
+
+  /* Home copy and center-header buttons: full-width for easy tapping */
+  .solar-home-copy .solar-btn,
+  .solar-center-header .solar-btn { width: 100%; justify-content: space-between; max-width: 300px; }
+
+  /* Search input: remove fixed min-width */
+  .solar-search-input { min-width: 0; }
+
+  /* Hero body text: tighter */
+  .solar-home-hero__text { font-size: 15px; margin-top: 12px; }
+
+  /* News tile text */
+  .solar-news-tile h3 { font-size: clamp(18px, 5vw, 24px); }
+  .solar-news-tile .solar-btn { margin-top: 14px; }
 }
 
 @media (max-width: 480px) {
@@ -2380,4 +2430,31 @@ textarea {
   .solar-page-hero__title {
     font-size: clamp(20px, 6vw, 28px);
   }
+
+  /* Hero image: even smaller on tiny screens */
+  .solar-home-hero__img-wrap { min-height: 170px !important; }
+
+  /* Chip row: single column on very small */
+  .solar-chip-row { grid-template-columns: 1fr; }
+
+  /* Cards: reduce further */
+  .solar-media,
+  .solar-media--sm { min-height: 170px; }
+  .solar-news-tile { min-height: 170px; padding: 18px; }
+  .solar-news-tile--featured { min-height: 220px; }
+  .solar-project-card { min-height: 200px; padding: 22px 16px; }
+  .solar-process-card { min-height: 180px; padding: 20px 16px 16px; }
+
+  /* Buttons: fill full width at very narrow */
+  .solar-home-copy .solar-btn,
+  .solar-center-header .solar-btn { max-width: 100%; }
+
+  /* Stat card: single column, minimal height */
+  .solar-stat-card { min-height: 100px; padding: 20px 14px 14px; }
+  .solar-stat-card strong { font-size: clamp(24px, 8vw, 34px); }
+
+  /* Spacers: minimal on tiny screens */
+  .solar-spacer { height: 60px; }
+  .solar-spacer--lg,
+  .solar-spacer--xl { height: 80px; }
 }

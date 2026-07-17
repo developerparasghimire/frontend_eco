@@ -101,7 +101,7 @@ export default function HomePage() {
           </SolariseButton>
         </div>
 
-        <div aria-hidden="true" style={{ position: 'relative', overflow: 'hidden', borderRadius: 38, minHeight: 420 }}>
+        <div aria-hidden="true" className="solar-home-hero__img-wrap" style={{ position: 'relative', overflow: 'hidden', borderRadius: 38, minHeight: 420 }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="https://images.unsplash.com/photo-1509391366360-2e959784a276?w=1200&q=80"
