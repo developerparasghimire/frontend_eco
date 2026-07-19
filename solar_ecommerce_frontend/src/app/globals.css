@@ -107,19 +107,26 @@ textarea {
   transition: transform 0.28s ease, opacity 0.28s ease;
 }
 
-.solar-nav__link:hover,
+/* Focus-visible always works (keyboard nav) */
 .solar-nav__link:focus-visible,
-.solar-btn:hover,
-.solar-btn:focus-visible,
-.solar-search-button:hover,
-.solar-filter-button:hover,
-.solar-project-card:hover,
-.solar-news-tile:hover,
-.solar-feature-card:hover,
-.solar-team-card:hover,
-.solar-media:hover,
-.solar-chip-link:hover {
+.solar-btn:focus-visible {
   transform: translateY(-4px);
+}
+
+/* Fix 9: Only apply hover lifts on devices that can actually hover */
+@media (hover: hover) {
+  .solar-nav__link:hover,
+  .solar-btn:hover,
+  .solar-search-button:hover,
+  .solar-filter-button:hover,
+  .solar-project-card:hover,
+  .solar-news-tile:hover,
+  .solar-feature-card:hover,
+  .solar-team-card:hover,
+  .solar-media:hover,
+  .solar-chip-link:hover {
+    transform: translateY(-4px);
+  }
 }
 
 .solar-nav__caret,
@@ -700,7 +707,10 @@ textarea {
   opacity: 0.3;
 }
 
+/* Fix 2: position:relative needed so the gradient overlay anchors to the card, not the viewport */
 .solar-news-tile {
+  position: relative;
+  overflow: hidden;
   background: var(--solar-placeholder);
   border-radius: 36px;
   min-height: 316px;
@@ -2090,6 +2100,7 @@ textarea {
     font-size: 15px;
   }
 
+  /* Fix 5: Section heading floor was 34px — too tall, wraps to 4+ lines */
   .solar-title--section,
   .solar-title--xxl,
   .solar-title--xl,
@@ -2105,12 +2116,13 @@ textarea {
   .solar-article h2,
   .solar-related h2,
   .solar-contact-heading h1 {
-    font-size: clamp(34px, 8vw, 46px);
+    font-size: clamp(24px, 6.5vw, 34px);
   }
 
+  /* Fix 12: Card titles were competing with section headings in size */
   .solar-card-title,
   .solar-toc h3 {
-    font-size: clamp(22px, 7vw, 28px);
+    font-size: clamp(16px, 4.5vw, 20px);
   }
 
   .solar-btn__icon {
@@ -2207,13 +2219,14 @@ textarea {
     padding-bottom: 24px;
   }
 
+  /* Fix 1 partial: hero title at very small screens (860px block handles the variable) */
   .solar-title--hero {
-    font-size: clamp(38px, 10vw, 54px);
+    font-size: clamp(26px, 8vw, 36px);
   }
 
   .solar-offer h2,
   .solar-join h2 {
-    font-size: clamp(34px, 9vw, 50px);
+    font-size: clamp(20px, 7vw, 28px);
   }
 
   .solar-btn {
@@ -2457,4 +2470,77 @@ textarea {
   .solar-spacer { height: 60px; }
   .solar-spacer--lg,
   .solar-spacer--xl { height: 80px; }
+}
+
+/* ─────────────────────────────────────────────────────────────────────────
+   AUDIT FIXES — all 13 findings
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Fix 1: Hero display title — override CSS variable so it scales on mobile */
+@media (max-width: 860px) {
+  :root {
+    --solar-type-display: clamp(32px, 9vw, 48px);
+  }
+}
+
+@media (max-width: 860px) {
+  /* Fix 3: Offer banner decorative blue wedge — hides on mobile so it can't
+     clip the headline and CTA button */
+  .solar-offer__shape {
+    display: none;
+  }
+
+  /* Fix 4: Testimonial blockquote — was at 34px (display font) on every phone */
+  .solar-testimonial blockquote {
+    font-size: clamp(18px, 5vw, 26px);
+    line-height: 1.3;
+    letter-spacing: -0.03em;
+  }
+
+  /* Fix 6: Offer / testimonial / join section margins
+     316px combined dead whitespace collapsed to breathing room */
+  .solar-offer       { margin-bottom: 28px; }
+  .solar-testimonial { margin-bottom: 28px; }
+  .solar-join        { margin-bottom: 36px; }
+
+  /* Fix 7: Process section top/bottom margin */
+  .solar-process { margin: 28px 0 40px; }
+
+  /* Fix 8: Offer/join heading — 54px desktop floor, never overridden at 860px.
+     The first 480px block had a fix but it only fired below 480px. */
+  .solar-offer h2,
+  .solar-join h2 {
+    font-size: clamp(26px, 8vw, 40px);
+    line-height: 1.05;
+  }
+
+  /* Fix 11: Process section decorative oval bleeds 220px below section */
+  .solar-process__cutout {
+    display: none;
+  }
+}
+
+/* Fix 10: News tiles — 3 full-width stacked is very long on tablets.
+   2-col with the last tile spanning full width. */
+@media (min-width: 480px) and (max-width: 860px) {
+  .solar-home-news__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .solar-home-news__grid > *:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Fix 13: Process cards — 3 single-column on tablet wastes space.
+   2-col arrangement, step 3 spans full width below. */
+@media (min-width: 480px) and (max-width: 860px) {
+  .solar-process__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .solar-process__grid > *:last-child {
+    grid-column: 1 / -1;
+  }
 }
