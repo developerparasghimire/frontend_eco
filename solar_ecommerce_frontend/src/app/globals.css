@@ -2294,25 +2294,33 @@ textarea {
     height: 14px;
   }
 
-  /* Offer / Join banners: let button sit naturally at start */
+  /* Offer / Join banners */
   .solar-offer .solar-btn,
   .solar-join .solar-btn {
     margin-top: 18px;
     width: fit-content;
   }
 
-  /* Hero copy button: full width on mobile for easy tap */
+  /* Hero copy button: compact, not full-width */
   .solar-home-hero__copy .solar-btn {
     margin-top: 16px;
-    width: 100%;
-    justify-content: space-between;
+    width: fit-content;
   }
 
-  /* Project cards / news tiles: prevent button overflow */
+  /* Project cards / news tiles: compact button */
   .solar-project-card .solar-btn,
   .solar-news-tile .solar-btn {
-    width: 100%;
-    justify-content: space-between;
+    width: fit-content;
+  }
+
+  /* Hero image above copy on mobile */
+  .solar-home-hero__img-wrap {
+    order: -1;
+  }
+
+  /* Projects alt-row: image above card text on mobile */
+  .solar-project-list__row--alt .solar-media {
+    order: -1;
   }
 
   /* Page hero: reduce height and font on mobile */
@@ -2405,9 +2413,9 @@ textarea {
   .solar-stat-card strong { font-size: clamp(26px, 7vw, 38px); }
   .solar-stat-card { min-height: 120px; padding: 24px 18px 16px; }
 
-  /* Home copy and center-header buttons: full-width for easy tapping */
+  /* Home copy and center-header buttons: compact, not full-width */
   .solar-home-copy .solar-btn,
-  .solar-center-header .solar-btn { width: 100%; justify-content: space-between; max-width: 300px; }
+  .solar-center-header .solar-btn { width: fit-content; }
 
   /* Search / filter: compact height on mobile but still 44px+ touch target */
   .solar-search-button,
@@ -2477,9 +2485,7 @@ textarea {
   .solar-project-card { min-height: 200px; padding: 22px 16px; }
   .solar-process-card { min-height: 180px; padding: 20px 16px 16px; }
 
-  /* Buttons: fill full width at very narrow */
-  .solar-home-copy .solar-btn,
-  .solar-center-header .solar-btn { max-width: 100%; }
+  /* Buttons stay compact even on very narrow screens */
 
   /* Stat card: single column, minimal height */
   .solar-stat-card { min-height: 100px; padding: 20px 14px 14px; }
