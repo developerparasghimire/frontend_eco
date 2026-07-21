@@ -2139,10 +2139,50 @@ textarea {
     height: 100px;
   }
 
+  /* Hero: full-bleed image with text overlaid at bottom */
   .solar-home-hero {
-    grid-template-columns: 1fr;
-    min-height: auto;
-    padding-top: 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 360px;
+    padding: 0;
+    border-radius: 24px;
+    overflow: hidden;
+  }
+
+  .solar-home-hero__img-wrap {
+    position: absolute !important;
+    inset: 0 !important;
+    min-height: unset !important;
+    border-radius: 0 !important;
+    order: 0;
+    z-index: 0;
+  }
+
+  .solar-home-hero__img-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10, 18, 50, 0.92) 0%, rgba(10, 18, 50, 0.52) 55%, rgba(10, 18, 50, 0.08) 100%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .solar-home-hero__copy {
+    position: relative;
+    z-index: 2;
+    padding: 24px 20px 32px;
+    color: #ffffff;
+    animation: none;
+  }
+
+  .solar-home-hero__copy .solar-title--hero {
+    color: #ffffff;
+  }
+
+  .solar-home-hero__text {
+    color: rgba(255, 255, 255, 0.82);
+    margin-top: 10px;
   }
 
   .solar-home-hero__burst--right,
@@ -2194,8 +2234,70 @@ textarea {
     margin-top: -120px;
   }
 
+  /* Footer: compact mobile layout */
   .solar-footer {
-    display: none;
+    padding: 36px 0 48px;
+  }
+
+  .solar-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 24px;
+  }
+
+  .solar-footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .solar-footer__brand p {
+    font-size: 13px;
+    max-width: 100%;
+    margin-top: 8px;
+  }
+
+  .solar-footer__logo {
+    height: 32px;
+  }
+
+  .solar-footer__socials {
+    margin-top: 12px;
+    gap: 12px;
+  }
+
+  .solar-footer__column {
+    gap: 6px;
+  }
+
+  .solar-footer__column h3 {
+    font-size: 13px;
+    margin: 0 0 4px;
+  }
+
+  .solar-footer__column a {
+    font-size: 12px;
+  }
+
+  /* Contact + Subscribe: full-width rows */
+  .solar-footer__column:nth-child(4),
+  .solar-footer__column:nth-child(5) {
+    grid-column: 1 / -1;
+  }
+
+  .solar-subscribe-row {
+    flex-direction: row;
+    gap: 8px;
+  }
+
+  .solar-subscribe-row input {
+    height: 40px;
+    font-size: 13px;
+    padding: 0 14px;
+  }
+
+  .solar-subscribe-row button {
+    height: 40px;
+    padding: 0 16px;
+    font-size: 13px;
+    white-space: nowrap;
   }
 
   .solar-contact-map {
@@ -2215,8 +2317,7 @@ textarea {
   }
 
   .solar-home-hero {
-    padding-top: 18px;
-    padding-bottom: 24px;
+    border-radius: 18px;
   }
 
   /* Fix 1 partial: hero title at very small screens (860px block handles the variable) */
@@ -2313,10 +2414,6 @@ textarea {
     width: fit-content;
   }
 
-  /* Hero image above copy on mobile */
-  .solar-home-hero__img-wrap {
-    order: -1;
-  }
 
   /* Projects alt-row: image above card text on mobile */
   .solar-project-list__row--alt .solar-media {
@@ -2341,11 +2438,6 @@ textarea {
     padding-bottom: 32px;
   }
 
-  /* Home hero image: constrain height on mobile, override inline style */
-  .solar-home-hero__img-wrap {
-    min-height: 200px !important;
-    border-radius: 24px !important;
-  }
 
   /* Stats: 2 columns on mobile */
   .solar-home-stats {
@@ -2471,8 +2563,8 @@ textarea {
     font-size: clamp(20px, 6vw, 28px);
   }
 
-  /* Hero image: even smaller on tiny screens */
-  .solar-home-hero__img-wrap { min-height: 170px !important; }
+  /* Hero: slightly smaller on very small phones */
+  .solar-home-hero { min-height: 300px; }
 
   /* Chip row: single column on very small */
   .solar-chip-row { grid-template-columns: 1fr; }
