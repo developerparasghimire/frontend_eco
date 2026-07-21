@@ -2269,28 +2269,29 @@ textarea {
     display: none;
   }
 
-  /* Buttons: compact, touch-friendly, no overflow on mobile */
+  /* Buttons: 44px touch target, readable font, properly sized icon */
   .solar-btn {
-    font-size: 14px;
-    padding: 6px 7px 6px 14px;
-    gap: 8px;
+    min-height: 44px;
+    padding: 0 12px 0 18px;
+    font-size: 15px;
+    gap: 10px;
     max-width: 100%;
     width: auto;
   }
 
   .solar-btn--sm {
-    font-size: 13px;
-    padding-left: 12px;
+    padding: 0 10px 0 16px;
+    font-size: 15px;
   }
 
   .solar-btn__icon {
-    width: 26px;
-    height: 26px;
+    width: 30px;
+    height: 30px;
   }
 
   .solar-btn__icon svg {
-    width: 13px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
   }
 
   /* Offer / Join banners: let button sit naturally at start */
@@ -2393,7 +2394,7 @@ textarea {
 
   /* Chip row: 2 columns with tighter sizing */
   .solar-chip-row { grid-template-columns: repeat(2, 1fr); margin-top: 24px; gap: 10px; }
-  .solar-chip-link { font-size: 14px; padding: 8px 8px 8px 12px; min-height: 42px; }
+  .solar-chip-link { font-size: 14px; padding: 0 10px 0 14px; min-height: 44px; }
   .solar-chip-link__icon { width: 26px; height: 26px; }
   .solar-chip-link__icon svg { width: 12px; height: 12px; }
 
@@ -2408,8 +2409,10 @@ textarea {
   .solar-home-copy .solar-btn,
   .solar-center-header .solar-btn { width: 100%; justify-content: space-between; max-width: 300px; }
 
-  /* Search input: remove fixed min-width */
-  .solar-search-input { min-width: 0; }
+  /* Search / filter: compact height on mobile but still 44px+ touch target */
+  .solar-search-button,
+  .solar-filter-button { height: 46px; font-size: 15px; padding: 0 18px; }
+  .solar-search-input { min-width: 0; height: 46px; font-size: 15px; }
 
   /* Hero body text: tighter */
   .solar-home-hero__text { font-size: 15px; margin-top: 12px; }
@@ -2430,10 +2433,26 @@ textarea {
     grid-template-columns: 1fr;
   }
 
-  /* Reduce all buttons further */
+  /* Buttons: keep 44px touch target on very small phones, tighten padding slightly */
   .solar-btn {
-    font-size: 13px;
-    padding: 6px 7px 6px 12px;
+    min-height: 44px;
+    padding: 0 10px 0 16px;
+    font-size: 14px;
+    gap: 9px;
+  }
+
+  .solar-btn--sm {
+    padding: 0 9px 0 14px;
+  }
+
+  .solar-btn__icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .solar-btn__icon svg {
+    width: 13px;
+    height: 13px;
   }
 
   /* Page hero: minimal height */
