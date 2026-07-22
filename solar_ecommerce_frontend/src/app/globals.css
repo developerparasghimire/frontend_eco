@@ -2140,10 +2140,11 @@ textarea {
   }
 
   /* Hero: full-bleed image with text overlaid at bottom */
+  /* Home hero: text at TOP, image as full background */
   .solar-home-hero {
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start;
     min-height: 360px;
     padding: 0;
     border-radius: 24px;
@@ -2159,11 +2160,12 @@ textarea {
     z-index: 0;
   }
 
+  /* Gradient: dark at top where text sits, fades to transparent at bottom */
   .solar-home-hero__img-wrap::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(10, 18, 50, 0.92) 0%, rgba(10, 18, 50, 0.52) 55%, rgba(10, 18, 50, 0.08) 100%);
+    background: linear-gradient(to bottom, rgba(10, 18, 50, 0.88) 0%, rgba(10, 18, 50, 0.48) 55%, rgba(10, 18, 50, 0.06) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -2171,7 +2173,7 @@ textarea {
   .solar-home-hero__copy {
     position: relative;
     z-index: 2;
-    padding: 24px 20px 32px;
+    padding: 28px 20px 24px;
     color: #ffffff;
     animation: none;
   }
@@ -2420,9 +2422,26 @@ textarea {
     order: -1;
   }
 
-  /* Page hero: reduce height and font on mobile */
-  .solar-page-hero--lg { min-height: 280px; }
-  .solar-page-hero--md { min-height: 220px; }
+  /* Page heroes: text at TOP, compact height */
+  .solar-page-hero {
+    align-items: flex-start;
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+
+  /* Flip gradient: dark at top where text is, lighter at bottom */
+  .solar-page-hero__overlay {
+    background: linear-gradient(
+      to bottom,
+      rgba(10, 18, 50, 0.82) 0%,
+      rgba(10, 18, 50, 0.42) 55%,
+      rgba(8, 168, 74, 0.12) 100%
+    );
+  }
+
+  .solar-page-hero--lg { min-height: 260px; }
+  .solar-page-hero--md { min-height: 210px; }
   .solar-page-hero--sm { min-height: 160px; }
 
   .solar-page-hero__title {
@@ -2431,11 +2450,12 @@ textarea {
 
   .solar-page-hero__sub {
     font-size: 14px;
+    margin-top: 10px;
   }
 
   .solar-page-hero__content {
-    padding-top: 32px;
-    padding-bottom: 32px;
+    padding-top: 28px;
+    padding-bottom: 28px;
   }
 
 
