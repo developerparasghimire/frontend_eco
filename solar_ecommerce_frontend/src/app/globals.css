@@ -2237,17 +2237,18 @@ textarea {
     margin-top: -120px;
   }
 
-  /* Footer: mobile shows brand + Company only */
+  /* Footer: mobile shows logo + tagline + socials only */
   .solar-footer {
-    padding: 32px 0 40px;
+    padding: 28px 0 36px;
   }
 
   .solar-footer__grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 0;
   }
 
-  /* Hide Services, Contact, Subscribe on mobile (children 3–5) */
+  /* Hide all columns (Company, Services, Contact, Subscribe) on mobile */
+  .solar-footer__grid > *:nth-child(2),
   .solar-footer__grid > *:nth-child(3),
   .solar-footer__grid > *:nth-child(4),
   .solar-footer__grid > *:nth-child(5) {
@@ -2257,29 +2258,27 @@ textarea {
   .solar-footer__brand p {
     font-size: 14px;
     max-width: 100%;
-    margin-top: 8px;
+    margin-top: 10px;
+    line-height: 1.4;
   }
 
   .solar-footer__logo {
-    height: 34px;
+    height: 36px;
   }
 
   .solar-footer__socials {
-    margin-top: 14px;
-    gap: 14px;
+    margin-top: 16px;
+    gap: 16px;
   }
 
-  .solar-footer__column {
-    gap: 8px;
+  .solar-social-link {
+    width: 28px;
+    height: 28px;
   }
 
-  .solar-footer__column h3 {
-    font-size: 14px;
-    margin: 0 0 6px;
-  }
-
-  .solar-footer__column a {
-    font-size: 13px;
+  .solar-social-link svg {
+    width: 24px;
+    height: 24px;
   }
 
   .solar-contact-map {
