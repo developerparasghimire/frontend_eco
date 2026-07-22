@@ -48,6 +48,12 @@ export interface NewsCardData {
   image?: string;
 }
 
+export interface TestimonialItem {
+  quote: string;
+  name: string;
+  role: string;
+}
+
 export interface ProductCardData {
   slug: string;
   title: string;
@@ -87,6 +93,24 @@ export const footerServiceLinks: FooterLink[] = [
   { href: '/services', label: 'Design & Engineering' },
   { href: '/services', label: 'Construction' },
   { href: '/services', label: 'Maintenance' },
+];
+
+export const testimonials: TestimonialItem[] = [
+  {
+    quote: 'The quality of their work and their commitment to a sustainable future truly impressed us. We couldn\'t be happier with our solar installation.',
+    name: 'Sarah M.',
+    role: 'Owner, Sunset Valley Solar Farm',
+  },
+  {
+    quote: 'Eco Planet Solar made the whole process seamless from consultation to installation. Our energy bills dropped by 70% in the first month.',
+    name: 'James R.',
+    role: 'Homeowner, Brisbane',
+  },
+  {
+    quote: 'Professional, punctual, and passionate about clean energy. I\'d recommend them to any business looking to go solar.',
+    name: 'Linda K.',
+    role: 'Director, GreenBuild Co.',
+  },
 ];
 
 export const processSteps: ProcessStep[] = [

@@ -7,12 +7,14 @@ import type {
   FeatureItem,
   FooterLink,
   ProcessStep,
+  TestimonialItem,
 } from '@/data/solariseContent';
 import {
   footerCompanyLinks,
   footerServiceLinks,
   primaryNavLinks,
   processSteps,
+  testimonials,
 } from '@/data/solariseContent';
 import { useAuthStore, useUser } from '@/store/auth';
 
@@ -590,15 +592,53 @@ export function SolariseJoinBanner() {
 // ─── Testimonial ─────────────────────────────────────────────────────────────
 
 export function SolariseTestimonial() {
+  const [active, setActive] = useState(0);
+  const items: TestimonialItem[] = testimonials;
+
+  const prev = () => setActive((i) => (i - 1 + items.length) % items.length);
+  const next = () => setActive((i) => (i + 1) % items.length);
+
+  const current = items[active];
+
   return (
     <section className="solar-testimonial">
       <p className="solar-eyebrow">TESTIMONIAL</p>
-      <blockquote>
-        The quality of their work and their commitment to a sustainable future truly impressed us. We
-        couldn&apos;t be happier with our solar installation.
-      </blockquote>
-      <p className="solar-testimonial__name">Sarah M.</p>
-      <p className="solar-testimonial__role">Owner Sunset Valley Solar Farm</p>
+      <blockquote key={active}>{current.quote}</blockquote>
+      <p className="solar-testimonial__name">{current.name}</p>
+      <p className="solar-testimonial__role">{current.role}</p>
+
+      {/* Slider controls — visible on mobile only */}
+      <div className="solar-testimonial__controls">
+        <button
+          className="solar-testimonial__arrow"
+          onClick={prev}
+          aria-label="Previous testimonial"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+        <div className="solar-testimonial__dots">
+          {items.map((_, i) => (
+            <button
+              key={i}
+              className={`solar-testimonial__dot${i === active ? ' solar-testimonial__dot--active' : ''}`}
+              onClick={() => setActive(i)}
+              aria-label={`Testimonial ${i + 1}`}
+            />
+          ))}
+        </div>
+        <button
+          className="solar-testimonial__arrow"
+          onClick={next}
+          aria-label="Next testimonial"
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M9 18l6-6-6-6" />
+          </svg>
+        </button>
+      </div>
+
       <SolariseStarburst className="solar-testimonial__burst" tone="ghost" />
     </section>
   );
