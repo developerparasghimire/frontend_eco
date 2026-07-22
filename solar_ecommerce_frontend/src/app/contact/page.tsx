@@ -112,13 +112,47 @@ export default function ContactPage() {
         </div>
 
         <div className="solar-office-card">
-          <div>EcoPlanet Solar Office</div>
-          <div>Kathmandu, Nepal</div>
-          <div>info@ecoplanet.eco</div>
-          <div>(+977) 9800000000</div>
+          <div className="solar-office-item">
+            <div className="solar-office-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            </div>
+            <div>
+              <p className="solar-office-label">Visit Us</p>
+              <p className="solar-office-value">1/30 Chancellor Village Blvd<br />Sippy Downs QLD 4556<br />Australia</p>
+            </div>
+          </div>
+          <div className="solar-office-item">
+            <div className="solar-office-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div>
+              <p className="solar-office-label">Email Us</p>
+              <a href="mailto:info@ecoplanet.eco" className="solar-office-value solar-office-link">info@ecoplanet.eco</a>
+            </div>
+          </div>
+          <div className="solar-office-item">
+            <div className="solar-office-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.07 3.38 2 2 0 0 1 3 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16l.92.92z"/></svg>
+            </div>
+            <div>
+              <p className="solar-office-label">Call Us</p>
+              <a href="tel:0734226150" className="solar-office-value solar-office-link">07 3422 6150</a>
+            </div>
+          </div>
         </div>
 
-        <div className="solar-contact-map" aria-hidden="true" />
+        <div className="solar-contact-map">
+          <iframe
+            src="https://maps.google.com/maps?q=1%2F30+Chancellor+Village+Blvd%2C+Sippy+Downs%2C+4556%2C+QLD%2C+Australia&output=embed&z=15"
+            width="100%"
+            height="100%"
+            style={{ border: 0, borderRadius: 'inherit' }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title="Eco Planet Solar Office Location"
+          />
+        </div>
       </section>
     </SolariseShell>
   );

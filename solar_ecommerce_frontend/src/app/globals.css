@@ -1891,21 +1891,67 @@ textarea {
 
 .solar-office-card {
   margin-top: 54px;
-  min-height: 212px;
-  padding: 54px 40px;
+  padding: 44px 48px;
   display: grid;
-  grid-template-columns: 1.05fr 2.2fr 1.25fr 0.95fr;
-  gap: 26px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
   align-items: start;
+}
+
+.solar-office-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.solar-office-icon {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(39, 70, 124, 0.08);
+  display: grid;
+  place-items: center;
   color: var(--solar-navy);
-  font-size: 18px;
+}
+
+.solar-office-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.solar-office-label {
+  margin: 0 0 6px;
+  font-size: 12px;
   font-weight: 700;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--solar-green);
+}
+
+.solar-office-value {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--solar-navy);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.solar-office-link {
+  text-decoration: none;
+  color: var(--solar-navy);
+  transition: color 0.2s;
+}
+
+.solar-office-link:hover {
+  color: var(--solar-green);
 }
 
 .solar-contact-map {
   margin-top: 42px;
   min-height: 430px;
+  overflow: hidden;
   box-shadow: var(--solar-shadow);
 }
 
@@ -2379,6 +2425,11 @@ textarea {
 
   .solar-contact-card {
     padding: 24px 16px;
+  }
+
+  .solar-office-card {
+    padding: 24px 16px;
+    gap: 20px;
   }
 
   .solar-offer,
