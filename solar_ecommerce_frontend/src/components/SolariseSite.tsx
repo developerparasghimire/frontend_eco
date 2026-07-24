@@ -157,10 +157,6 @@ export function SiteHeader() {
       {/* Mobile drawer */}
       {open && (
         <nav className="solar-mobile-nav" aria-label="Mobile navigation">
-          <Link href="/" onClick={() => setOpen(false)} className="solar-mobile-nav__logo">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/logoonly.png" alt="Eco Planet Solar" style={{ height: 36 }} />
-          </Link>
           {primaryNavLinks.map((item) => (
             <Link key={item.label} href={item.href} className="solar-mobile-nav__link" onClick={() => setOpen(false)}>
               {item.label}
