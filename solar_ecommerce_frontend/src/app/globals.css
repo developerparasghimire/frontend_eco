@@ -202,6 +202,48 @@ textarea {
   flex-shrink: 0;
 }
 
+.solar-header__icon-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: var(--solar-navy);
+  text-decoration: none;
+  transition: background 0.18s;
+  flex-shrink: 0;
+}
+
+.solar-header__icon-btn:hover {
+  background: rgba(39, 70, 124, 0.08);
+}
+
+.solar-header__badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 999px;
+  background: var(--solar-green);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.solar-header__mobile-right {
+  display: none;
+  align-items: center;
+  gap: 4px;
+}
+
 .solar-btn {
   display: inline-flex;
   align-items: center;
@@ -2175,13 +2217,18 @@ textarea {
     width: calc(100% - 28px);
   }
 
-  /* Show hamburger, hide desktop nav */
+  /* Show mobile-right cluster (cart + hamburger), hide desktop nav + auth */
+  .solar-header__mobile-right {
+    display: flex;
+  }
+
   .solar-mobile-menu-btn {
     display: flex;
   }
 
   .solar-nav--desktop,
-  .solar-header__cta--desktop {
+  .solar-header__cta--desktop,
+  .solar-header__auth {
     display: none;
   }
 

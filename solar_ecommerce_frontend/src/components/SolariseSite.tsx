@@ -16,7 +16,10 @@ import {
   processSteps,
   testimonials,
 } from '@/data/solariseContent';
-import { useAuthStore, useUser } from '@/store/auth';
+import { useAuthStatus, useAuthStore, useUser } from '@/store/auth';
+import { useCart } from '@/hooks/useCart';
+import { useWishlist } from '@/hooks/useWishlist';
+import { useGuestCartStore } from '@/store/guestCart';
 
 function cx(...classNames: (string | boolean | undefined | null)[]): string {
   return classNames.filter(Boolean).join(' ');
@@ -51,6 +54,13 @@ export function SiteHeader() {
   const user = useUser();
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
+  const status = useAuthStatus();
+  const cart = useCart();
+  const wishlist = useWishlist();
+  const guestCartCount = useGuestCartStore((s) => s.lines.reduce((sum, l) => sum + l.quantity, 0));
+
+  const cartCount = status === 'authenticated' ? (cart.data?.total_items ?? 0) : guestCartCount;
+  const wishCount = wishlist.data?.count ?? 0;
 
   const handleLogout = async () => {
     await logout();
@@ -60,7 +70,7 @@ export function SiteHeader() {
   return (
     <header className="solar-header">
       <div className="solar-container solar-header__inner">
-        {/* Logo — left side */}
+        {/* Logo */}
         <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logoonly.png" alt="Eco Planet Solar" className="solar-logo-img" />
@@ -76,14 +86,27 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        {/* Desktop auth */}
+        {/* Desktop right: cart + wishlist + auth */}
         <div className="solar-header__auth">
+          <Link href="/wishlist" aria-label={`Wishlist${wishCount > 0 ? ` (${wishCount})` : ''}`} className="solar-header__icon-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+            </svg>
+            {wishCount > 0 && <span className="solar-header__badge">{wishCount > 99 ? '99+' : wishCount}</span>}
+          </Link>
+
+          <Link href="/cart" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`} className="solar-header__icon-btn">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            {cartCount > 0 && <span className="solar-header__badge">{cartCount > 99 ? '99+' : cartCount}</span>}
+          </Link>
+
           {user ? (
             <>
               {user.is_staff && (
-                <Link href="/admin-eco" className="solar-nav__link solar-nav__link--auth">
-                  Admin
-                </Link>
+                <Link href="/admin-eco" className="solar-nav__link solar-nav__link--auth">Admin</Link>
               )}
               <Link href="/dashboard" className="solar-nav__link solar-nav__link--auth">
                 {user.first_name || user.email.split('@')[0]}
@@ -99,19 +122,28 @@ export function SiteHeader() {
           )}
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          className="solar-mobile-menu-btn"
-          onClick={() => setOpen((o) => !o)}
-          aria-label="Toggle navigation"
-          aria-expanded={open}
-        >
-          <span className="solar-hamburger-icon">
-            <span />
-            <span />
-            <span />
-          </span>
-        </button>
+        {/* Mobile: cart icon + hamburger */}
+        <div className="solar-header__mobile-right">
+          <Link href="/cart" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`} className="solar-header__icon-btn">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+            </svg>
+            {cartCount > 0 && <span className="solar-header__badge">{cartCount > 99 ? '99+' : cartCount}</span>}
+          </Link>
+          <button
+            className="solar-mobile-menu-btn"
+            onClick={() => setOpen((o) => !o)}
+            aria-label="Toggle navigation"
+            aria-expanded={open}
+          >
+            <span className="solar-hamburger-icon">
+              <span />
+              <span />
+              <span />
+            </span>
+          </button>
+        </div>
       </div>
 
       {/* Mobile drawer */}
@@ -126,6 +158,12 @@ export function SiteHeader() {
               {item.label}
             </Link>
           ))}
+          <Link href="/cart" onClick={() => setOpen(false)} className="solar-mobile-nav__link">
+            Cart{cartCount > 0 ? ` (${cartCount})` : ''}
+          </Link>
+          <Link href="/wishlist" onClick={() => setOpen(false)} className="solar-mobile-nav__link">
+            Wishlist{wishCount > 0 ? ` (${wishCount})` : ''}
+          </Link>
           {user ? (
             <>
               {user.is_staff && (
