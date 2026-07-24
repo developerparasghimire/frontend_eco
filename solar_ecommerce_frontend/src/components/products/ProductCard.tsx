@@ -94,53 +94,74 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const original = Number(product.price);
   const discounted = Number(product.discounted_price);
   const hasDiscount = Number.isFinite(original) && Number.isFinite(discounted) && discounted < original;
+  const discountPct = hasDiscount ? Math.round(((original - discounted) / original) * 100) : 0;
 
   return (
-    <div className={cn('group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:border-green-300 hover:shadow-md', className)}>
+    <div className={cn(
+      'group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm',
+      'transition-all duration-200 hover:border-green-300 hover:shadow-lg hover:-translate-y-0.5',
+      !product.in_stock && 'opacity-75',
+      className
+    )}>
+      {/* Green accent top bar on hover */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-green-500 to-emerald-400 opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10" />
+
       <Link
         href={`/products/${product.slug}`}
         className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-green-400 focus-visible:ring-inset"
         tabIndex={0}
       >
-        <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
+        <div className="relative aspect-[4/3] w-full overflow-hidden bg-gradient-to-br from-slate-100 to-slate-50">
           {product.primary_image ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
               src={product.primary_image}
               alt={product.name}
               loading="lazy"
-              className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.03]"
+              className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-xs uppercase tracking-wide text-slate-400">
               No image
             </div>
           )}
-          {hasDiscount ? (
-            <span className="absolute left-3 top-3 rounded-full bg-green-600 px-2 py-0.5 text-xs font-semibold text-white shadow">
-              -{Math.round(((original - discounted) / original) * 100)}%
-            </span>
-          ) : null}
+
+          {/* Badges */}
+          <div className="absolute left-2.5 top-2.5 flex flex-col gap-1.5">
+            {hasDiscount && (
+              <span className="rounded-full bg-green-600 px-2.5 py-0.5 text-xs font-bold text-white shadow-sm">
+                -{discountPct}%
+              </span>
+            )}
+            {!product.in_stock && (
+              <span className="rounded-full bg-slate-700 px-2.5 py-0.5 text-xs font-semibold text-white">
+                Sold Out
+              </span>
+            )}
+          </div>
+
           <WishlistButton
             productId={product.id}
             variant="icon"
-            className="absolute right-3 top-3"
+            className="absolute right-2.5 top-2.5"
             redirectPath={`/products/${product.slug}`}
           />
         </div>
 
         <div className="flex flex-1 flex-col space-y-1.5 p-3">
-          <p className="text-[10px] font-semibold uppercase tracking-wider text-slate-400">
-            {product.category_name || product.brand}
-          </p>
-          <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-slate-900 group-hover:text-green-700 transition-colors">
+          {(product.category_name || product.brand) && (
+            <p className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+              {product.category_name || product.brand}
+            </p>
+          )}
+          <h3 className="line-clamp-2 text-sm font-semibold leading-snug text-slate-900 group-hover:text-green-700 transition-colors duration-200">
             {product.name}
           </h3>
 
           <div className="flex items-center gap-1.5">
             <RatingStars value={Number(product.average_rating) || 0} size={12} />
             <span className="text-[11px] text-slate-400">
-              {product.review_count > 0 ? `(${product.review_count})` : 'No reviews'}
+              {product.review_count > 0 ? `(${product.review_count})` : ''}
             </span>
           </div>
 
@@ -155,7 +176,6 @@ export function ProductCard({ product, className }: ProductCardProps) {
         </div>
       </Link>
 
-      {/* Add to cart button always visible at the bottom */}
       <div className="px-3 pb-3">
         <QuickAddButton product={product} />
       </div>

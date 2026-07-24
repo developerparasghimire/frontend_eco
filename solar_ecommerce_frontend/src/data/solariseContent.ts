@@ -82,10 +82,9 @@ export const primaryNavLinks: NavLink[] = [
 
 export const footerCompanyLinks: FooterLink[] = [
   { href: '/about', label: 'About Us' },
-  { href: '/team', label: 'Team' },
-  { href: '/', label: 'Testimonial' },
   { href: '/projects', label: 'Projects' },
   { href: '/news', label: 'News' },
+  { href: '/contact', label: 'Contact Us' },
 ];
 
 export const footerServiceLinks: FooterLink[] = [
@@ -93,6 +92,13 @@ export const footerServiceLinks: FooterLink[] = [
   { href: '/services', label: 'Design & Engineering' },
   { href: '/services', label: 'Construction' },
   { href: '/services', label: 'Maintenance' },
+];
+
+export const footerShopLinks: FooterLink[] = [
+  { href: '/products', label: 'All Products' },
+  { href: '/cart', label: 'Cart' },
+  { href: '/wishlist', label: 'Wishlist' },
+  { href: '/dashboard', label: 'My Account' },
 ];
 
 export const testimonials: TestimonialItem[] = [

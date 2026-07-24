@@ -12,6 +12,7 @@ import type {
 import {
   footerCompanyLinks,
   footerServiceLinks,
+  footerShopLinks,
   primaryNavLinks,
   processSteps,
   testimonials,
@@ -40,9 +41,36 @@ export function SolariseShell({
 }: SolariseShellProps) {
   return (
     <div className="solar-app">
+      <AnnouncementBar />
       <SiteHeader />
       <main className="solar-main">{children}</main>
       <SiteFooter email={footerEmail} phone={footerPhone} />
+    </div>
+  );
+}
+
+// ─── Announcement Bar ─────────────────────────────────────────────────────────
+
+function AnnouncementBar() {
+  const [visible, setVisible] = useState(true);
+  if (!visible) return null;
+  return (
+    <div className="solar-announce-bar" role="banner">
+      <div className="solar-announce-bar__items">
+        <span>🚚 Free shipping on orders over $500</span>
+        <span className="solar-announce-bar__divider" aria-hidden="true" />
+        <span>📞 07 3422 6150</span>
+        <span className="solar-announce-bar__divider" aria-hidden="true" />
+        <span>☀️ CEC Approved Retailer &amp; Installer</span>
+      </div>
+      <button
+        type="button"
+        className="solar-announce-bar__close"
+        onClick={() => setVisible(false)}
+        aria-label="Dismiss announcement"
+      >
+        ×
+      </button>
     </div>
   );
 }
@@ -232,11 +260,13 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
 
         <FooterColumn title="Company" links={footerCompanyLinks} />
         <FooterColumn title="Services" links={footerServiceLinks} />
+        <FooterColumn title="Shop" links={footerShopLinks} />
 
         <div className="solar-footer__column">
           <h3>Contact Us</h3>
           <a href={`mailto:${email}`}>{email}</a>
           <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a>
+          <a href="/contact">1/30 Chancellor Village Blvd<br />Sippy Downs QLD 4556</a>
         </div>
 
         <div className="solar-footer__column">
@@ -260,6 +290,48 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
             </div>
           )}
           {nState === 'err' && <p style={{ color: '#ef4444', fontSize: 12, marginTop: 4 }}>Something went wrong. Try again.</p>}
+        </div>
+      </div>
+
+      {/* Trust & Payment Strip */}
+      <div className="solar-container">
+        <hr className="solar-footer__divider" />
+        <div className="solar-footer__trust">
+          <div className="solar-footer__trust-badges">
+            <span className="solar-footer__trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              SSL Secured
+            </span>
+            <span className="solar-footer__trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>
+              Australian Owned &amp; Operated
+            </span>
+            <span className="solar-footer__trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              5-Year Installation Warranty
+            </span>
+            <span className="solar-footer__trust-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+              CEC Approved
+            </span>
+          </div>
+          <div className="solar-footer__payments">
+            <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginRight: 6, fontWeight: 600 }}>WE ACCEPT</span>
+            {['VISA', 'MC', 'AMEX', 'PAYPAL', 'AFTERPAY', 'EFT'].map((p) => (
+              <span key={p} className="solar-footer__payment-chip">{p}</span>
+            ))}
+          </div>
+        </div>
+
+        {/* Legal bottom bar */}
+        <div className="solar-footer__bottom">
+          <p className="solar-footer__copyright">© {new Date().getFullYear()} Eco Planet Solar. All rights reserved. ABN 12 345 678 901</p>
+          <div className="solar-footer__legal-links">
+            <Link href="/privacy" className="solar-footer__legal-link">Privacy Policy</Link>
+            <Link href="/terms" className="solar-footer__legal-link">Terms &amp; Conditions</Link>
+            <Link href="/shipping" className="solar-footer__legal-link">Shipping</Link>
+            <Link href="/returns" className="solar-footer__legal-link">Returns</Link>
+          </div>
         </div>
       </div>
     </footer>

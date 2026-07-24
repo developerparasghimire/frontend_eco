@@ -1073,8 +1073,8 @@ textarea {
 
 .solar-footer__grid {
   display: grid;
-  grid-template-columns: 1.25fr 0.9fr 0.95fr 0.95fr 1.35fr;
-  gap: 34px;
+  grid-template-columns: 1.25fr 0.8fr 0.8fr 0.8fr 0.85fr 1.2fr;
+  gap: 28px;
   align-items: start;
 }
 
@@ -2454,11 +2454,12 @@ textarea {
     gap: 0;
   }
 
-  /* Hide all columns (Company, Services, Contact, Subscribe) on mobile */
+  /* Hide all columns except brand on mobile */
   .solar-footer__grid > *:nth-child(2),
   .solar-footer__grid > *:nth-child(3),
   .solar-footer__grid > *:nth-child(4),
-  .solar-footer__grid > *:nth-child(5) {
+  .solar-footer__grid > *:nth-child(5),
+  .solar-footer__grid > *:nth-child(6) {
     display: none;
   }
 
@@ -2884,5 +2885,372 @@ textarea {
 
   .solar-process__grid > *:last-child {
     grid-column: 1 / -1;
+  }
+}
+
+/* ── Premium Ecommerce: Announcement Bar ─────────────────────── */
+.solar-announce-bar {
+  background: var(--solar-green);
+  color: #ffffff;
+  padding: 9px 48px 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  min-height: 38px;
+  position: relative;
+  z-index: 61;
+}
+
+.solar-announce-bar__items {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.solar-announce-bar__divider {
+  display: inline-block;
+  width: 1px;
+  height: 13px;
+  background: rgba(255, 255, 255, 0.35);
+  margin: 0 8px;
+  vertical-align: middle;
+}
+
+.solar-announce-bar__close {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  padding: 4px 6px;
+  border-radius: 4px;
+  line-height: 1;
+  font-size: 16px;
+  font-weight: 300;
+  transition: color 0.15s, background 0.15s;
+}
+
+.solar-announce-bar__close:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Premium Ecommerce: Footer Trust & Payment ───────────────── */
+.solar-footer__divider {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 36px 0 0;
+}
+
+.solar-footer__trust {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 24px;
+  flex-wrap: wrap;
+}
+
+.solar-footer__trust-badges {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.solar-footer__trust-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.65);
+  letter-spacing: 0.01em;
+}
+
+.solar-footer__trust-badge svg {
+  width: 15px;
+  height: 15px;
+  color: var(--solar-green);
+  flex-shrink: 0;
+}
+
+.solar-footer__payments {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.solar-footer__payment-chip {
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
+}
+
+.solar-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  margin-top: 24px;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.solar-footer__copyright {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.solar-footer__legal-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.solar-footer__legal-link {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.4);
+  transition: color 0.18s;
+  letter-spacing: 0.01em;
+}
+
+.solar-footer__legal-link:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* ── Premium Ecommerce: Trust Strip ─────────────────────────── */
+.shop-trust-strip {
+  border-top: 1px solid #f1f5f9;
+  border-bottom: 1px solid #f1f5f9;
+  background: #ffffff;
+  padding: 14px 0;
+}
+
+.shop-trust-strip__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.shop-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  white-space: nowrap;
+}
+
+.shop-trust-item svg {
+  color: #08a84a;
+  flex-shrink: 0;
+}
+
+/* ── Premium Ecommerce: Shop Page Banner ─────────────────────── */
+.shop-page-banner {
+  background: linear-gradient(135deg, #1a3a6e 0%, #27467c 60%, #0b7cae 100%);
+  color: #ffffff;
+  padding: 36px 0 32px;
+  position: relative;
+  overflow: hidden;
+}
+
+.shop-page-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 85% 50%, rgba(8,168,74,0.18) 0%, transparent 50%),
+    radial-gradient(circle at 15% 80%, rgba(11,124,174,0.15) 0%, transparent 40%);
+  pointer-events: none;
+}
+
+.shop-page-banner__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.shop-page-banner__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.65);
+  margin: 0 0 8px;
+}
+
+.shop-page-banner h1 {
+  margin: 0;
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: #ffffff;
+}
+
+.shop-page-banner__sub {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: rgba(255,255,255,0.65);
+  font-weight: 500;
+}
+
+/* ── Premium Ecommerce: Active Filter Chips ──────────────────── */
+.shop-filter-chips {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.shop-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  border-radius: 999px;
+  background: #e8f5ee;
+  border: 1px solid rgba(8,168,74,0.2);
+  padding: 0 10px 0 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #166534;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.shop-filter-chip:hover {
+  background: #d4eddc;
+}
+
+.shop-filter-chip svg {
+  width: 12px;
+  height: 12px;
+  color: #166534;
+  opacity: 0.7;
+}
+
+/* ── Premium Ecommerce: Product Count Badge ──────────────────── */
+.shop-result-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.shop-result-count strong {
+  color: #1e293b;
+  font-weight: 700;
+}
+
+/* ── Premium Ecommerce: Cart Trust Badges ────────────────────── */
+.cart-trust-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  background: #f8faff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.cart-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.cart-trust-item svg {
+  color: #08a84a;
+  flex-shrink: 0;
+}
+
+/* ── Mobile: Announcement bar ────────────────────────────────── */
+@media (max-width: 860px) {
+  .solar-announce-bar {
+    font-size: 11px;
+    padding: 7px 40px 7px 12px;
+    min-height: 34px;
+    gap: 0;
+  }
+
+  .solar-announce-bar__divider {
+    display: none;
+  }
+
+  .solar-announce-bar__items span:not(:first-child) {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .solar-footer__trust {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+
+  .solar-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .solar-footer__legal-links {
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .shop-page-banner {
+    padding: 24px 0 20px;
+  }
+
+  .shop-trust-strip__inner {
+    gap: 16px;
+  }
+
+  .shop-trust-item {
+    font-size: 12px;
   }
 }
