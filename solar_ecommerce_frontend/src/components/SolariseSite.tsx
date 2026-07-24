@@ -13,10 +13,71 @@ import {
   footerCompanyLinks,
   footerServiceLinks,
   footerShopLinks,
-  primaryNavLinks,
   processSteps,
   testimonials,
 } from '@/data/solariseContent';
+
+// ── Nav dropdown data ─────────────────────────────────────────────────────────
+
+const PRODUCTS_MEGA = [
+  {
+    href: '/products?category=solar-panels',
+    label: 'Solar Panels',
+    desc: 'Monocrystalline & bifacial panels',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+      </svg>
+    ),
+  },
+  {
+    href: '/products?category=battery-storage',
+    label: 'Battery Storage',
+    desc: 'Home & commercial lithium batteries',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="16" height="11" rx="2" /><path d="M22 11v3" /><path d="M6 7V4" /><path d="M10 7V4" />
+      </svg>
+    ),
+  },
+  {
+    href: '/products?category=inverters',
+    label: 'Inverters & Chargers',
+    desc: 'Hybrid, string & micro inverters',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+      </svg>
+    ),
+  },
+  {
+    href: '/products?category=ev-chargers',
+    label: 'EV Chargers',
+    desc: 'Home EV charging stations',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" /><path d="M6 1v3M10 1v3" />
+      </svg>
+    ),
+  },
+  {
+    href: '/products?category=accessories',
+    label: 'Accessories',
+    desc: 'Cables, mounts & components',
+    icon: (
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
+      </svg>
+    ),
+  },
+];
+
+const SOLUTIONS_DROPDOWN = [
+  { href: '/products', label: 'Home Solar Systems', desc: 'Complete solar for your home' },
+  { href: '/products', label: 'Commercial Solar', desc: 'Scalable business solar solutions' },
+  { href: '/products', label: 'Battery Backup', desc: 'Stay powered during outages' },
+  { href: '/products', label: 'Off-Grid Energy', desc: 'Complete grid independence' },
+];
 import { useAuthStatus, useAuthStore, useUser } from '@/store/auth';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
@@ -79,6 +140,7 @@ function AnnouncementBar() {
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
   const user = useUser();
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
@@ -95,6 +157,37 @@ export function SiteHeader() {
     router.push('/');
   };
 
+  const toggleMobile = (key: string) =>
+    setMobileExpanded((e) => (e === key ? null : key));
+
+  // Shared icon SVGs
+  const HeartIcon = () => (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+    </svg>
+  );
+  const BagIcon = () => (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" /><line x1="3" y1="6" x2="21" y2="6" />
+      <path d="M16 10a4 4 0 0 1-8 0" />
+    </svg>
+  );
+  const UserIcon = () => (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" />
+    </svg>
+  );
+  const SearchIcon = () => (
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+    </svg>
+  );
+  const ChevronIcon = () => (
+    <svg className="solar-nav__chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="m6 9 6 6 6-6" />
+    </svg>
+  );
+
   return (
     <header className="solar-header">
       <div className="solar-container solar-header__inner">
@@ -106,66 +199,101 @@ export function SiteHeader() {
 
         {/* Desktop nav */}
         <nav className="solar-nav solar-nav--desktop" aria-label="Primary">
-          {primaryNavLinks.map((item) => (
-            <Link key={item.label} href={item.href} className="solar-nav__link">
-              <span>{item.label}</span>
-              {item.caret ? <span className="solar-nav__caret">▼</span> : null}
+
+          {/* Products — mega menu */}
+          <div className="solar-nav__item">
+            <Link href="/products" className="solar-nav__trigger">
+              Products <ChevronIcon />
             </Link>
-          ))}
+            <div className="solar-nav__dropdown solar-nav__dropdown--mega">
+              <div className="solar-nav__mega-inner">
+                <div className="solar-nav__mega-header">
+                  <span>Shop by Category</span>
+                  <Link href="/products" className="solar-nav__view-all">View all products →</Link>
+                </div>
+                <div className="solar-nav__mega-grid">
+                  {PRODUCTS_MEGA.map((item) => (
+                    <Link key={item.label} href={item.href} className="solar-nav__mega-item">
+                      <span className="solar-nav__mega-icon">{item.icon}</span>
+                      <span className="solar-nav__mega-text">
+                        <span className="solar-nav__mega-label">{item.label}</span>
+                        <span className="solar-nav__mega-desc">{item.desc}</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Solutions — simple dropdown */}
+          <div className="solar-nav__item">
+            <Link href="/products" className="solar-nav__trigger">
+              Solutions <ChevronIcon />
+            </Link>
+            <div className="solar-nav__dropdown">
+              <div className="solar-nav__drop-inner">
+                {SOLUTIONS_DROPDOWN.map((item) => (
+                  <Link key={item.label} href={item.href} className="solar-nav__drop-link">
+                    <span className="solar-nav__drop-label">{item.label}</span>
+                    <span className="solar-nav__drop-desc">{item.desc}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <Link href="/about" className="solar-nav__link">About</Link>
+          <Link href="/news" className="solar-nav__link">Blog</Link>
+          <Link href="/faq" className="solar-nav__link">FAQ</Link>
+          <Link href="/contact" className="solar-nav__link">Contact</Link>
         </nav>
 
-        {/* Desktop right: wishlist icon + cart pill button + auth */}
-        <div className="solar-header__auth">
-          <Link href="/wishlist" aria-label={`Wishlist${wishCount > 0 ? ` (${wishCount})` : ''}`} className="solar-header__icon-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            {wishCount > 0 && <span className="solar-header__badge">{wishCount > 99 ? '99+' : wishCount}</span>}
+        {/* Desktop right: search + wishlist + cart + account */}
+        <div className="solar-header__auth solar-header__icon-group">
+          <Link href="/search" className="solar-header__icon-btn" aria-label="Search">
+            <SearchIcon />
           </Link>
 
-          <Link href="/cart" className="solar-header__cart-btn" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}>
-            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            Cart
-            {cartCount > 0 && <span className="solar-header__cart-count">{cartCount > 99 ? '99+' : cartCount}</span>}
+          <Link href="/wishlist" className="solar-header__icon-btn" aria-label={`Wishlist${wishCount > 0 ? ` (${wishCount})` : ''}`}>
+            <HeartIcon />
+            {wishCount > 0 && <span className="solar-header__icon-badge">{wishCount > 99 ? '99+' : wishCount}</span>}
+          </Link>
+
+          <Link href="/cart" className="solar-header__icon-btn" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}>
+            <BagIcon />
+            {cartCount > 0 && <span className="solar-header__icon-badge">{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
 
           {user ? (
             <>
               {user.is_staff && (
-                <Link href="/admin-eco" className="solar-nav__link solar-nav__link--auth">Admin</Link>
+                <Link href="/admin-eco" className="solar-header__icon-btn" aria-label="Admin">
+                  <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                </Link>
               )}
-              <Link href="/dashboard" className="solar-nav__link solar-nav__link--auth">
-                {user.first_name || user.email.split('@')[0]}
+              <Link href="/dashboard" className="solar-header__icon-btn" aria-label="My Account">
+                <UserIcon />
               </Link>
-              <button type="button" onClick={handleLogout} className="solar-nav__link solar-nav__link--auth solar-nav__logout">
-                Logout
-              </button>
             </>
           ) : (
-            <SolariseButton href="/login" tone="navy" size="sm" className="solar-header__cta solar-header__cta--desktop">
-              Login
-            </SolariseButton>
+            <Link href="/login" className="solar-header__icon-btn" aria-label="Login">
+              <UserIcon />
+            </Link>
           )}
         </div>
 
-        {/* Mobile: wishlist icon + cart pill + hamburger */}
+        {/* Mobile: wishlist + cart + hamburger */}
         <div className="solar-header__mobile-right">
-          <Link href="/wishlist" aria-label={`Wishlist${wishCount > 0 ? ` (${wishCount})` : ''}`} className="solar-header__icon-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-            </svg>
-            {wishCount > 0 && <span className="solar-header__badge">{wishCount > 99 ? '99+' : wishCount}</span>}
+          <Link href="/wishlist" className="solar-header__icon-btn" aria-label={`Wishlist${wishCount > 0 ? ` (${wishCount})` : ''}`}>
+            <HeartIcon />
+            {wishCount > 0 && <span className="solar-header__icon-badge">{wishCount > 99 ? '99+' : wishCount}</span>}
           </Link>
-          <Link href="/cart" className="solar-header__cart-btn" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}>
-            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
-              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
-            </svg>
-            Cart
-            {cartCount > 0 && <span className="solar-header__cart-count">{cartCount > 99 ? '99+' : cartCount}</span>}
+          <Link href="/cart" className="solar-header__icon-btn" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}>
+            <BagIcon />
+            {cartCount > 0 && <span className="solar-header__icon-badge">{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
           <button
             className="solar-mobile-menu-btn"
@@ -185,11 +313,69 @@ export function SiteHeader() {
       {/* Mobile drawer */}
       {open && (
         <nav className="solar-mobile-nav" aria-label="Mobile navigation">
-          {primaryNavLinks.map((item) => (
-            <Link key={item.label} href={item.href} className="solar-mobile-nav__link" onClick={() => setOpen(false)}>
-              {item.label}
-            </Link>
-          ))}
+
+          {/* Products accordion */}
+          <div className="solar-mobile-nav__group">
+            <button
+              type="button"
+              className="solar-mobile-nav__toggle"
+              onClick={() => toggleMobile('products')}
+              aria-expanded={mobileExpanded === 'products'}
+            >
+              Products
+              <span className={cx('solar-mobile-nav__toggle-icon', mobileExpanded === 'products' && 'solar-mobile-nav__toggle-icon--open')}>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            </button>
+            {mobileExpanded === 'products' && (
+              <div className="solar-mobile-nav__sub">
+                {PRODUCTS_MEGA.map((item) => (
+                  <Link key={item.label} href={item.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
+                    {item.label}
+                  </Link>
+                ))}
+                <Link href="/products" className="solar-mobile-nav__sub-link solar-mobile-nav__sub-link--all" onClick={() => setOpen(false)}>
+                  View All Products →
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Solutions accordion */}
+          <div className="solar-mobile-nav__group">
+            <button
+              type="button"
+              className="solar-mobile-nav__toggle"
+              onClick={() => toggleMobile('solutions')}
+              aria-expanded={mobileExpanded === 'solutions'}
+            >
+              Solutions
+              <span className={cx('solar-mobile-nav__toggle-icon', mobileExpanded === 'solutions' && 'solar-mobile-nav__toggle-icon--open')}>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            </button>
+            {mobileExpanded === 'solutions' && (
+              <div className="solar-mobile-nav__sub">
+                {SOLUTIONS_DROPDOWN.map((item) => (
+                  <Link key={item.label} href={item.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <Link href="/about" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>About</Link>
+          <Link href="/news" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Blog</Link>
+          <Link href="/faq" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>FAQ</Link>
+          <Link href="/contact" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Contact</Link>
+
+          <div className="solar-mobile-nav__divider" />
+
           {user ? (
             <>
               {user.is_staff && (
@@ -201,7 +387,7 @@ export function SiteHeader() {
               </button>
             </>
           ) : (
-            <Link href="/login" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Login</Link>
+            <Link href="/login" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Login / Register</Link>
           )}
         </nav>
       )}

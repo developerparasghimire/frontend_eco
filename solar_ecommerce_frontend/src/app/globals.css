@@ -78,8 +78,8 @@ textarea {
   position: sticky;
   top: 0;
   z-index: 60;
-  background: rgba(248, 247, 244, 0.9);
-  backdrop-filter: blur(12px);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 }
 
 .solar-header__inner {
@@ -87,24 +87,29 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 86px;
+  min-height: 72px;
 }
 
 .solar-nav {
   display: flex;
-  align-items: center;
-  gap: 32px;
+  align-items: stretch;
+  gap: 8px;
 }
 
 .solar-nav__link {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  color: #1272a5;
+  padding: 0 12px;
+  color: var(--solar-navy-deep);
   font-size: 15px;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  transition: transform 0.28s ease, opacity 0.28s ease;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: color 0.18s;
+}
+
+.solar-nav__trigger {
+  padding: 0 12px;
 }
 
 /* Focus-visible always works (keyboard nav) */
@@ -113,9 +118,8 @@ textarea {
   transform: translateY(-4px);
 }
 
-/* Fix 9: Only apply hover lifts on devices that can actually hover */
+/* Only apply hover lifts on devices that can actually hover */
 @media (hover: hover) {
-  .solar-nav__link:hover,
   .solar-btn:hover,
   .solar-search-button:hover,
   .solar-filter-button:hover,
@@ -126,6 +130,11 @@ textarea {
   .solar-media:hover,
   .solar-chip-link:hover {
     transform: translateY(-4px);
+  }
+
+  .solar-nav__link:hover,
+  .solar-nav__trigger:hover {
+    color: var(--solar-green);
   }
 }
 
@@ -277,6 +286,309 @@ textarea {
   font-size: 10px;
   font-weight: 800;
   padding: 0 4px;
+}
+
+/* ── Nav Mega Menu ──────────────────────────────────────────────────── */
+
+.solar-nav__item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.solar-nav__trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--solar-navy-deep);
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.18s;
+  text-decoration: none;
+}
+
+.solar-nav__chevron {
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.22s ease;
+  flex-shrink: 0;
+}
+
+.solar-nav__item:hover .solar-nav__chevron {
+  transform: rotate(180deg);
+}
+
+/* dropdown panel — positioned absolutely under the nav item */
+.solar-nav__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-top: 4px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.18s ease, visibility 0.18s ease;
+  z-index: 200;
+}
+
+/* invisible bridge: keeps hover active across the 4px gap */
+.solar-nav__dropdown::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -24px;
+  right: -24px;
+  height: 4px;
+}
+
+.solar-nav__item:hover .solar-nav__dropdown {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* ── Solutions simple dropdown ─ */
+.solar-nav__drop-inner {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 8px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.solar-nav__drop-link {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.solar-nav__drop-link:hover {
+  background: rgba(8, 168, 74, 0.06);
+}
+
+.solar-nav__drop-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--solar-navy-deep);
+  line-height: 1.3;
+}
+
+.solar-nav__drop-desc {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* ── Products mega dropdown ─ */
+.solar-nav__dropdown--mega {
+  left: 50%;
+}
+
+.solar-nav__mega-inner {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 14px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 20px;
+  min-width: 480px;
+}
+
+.solar-nav__mega-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.solar-nav__mega-header span {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9ca3af;
+}
+
+.solar-nav__view-all {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--solar-green);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.solar-nav__view-all:hover {
+  opacity: 0.75;
+}
+
+.solar-nav__mega-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.solar-nav__mega-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.solar-nav__mega-item:hover {
+  background: rgba(8, 168, 74, 0.06);
+}
+
+.solar-nav__mega-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(39, 70, 124, 0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--solar-navy);
+}
+
+.solar-nav__mega-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.solar-nav__mega-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--solar-navy-deep);
+  line-height: 1.3;
+}
+
+.solar-nav__mega-desc {
+  font-size: 12px;
+  color: #6b7280;
+  line-height: 1.4;
+}
+
+/* ── Header icon buttons (right side) ─ */
+.solar-header__icon-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.solar-header__icon-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 17px;
+  height: 17px;
+  border-radius: 999px;
+  background: var(--solar-green);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+/* Mobile nav accordion */
+.solar-mobile-nav__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.solar-mobile-nav__toggle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--solar-navy);
+  letter-spacing: -0.02em;
+  transition: background 0.18s;
+}
+
+.solar-mobile-nav__toggle:hover {
+  background: rgba(39, 70, 124, 0.06);
+}
+
+.solar-mobile-nav__toggle-icon {
+  font-size: 12px;
+  transition: transform 0.22s ease;
+}
+
+.solar-mobile-nav__toggle-icon--open {
+  transform: rotate(180deg);
+}
+
+.solar-mobile-nav__sub {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 4px 0 4px 12px;
+  border-left: 2px solid rgba(39, 70, 124, 0.12);
+  margin: 0 14px 4px 14px;
+}
+
+.solar-mobile-nav__sub-link {
+  display: block;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--solar-navy);
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.solar-mobile-nav__sub-link:hover {
+  background: rgba(39, 70, 124, 0.06);
+}
+
+.solar-mobile-nav__sub-link--all {
+  font-weight: 600;
+  color: var(--solar-green);
+}
+
+/* Mobile auth divider */
+.solar-mobile-nav__divider {
+  height: 1px;
+  background: rgba(39, 70, 124, 0.1);
+  margin: 8px 14px;
 }
 
 .solar-btn {
@@ -2071,10 +2383,6 @@ textarea {
     width: min(1460px, calc(100% - 92px));
   }
 
-  .solar-nav {
-    gap: 48px;
-  }
-
   .solar-home-hero__burst--right {
     right: 72px;
     width: 290px;
@@ -2086,13 +2394,11 @@ textarea {
     width: min(1180px, calc(100% - 56px));
   }
 
-  .solar-nav {
-    gap: 32px;
-  }
-
   .solar-nav__link,
+  .solar-nav__trigger,
   .solar-btn {
-    font-size: 16px;
+    font-size: 14px;
+    padding: 0 8px;
   }
 
   .solar-title--hero {
@@ -2264,7 +2570,7 @@ textarea {
   .solar-nav--desktop,
   .solar-header__cta--desktop,
   .solar-header__auth {
-    display: none;
+    display: none !important;
   }
 
   .solar-header__inner {
