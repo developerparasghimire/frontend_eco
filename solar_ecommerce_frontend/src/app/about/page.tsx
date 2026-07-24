@@ -13,7 +13,7 @@ import { aboutValueCards } from '@/data/solariseContent';
 export const metadata: Metadata = {
   title: 'About Us',
   description:
-    'Learn about Eco Planet Solar — our story, mission, and commitment to delivering clean, reliable solar energy solutions for homes and businesses across India.',
+    'Learn about Eco Planet Solar — our story, mission, and commitment to delivering clean, reliable solar energy solutions for homes and businesses across Australia.',
   alternates: { canonical: '/about' },
   openGraph: {
     title: 'About Eco Planet Solar',
@@ -25,10 +25,10 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.eco">
+    <SolariseShell footerEmail="info@ecoplanet.eco" footerPhone="07 3422 6150">
       <SolarisePageHero
         eyebrow="ABOUT US"
-        title="Empowering India through clean solar energy"
+        title="Empowering Australia through clean solar energy"
         subtitle="We exist to make solar power accessible, reliable, and affordable for every home and business — one installation at a time."
         image="https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=1600&q=80"
         height="lg"

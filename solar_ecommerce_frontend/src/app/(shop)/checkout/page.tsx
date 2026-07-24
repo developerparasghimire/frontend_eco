@@ -22,7 +22,7 @@ const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string
   {
     value: 'stripe',
     label: 'Card / Stripe',
-    hint: 'Visa, Mastercard, RuPay, UPI',
+    hint: 'Visa, Mastercard, Amex, PayPal',
     icon: <CreditCard size={18} className="text-brand-600" />,
   },
   {

@@ -54,7 +54,7 @@ const SOLUTIONS = [
     tag: 'Commercial',
     title: 'Business Solar Solutions',
     cta: 'Learn more',
-    href: '/services',
+    href: '/products',
     image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=800&q=80',
   },
   {

@@ -108,10 +108,6 @@ textarea {
   transition: color 0.18s;
 }
 
-.solar-nav__trigger {
-  padding: 0 12px;
-}
-
 /* Focus-visible always works (keyboard nav) */
 .solar-nav__link:focus-visible,
 .solar-btn:focus-visible {
@@ -307,7 +303,7 @@ textarea {
   letter-spacing: -0.01em;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0 12px;
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.18s;

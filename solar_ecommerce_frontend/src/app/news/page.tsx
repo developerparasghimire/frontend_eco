@@ -17,7 +17,7 @@ export const metadata: Metadata = {
 
 export default function NewsPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.eco">
+    <SolariseShell footerEmail="info@ecoplanet.eco" footerPhone="07 3422 6150">
       <SolarisePageHero
         eyebrow="NEWS & INSIGHTS"
         title="Stay ahead with the latest in solar energy"

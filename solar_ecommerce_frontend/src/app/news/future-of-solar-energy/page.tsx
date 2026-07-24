@@ -3,7 +3,7 @@ import { newsCards } from '@/data/solariseContent';
 
 export default function NewsDetailPage() {
   return (
-    <SolariseShell footerEmail="info@ecoplanet.eco">
+    <SolariseShell footerEmail="info@ecoplanet.eco" footerPhone="07 3422 6150">
       <SolarisePageHero
         eyebrow="OCTOBER 23, 2023  ·  WRITTEN BY AMANDA NITHE"
         title="The Future of Solar Energy: Innovations and Trends"

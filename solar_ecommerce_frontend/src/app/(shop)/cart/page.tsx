@@ -442,7 +442,7 @@ function GuestCartView() {
           </div>
           <Link
             href="/login?next=/checkout"
-            className="inline-flex h-10 w-full items-center justify-center rounded-xl border border-brand-200 bg-brand-50 px-6 text-sm font-semibold text-brand-700 hover:bg-brand-100 transition-colors"
+            className="inline-flex h-10 w-full items-center justify-center rounded-xl border border-slate-200 bg-slate-50 px-6 text-sm font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
           >
             Sign in for faster checkout
           </Link>

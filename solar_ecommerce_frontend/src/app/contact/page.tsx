@@ -43,7 +43,7 @@ export default function ContactPage() {
   };
 
   return (
-    <SolariseShell footerEmail="info@ecoplanet.eco">
+    <SolariseShell footerEmail="info@ecoplanet.eco" footerPhone="07 3422 6150">
       <section className="solar-contact-hero">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
