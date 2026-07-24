@@ -4,6 +4,7 @@ import {
   SolariseButton,
   SolariseFeatureCard,
   SolariseJoinBanner,
+  SolariseMedia,
   SolarisePageHero,
   SolariseShell,
 } from '@/components/SolariseSite';
