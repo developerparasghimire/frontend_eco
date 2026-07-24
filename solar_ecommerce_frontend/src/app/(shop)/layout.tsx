@@ -1,10 +1,9 @@
-import { ShopHeader } from '@/components/shop/ShopHeader';
+import { SolariseShell } from '@/components/SolariseSite';
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen bg-slate-50">
-      <ShopHeader />
+    <SolariseShell footerEmail="info@ecoplanet.eco">
       {children}
-    </div>
+    </SolariseShell>
   );
 }

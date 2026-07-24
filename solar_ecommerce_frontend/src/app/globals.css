@@ -2235,15 +2235,18 @@ textarea {
   }
 
   /* Hero: full-bleed image with text overlaid at bottom */
-  /* Home hero: taller card, text at TOP, image as full background */
+  /* Home hero: full-bleed image with text overlaid at top */
   .solar-home-hero {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    min-height: 440px;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    min-height: 520px;
     padding: 0;
-    margin-bottom: 20px;
-    border-radius: 24px;
+    margin-bottom: 0;
+    border-radius: 0;
     overflow: hidden;
   }
 
@@ -2256,12 +2259,12 @@ textarea {
     z-index: 0;
   }
 
-  /* Gradient: dark at top where text sits, fades to transparent at bottom */
+  /* Deep dark at top where text sits, fades to transparent at bottom */
   .solar-home-hero__img-wrap::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to bottom, rgba(10, 18, 50, 0.88) 0%, rgba(10, 18, 50, 0.48) 55%, rgba(10, 18, 50, 0.06) 100%);
+    background: linear-gradient(to bottom, rgba(5, 10, 30, 0.93) 0%, rgba(5, 10, 30, 0.65) 50%, rgba(5, 10, 30, 0.08) 100%);
     pointer-events: none;
     z-index: 1;
   }
@@ -2269,7 +2272,7 @@ textarea {
   .solar-home-hero__copy {
     position: relative;
     z-index: 2;
-    padding: 28px 20px 24px;
+    padding: 56px 24px 36px;
     color: #ffffff;
     animation: none;
   }
@@ -2279,8 +2282,13 @@ textarea {
   }
 
   .solar-home-hero__text {
-    color: rgba(255, 255, 255, 0.82);
-    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.85);
+    margin-top: 14px;
+  }
+
+  /* Give stats section breathing room after full-bleed hero */
+  .solar-home-stats {
+    margin-top: 28px;
   }
 
   .solar-home-hero__burst--right,
@@ -2393,7 +2401,10 @@ textarea {
   }
 
   .solar-home-hero {
-    border-radius: 18px;
+    border-radius: 0;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   /* Fix 1 partial: hero title at very small screens (860px block handles the variable) */
@@ -2668,8 +2679,10 @@ textarea {
     font-size: clamp(20px, 6vw, 28px);
   }
 
-  /* Hero: slightly smaller on very small phones but still taller than before */
-  .solar-home-hero { min-height: 360px; border-radius: 18px; }
+  /* Hero: full-bleed on very small phones */
+  .solar-home-hero { min-height: 420px; border-radius: 0; }
+
+  .solar-home-hero__copy { padding: 44px 18px 28px; }
 
   /* Chip row: single column on very small */
   .solar-chip-row { grid-template-columns: 1fr; }
