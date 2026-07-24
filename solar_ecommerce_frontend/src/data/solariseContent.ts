@@ -72,31 +72,31 @@ export interface ProductDetail {
 
 export const primaryNavLinks: NavLink[] = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
-  { href: '/services', label: 'Services' },
   { href: '/products', label: 'Shop' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/news', label: 'News' },
-  { href: '/contact', label: 'Contact Us' },
+  { href: '/about', label: 'About Us' },
+  { href: '/news', label: 'Blog' },
+  { href: '/faq', label: 'FAQ' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 export const footerCompanyLinks: FooterLink[] = [
   { href: '/about', label: 'About Us' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/news', label: 'News' },
+  { href: '/news', label: 'Blog' },
   { href: '/contact', label: 'Contact Us' },
+  { href: '/faq', label: 'FAQ' },
 ];
 
 export const footerServiceLinks: FooterLink[] = [
-  { href: '/services/consultation-assessment', label: 'Consulting' },
-  { href: '/services', label: 'Design & Engineering' },
-  { href: '/services', label: 'Construction' },
-  { href: '/services', label: 'Maintenance' },
+  { href: '/shipping', label: 'Shipping Info' },
+  { href: '/returns', label: 'Returns & Refunds' },
+  { href: '/warranty', label: 'Warranty' },
+  { href: '/privacy', label: 'Privacy Policy' },
+  { href: '/terms', label: 'Terms & Conditions' },
 ];
 
 export const footerShopLinks: FooterLink[] = [
   { href: '/products', label: 'All Products' },
-  { href: '/cart', label: 'Cart' },
+  { href: '/compare', label: 'Compare Products' },
   { href: '/wishlist', label: 'Wishlist' },
   { href: '/dashboard', label: 'My Account' },
 ];

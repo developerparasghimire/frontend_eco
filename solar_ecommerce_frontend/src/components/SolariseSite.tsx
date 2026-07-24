@@ -259,7 +259,7 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
         </div>
 
         <FooterColumn title="Company" links={footerCompanyLinks} />
-        <FooterColumn title="Services" links={footerServiceLinks} />
+        <FooterColumn title="Support" links={footerServiceLinks} />
         <FooterColumn title="Shop" links={footerShopLinks} />
 
         <div className="solar-footer__column">
@@ -328,9 +328,10 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
           <p className="solar-footer__copyright">© {new Date().getFullYear()} Eco Planet Solar. All rights reserved. ABN 12 345 678 901</p>
           <div className="solar-footer__legal-links">
             <Link href="/privacy" className="solar-footer__legal-link">Privacy Policy</Link>
-            <Link href="/terms" className="solar-footer__legal-link">Terms &amp; Conditions</Link>
+            <Link href="/terms" className="solar-footer__legal-link">Terms</Link>
             <Link href="/shipping" className="solar-footer__legal-link">Shipping</Link>
             <Link href="/returns" className="solar-footer__legal-link">Returns</Link>
+            <Link href="/warranty" className="solar-footer__legal-link">Warranty</Link>
           </div>
         </div>
       </div>
