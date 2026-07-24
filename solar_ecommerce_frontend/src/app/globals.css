@@ -1313,6 +1313,17 @@ textarea {
   margin-top: 42px;
 }
 
+.solar-featured-products {
+  padding-bottom: 96px;
+}
+
+.solar-featured-products__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 42px;
+}
+
 .solar-home-news {
   padding-bottom: 118px;
 }
@@ -2289,6 +2300,17 @@ textarea {
   /* Give stats section breathing room after full-bleed hero */
   .solar-home-stats {
     margin-top: 28px;
+  }
+
+  /* Featured products: 1 column on mobile */
+  .solar-featured-products__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .solar-featured-products {
+    padding-bottom: 48px;
   }
 
   .solar-home-hero__burst--right,

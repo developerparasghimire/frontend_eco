@@ -14,6 +14,7 @@ import {
   SolariseStatCard,
   SolariseTestimonial,
 } from '@/components/SolariseSite';
+import { FeaturedProductsSection } from '@/components/products/FeaturedProductsSection';
 import {
   homeBenefits,
   homeServiceLinks,
@@ -96,8 +97,8 @@ export default function HomePage() {
             We&apos;re your trusted partner in the world of renewable energy, and we&apos;re excited to
             introduce you to a world of possibilities.
           </p>
-          <SolariseButton href="/services" tone="navy" size="sm">
-            Our Services
+          <SolariseButton href="/products" tone="navy" size="sm">
+            Shop Now
           </SolariseButton>
         </div>
 
@@ -236,6 +237,8 @@ export default function HomePage() {
         <SolariseTestimonial />
         <SolariseJoinBanner />
       </div>
+
+      <FeaturedProductsSection />
 
       <section className="solar-container solar-home-news">
         <SolariseSectionHeader
