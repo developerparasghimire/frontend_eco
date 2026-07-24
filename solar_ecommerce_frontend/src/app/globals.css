@@ -2719,8 +2719,11 @@ textarea {
   .solar-stat-card strong { font-size: clamp(26px, 7vw, 38px); }
   .solar-stat-card { min-height: 120px; padding: 24px 18px 16px; }
 
-  /* About section: copy (eyebrow + heading) above image on mobile */
+  /* About section: copy above image on mobile */
   .solar-home-grid--about .solar-home-copy { order: -1; }
+
+  /* About Us page: story text above image on mobile */
+  .solar-about-story .solar-about-story__copy { order: -1; }
 
   /* Testimonial slider: show controls on mobile */
   .solar-testimonial__controls { display: flex; }

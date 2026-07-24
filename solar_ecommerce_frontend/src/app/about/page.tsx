@@ -35,6 +35,11 @@ export default function AboutPage() {
       />
 
       <section className="solar-container solar-about-story">
+        <SolariseMedia
+          src="https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=900&q=80"
+          alt="Solar panels on a rooftop"
+        />
+
         <div className="solar-about-story__copy">
           <p className="solar-eyebrow">OUR STORY</p>
           <h1 className="solar-title solar-title--xxl">
