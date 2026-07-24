@@ -86,7 +86,7 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        {/* Desktop right: cart + wishlist + auth */}
+        {/* Desktop right: wishlist icon + cart pill button + auth */}
         <div className="solar-header__auth">
           <Link href="/wishlist" aria-label={`Wishlist${wishCount > 0 ? ` (${wishCount})` : ''}`} className="solar-header__icon-btn">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
@@ -95,12 +95,13 @@ export function SiteHeader() {
             {wishCount > 0 && <span className="solar-header__badge">{wishCount > 99 ? '99+' : wishCount}</span>}
           </Link>
 
-          <Link href="/cart" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`} className="solar-header__icon-btn">
-            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <Link href="/cart" className="solar-header__cart-btn" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            {cartCount > 0 && <span className="solar-header__badge">{cartCount > 99 ? '99+' : cartCount}</span>}
+            Cart
+            {cartCount > 0 && <span className="solar-header__cart-count">{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
 
           {user ? (
@@ -122,14 +123,15 @@ export function SiteHeader() {
           )}
         </div>
 
-        {/* Mobile: cart icon + hamburger */}
+        {/* Mobile: cart pill + hamburger */}
         <div className="solar-header__mobile-right">
-          <Link href="/cart" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`} className="solar-header__icon-btn">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <Link href="/cart" className="solar-header__cart-btn" aria-label={`Cart${cartCount > 0 ? ` (${cartCount} items)` : ''}`}>
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
               <circle cx="9" cy="21" r="1" /><circle cx="20" cy="21" r="1" />
               <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
             </svg>
-            {cartCount > 0 && <span className="solar-header__badge">{cartCount > 99 ? '99+' : cartCount}</span>}
+            Cart
+            {cartCount > 0 && <span className="solar-header__cart-count">{cartCount > 99 ? '99+' : cartCount}</span>}
           </Link>
           <button
             className="solar-mobile-menu-btn"

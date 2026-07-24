@@ -72,6 +72,7 @@ export interface ProductDetail {
 
 export const primaryNavLinks: NavLink[] = [
   { href: '/', label: 'Home' },
+  { href: '/about', label: 'About Us' },
   { href: '/services', label: 'Services' },
   { href: '/products', label: 'Shop' },
   { href: '/projects', label: 'Projects' },
