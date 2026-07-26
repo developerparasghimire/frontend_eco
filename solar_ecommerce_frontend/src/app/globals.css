@@ -5092,3 +5092,636 @@ textarea {
     font-size: 11.5px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   NEW HOME PAGE SECTIONS (Anker SOLIX-inspired structure)
+═══════════════════════════════════════════════════════════════════════ */
+
+/* ── Featured Product Spotlight ─────────────────────────────────────── */
+.solar-spotlight {
+  background: var(--solar-navy-deep);
+  overflow: hidden;
+  position: relative;
+}
+.solar-spotlight__inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.solar-spotlight__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.solar-spotlight__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--solar-green);
+}
+.solar-spotlight__title {
+  font-size: clamp(28px, 3.5vw, 44px);
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.solar-spotlight__sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.72);
+  line-height: 1.6;
+  max-width: 44ch;
+}
+.solar-spotlight__features {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.solar-spotlight__feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14.5px;
+  font-weight: 500;
+  color: rgba(255,255,255,0.88);
+}
+.solar-spotlight__feature svg {
+  flex-shrink: 0;
+  color: var(--solar-green);
+}
+.solar-spotlight__ctas {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.solar-spotlight__btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 28px;
+  background: var(--solar-green);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: filter 0.18s;
+}
+.solar-spotlight__btn-primary:hover { filter: brightness(1.1); }
+.solar-spotlight__btn-ghost {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.82);
+  text-decoration: none;
+  transition: color 0.18s;
+}
+.solar-spotlight__btn-ghost:hover { color: #ffffff; }
+.solar-spotlight__media {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.solar-spotlight__img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 16px;
+  display: block;
+}
+.solar-spotlight__badge {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  backdrop-filter: blur(8px);
+}
+.solar-spotlight__badge-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.solar-spotlight__badge-value {
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--solar-navy-deep);
+  line-height: 1;
+}
+.solar-spotlight__badge-sub {
+  font-size: 11.5px;
+  color: #4b5563;
+  max-width: 18ch;
+  line-height: 1.4;
+}
+
+/* ── Power Solutions Comparison ─────────────────────────────────────── */
+.solar-compare {
+  background: #eef2f8;
+  padding: 80px 0;
+}
+.solar-compare__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.solar-compare__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--solar-green);
+  margin-bottom: 10px;
+}
+.solar-compare__title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--solar-navy-deep);
+  letter-spacing: -0.02em;
+}
+.solar-compare__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.solar-compare-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid rgba(39,70,124,0.08);
+  transition: box-shadow 0.2s;
+}
+.solar-compare-card:hover {
+  box-shadow: 0 8px 32px rgba(39,70,124,0.1);
+}
+.solar-compare-card__top {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.solar-compare-card__tag {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--solar-green);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  align-self: flex-start;
+}
+.solar-compare-card__icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  background: rgba(8,168,74,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--solar-green);
+}
+.solar-compare-card__title {
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--solar-navy-deep);
+  letter-spacing: -0.01em;
+}
+.solar-compare-card__desc {
+  font-size: 14.5px;
+  color: #4b5563;
+  line-height: 1.6;
+}
+.solar-compare-card__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.solar-compare-card__list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+.solar-compare-card__list svg { color: var(--solar-green); flex-shrink: 0; }
+.solar-compare-card__btn {
+  display: block;
+  text-align: center;
+  padding: 13px 24px;
+  border: 2px solid var(--solar-navy);
+  border-radius: 8px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--solar-navy);
+  text-decoration: none;
+  transition: background 0.18s, color 0.18s;
+  margin-top: 8px;
+}
+.solar-compare-card__btn:hover {
+  background: var(--solar-navy);
+  color: #fff;
+}
+
+/* ── How It Works ────────────────────────────────────────────────────── */
+.solar-how {
+  background: var(--solar-bg);
+  padding: 80px 0;
+}
+.solar-how__header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+.solar-how__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--solar-green);
+  margin-bottom: 10px;
+}
+.solar-how__title {
+  font-size: clamp(24px, 3vw, 36px);
+  font-weight: 800;
+  color: var(--solar-navy-deep);
+  letter-spacing: -0.02em;
+}
+.solar-how__steps {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+  position: relative;
+}
+.solar-how__step {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 24px;
+  position: relative;
+}
+.solar-how__step-num {
+  font-size: 52px;
+  font-weight: 900;
+  color: rgba(39,70,124,0.08);
+  line-height: 1;
+  margin-bottom: -12px;
+  letter-spacing: -0.04em;
+}
+.solar-how__step-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid rgba(8,168,74,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--solar-green);
+  margin-bottom: 18px;
+  box-shadow: 0 4px 16px rgba(8,168,74,0.1);
+}
+.solar-how__step-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--solar-navy-deep);
+  margin-bottom: 10px;
+}
+.solar-how__step-desc {
+  font-size: 14px;
+  color: #6b7280;
+  line-height: 1.65;
+  max-width: 28ch;
+}
+.solar-how__connector {
+  position: absolute;
+  top: 80px;
+  right: -10px;
+  color: rgba(39,70,124,0.25);
+  z-index: 1;
+}
+.solar-how__cta {
+  display: flex;
+  justify-content: center;
+  margin-top: 52px;
+}
+
+/* ── Trust / Shop Benefits Strip ─────────────────────────────────────── */
+.solar-trust-strip {
+  background: #fff;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  border-bottom: 1px solid rgba(0,0,0,0.07);
+  padding: 24px 0;
+}
+.solar-trust-strip__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+.solar-trust-strip__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 130px;
+}
+.solar-trust-strip__icon {
+  flex-shrink: 0;
+  color: var(--solar-green);
+  display: flex;
+}
+.solar-trust-strip__label {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--solar-navy-deep);
+  white-space: nowrap;
+}
+
+/* ── Press / As Seen In Bar ──────────────────────────────────────────── */
+.solar-press-bar {
+  background: #f8f9fb;
+  padding: 32px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.solar-press-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+.solar-press-bar__heading {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #9ca3af;
+  white-space: nowrap;
+}
+.solar-press-bar__logos {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+.solar-press-bar__logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: #d1d5db;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  transition: color 0.18s;
+}
+.solar-press-bar__logo:hover { color: #9ca3af; }
+
+/* ── Loyalty / Newsletter + Refer a Friend ───────────────────────────── */
+.solar-loyalty {
+  background: var(--solar-bg);
+  padding: 72px 0;
+}
+.solar-loyalty__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+.solar-loyalty-card {
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.solar-loyalty-card--dark {
+  background: var(--solar-navy-deep);
+  color: #fff;
+}
+.solar-loyalty-card--light {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.07);
+  color: var(--solar-navy-deep);
+}
+.solar-loyalty-card__eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--solar-green);
+}
+.solar-loyalty-card--dark .solar-loyalty-card__title { color: #fff; }
+.solar-loyalty-card--light .solar-loyalty-card__title { color: var(--solar-navy-deep); }
+.solar-loyalty-card__title {
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.solar-loyalty-card--dark .solar-loyalty-card__desc { color: rgba(255,255,255,0.72); }
+.solar-loyalty-card--light .solar-loyalty-card__desc { color: #6b7280; }
+.solar-loyalty-card__desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.solar-loyalty-card__form {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+.solar-loyalty-card__input {
+  flex: 1;
+  height: 46px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.18s;
+}
+.solar-loyalty-card__input::placeholder { color: rgba(255,255,255,0.45); }
+.solar-loyalty-card__input:focus { border-color: var(--solar-green); }
+.solar-loyalty-card__btn {
+  height: 46px;
+  padding: 0 20px;
+  background: var(--solar-green);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: filter 0.18s;
+}
+.solar-loyalty-card__btn:hover { filter: brightness(1.1); }
+.solar-loyalty-card__fine {
+  font-size: 11.5px;
+  color: rgba(255,255,255,0.45);
+}
+.solar-loyalty-card__perks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  flex: 1;
+}
+.solar-loyalty-card__perks li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+.solar-loyalty-card__perks svg { color: var(--solar-green); flex-shrink: 0; }
+.solar-loyalty-card__link-btn {
+  display: inline-block;
+  padding: 13px 24px;
+  background: var(--solar-navy-deep);
+  color: #fff;
+  font-size: 14.5px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: filter 0.18s;
+  align-self: flex-start;
+  margin-top: 8px;
+}
+.solar-loyalty-card__link-btn:hover { filter: brightness(1.15); }
+
+/* ── Brand / Explore Cards ───────────────────────────────────────────── */
+.solar-explore-cards {
+  padding: 72px 0;
+  background: #fff;
+}
+.solar-explore-cards__header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.solar-explore-cards__eyebrow {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--solar-green);
+  margin-bottom: 10px;
+}
+.solar-explore-cards__title {
+  font-size: clamp(22px, 2.8vw, 34px);
+  font-weight: 800;
+  color: var(--solar-navy-deep);
+  letter-spacing: -0.02em;
+}
+.solar-explore-cards__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.solar-explore-card {
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.07);
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+.solar-explore-card:hover {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+  transform: translateY(-3px);
+}
+.solar-explore-card__img-wrap {
+  aspect-ratio: 16/9;
+  overflow: hidden;
+  background: #f1f5f9;
+}
+.solar-explore-card__img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+.solar-explore-card:hover .solar-explore-card__img-wrap img {
+  transform: scale(1.04);
+}
+.solar-explore-card__body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+.solar-explore-card__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--solar-navy-deep);
+  line-height: 1.3;
+}
+.solar-explore-card__desc {
+  font-size: 13.5px;
+  color: #6b7280;
+  line-height: 1.6;
+  flex: 1;
+}
+.solar-explore-card__cta {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--solar-green);
+  margin-top: 4px;
+}
+
+/* ── Responsive: new sections ────────────────────────────────────────── */
+@media (max-width: 860px) {
+  .solar-spotlight__inner {
+    grid-template-columns: 1fr;
+    padding-top: 48px;
+    padding-bottom: 48px;
+    gap: 32px;
+  }
+  .solar-spotlight__badge { bottom: 14px; left: 14px; }
+
+  .solar-compare__grid { grid-template-columns: 1fr; }
+
+  .solar-how__steps {
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+  }
+  .solar-how__step { padding: 0; }
+  .solar-how__connector { display: none; }
+
+  .solar-trust-strip__inner { justify-content: flex-start; gap: 20px; }
+  .solar-trust-strip__item { min-width: calc(50% - 10px); }
+
+  .solar-press-bar__inner { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .solar-press-bar__logos { gap: 20px; }
+
+  .solar-loyalty__grid { grid-template-columns: 1fr; }
+  .solar-loyalty-card__form { flex-direction: column; }
+  .solar-loyalty-card__btn { width: 100%; }
+
+  .solar-explore-cards__grid { grid-template-columns: 1fr; }
+}
