@@ -5742,3 +5742,346 @@ textarea {
 
   .solar-explore-cards__grid { grid-template-columns: 1fr; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   APPLE-CLEAN DESIGN SYSTEM — overrides (cascade wins by file order)
+   Principle: white + #f5f5f7 only · generous space · no card clutter
+════════════════════════════════════════════════════════════════════════ */
+
+/* ── Announcement bar: minimal like Apple's top strip ─ */
+.solar-promo-strip {
+  padding: 10px 0;
+  font-size: 13px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Stats bar: no divider line, airier ─ */
+.solar-stats-bar {
+  padding: 60px 0;
+  border-bottom: none;
+  background: #fff;
+}
+.solar-stats-bar__item {
+  border-right: 1px solid rgba(0,0,0,0.07);
+  padding: 0 48px;
+}
+
+/* ── Spotlight: darker, more cinematic, Apple product-page feel ─ */
+.solar-spotlight {
+  background: #1d1d1f;
+}
+.solar-spotlight__inner {
+  padding-top: 120px;
+  padding-bottom: 120px;
+  gap: 64px;
+}
+.solar-spotlight__title {
+  font-size: clamp(36px, 5vw, 60px);
+  font-weight: 800;
+  letter-spacing: -0.045em;
+  line-height: 1.05;
+}
+.solar-spotlight__sub {
+  font-size: 17px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.65);
+}
+.solar-spotlight__btn-primary {
+  border-radius: 980px;
+  height: 44px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.solar-spotlight__btn-ghost {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2997ff;
+}
+.solar-spotlight__btn-ghost:hover { color: #fff; }
+.solar-spotlight__img {
+  border-radius: 20px;
+}
+
+/* ── Power Compare: white cards, zero borders, Apple card feel ─ */
+.solar-compare {
+  background: #f5f5f7;
+  padding: 120px 0;
+}
+.solar-compare__title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.solar-compare-card {
+  background: #fff;
+  border: none;
+  border-radius: 20px;
+  padding: 44px;
+  box-shadow: none;
+}
+.solar-compare-card:hover {
+  box-shadow: 0 2px 28px rgba(0,0,0,0.06);
+  transform: none;
+}
+.solar-compare-card__btn {
+  border-radius: 980px;
+  border-color: var(--solar-navy);
+  font-size: 14px;
+  height: 44px;
+  letter-spacing: -0.01em;
+}
+
+/* ── Solutions: dark section, Apple product dark row ─ */
+.solar-solutions {
+  padding: 100px 0 120px;
+}
+.solar-solutions__title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.solar-solution-card {
+  border-radius: 16px;
+  min-height: 360px;
+}
+.solar-solution-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── How It Works: white, generous, minimal steps ─ */
+.solar-how {
+  background: #fff;
+  padding: 120px 0;
+}
+.solar-how__title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.solar-how__step {
+  padding: 0 48px;
+}
+.solar-how__step-num {
+  font-size: 40px;
+  color: rgba(0,0,0,0.06);
+  letter-spacing: -0.06em;
+  margin-bottom: -8px;
+}
+.solar-how__step-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: none;
+  background: #f5f5f7;
+  box-shadow: none;
+}
+
+/* ── Why Choose Us: NO card tiles — Apple feature-list grid ─ */
+.solar-why {
+  background: #f5f5f7;
+  padding: 120px 0;
+}
+.solar-why__title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.solar-why__grid {
+  gap: 0;
+}
+.solar-why-item {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0 40px 0;
+  border-right: 1px solid rgba(0,0,0,0.08);
+}
+.solar-why-item:last-child {
+  border-right: none;
+}
+.solar-why-item:hover {
+  box-shadow: none;
+  transform: none;
+}
+.solar-why-item__icon {
+  width: 52px;
+  height: 52px;
+  background: transparent;
+  border-radius: 0;
+  margin-bottom: 20px;
+}
+.solar-why-item h3 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--solar-navy-deep);
+}
+.solar-why-item p {
+  font-size: 14px;
+  color: #6e6e73;
+  line-height: 1.65;
+}
+
+/* ── Trust Strip: clean, no border, Apple-simple ─ */
+.solar-trust-strip {
+  background: #fff;
+  border: none;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  padding: 32px 0;
+}
+.solar-trust-strip__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1d1d1f;
+}
+.solar-trust-strip__icon {
+  color: var(--solar-green);
+}
+
+/* ── Press Bar: clean, no bg contrast ─ */
+.solar-press-bar {
+  background: #f5f5f7;
+  border-bottom: none;
+  padding: 40px 0;
+}
+.solar-press-bar__logo {
+  font-size: 14px;
+  font-weight: 700;
+  color: #c7c7cc;
+  letter-spacing: -0.01em;
+}
+.solar-press-bar__logo:hover { color: #86868b; }
+
+/* ── Loyalty Cards: both on clean dark/light, Apple-newsletter style ─ */
+.solar-loyalty {
+  background: #f5f5f7;
+  padding: 120px 0;
+}
+.solar-loyalty-card {
+  border-radius: 24px;
+  padding: 48px;
+}
+.solar-loyalty-card--dark {
+  background: #1d1d1f;
+}
+.solar-loyalty-card__title {
+  font-size: clamp(26px, 3vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.solar-loyalty-card__input {
+  border-radius: 980px;
+  height: 44px;
+  padding: 0 18px;
+  font-size: 14px;
+}
+.solar-loyalty-card__btn {
+  border-radius: 980px;
+  height: 44px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 18px;
+}
+
+/* ── Explore Brand Cards: no border, hover shadow only ─ */
+.solar-explore-cards {
+  background: #fff;
+  padding: 120px 0;
+}
+.solar-explore-cards__title {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+}
+.solar-explore-card {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #f5f5f7;
+}
+.solar-explore-card:hover {
+  box-shadow: 0 4px 28px rgba(0,0,0,0.09);
+  transform: none;
+}
+.solar-explore-card__title {
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+/* ── News section: white, airier ─ */
+.solar-home-news {
+  background: #fff;
+  padding: 80px 0 100px;
+}
+
+/* ── Hero: Apple-level large type ─ */
+.solar-hero-v2__title {
+  font-size: clamp(52px, 8.5vw, 112px);
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  line-height: 0.92;
+}
+.solar-hero-v2__sub {
+  font-size: 19px;
+  font-weight: 400;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.6;
+}
+.solar-hero-v2__btn-primary {
+  height: 44px;
+  border-radius: 980px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.solar-hero-v2__btn-outline {
+  height: 44px;
+  border-radius: 980px;
+  padding: 0 22px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ── Nav: Apple-minimal header ─ */
+.solar-header {
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.08);
+}
+.solar-nav__link,
+.solar-nav__trigger {
+  font-size: 13px;
+  font-weight: 400;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+}
+.solar-nav__link:hover,
+.solar-nav__trigger:hover {
+  color: var(--solar-green);
+}
+
+/* ── Mobile responsive: Apple overrides ─ */
+@media (max-width: 860px) {
+  .solar-spotlight__inner { padding-top: 64px; padding-bottom: 64px; gap: 40px; }
+  .solar-compare { padding: 72px 0; }
+  .solar-solutions { padding: 64px 0 80px; }
+  .solar-how { padding: 72px 0; }
+  .solar-how__step { padding: 0 16px; }
+  .solar-why { padding: 72px 0; }
+  .solar-why-item { border-right: none; border-bottom: 1px solid rgba(0,0,0,0.08); padding: 0 0 40px; }
+  .solar-why-item:last-child { border-bottom: none; }
+  .solar-loyalty { padding: 72px 0; }
+  .solar-loyalty-card { padding: 32px; }
+  .solar-explore-cards { padding: 72px 0; }
+  .solar-hero-v2__title { font-size: clamp(44px, 11vw, 72px); }
+}
+
