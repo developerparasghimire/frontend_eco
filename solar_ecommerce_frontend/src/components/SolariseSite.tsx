@@ -19,64 +19,88 @@ import {
 
 // ── Nav dropdown data ─────────────────────────────────────────────────────────
 
-const PRODUCTS_MEGA = [
+const PRODUCTS_CATEGORIES = [
   {
-    href: '/products?category=solar-panels',
+    slug: 'solar-panels',
     label: 'Solar Panels',
-    desc: 'Monocrystalline & bifacial panels',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-      </svg>
-    ),
+    href: '/products?category=solar-panels',
+    items: [
+      { label: 'Rooftop Solar Panels', desc: 'High-efficiency mono panels for homes', href: '/products?category=solar-panels', image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=320&q=80', badge: 'Bestseller' },
+      { label: 'Commercial Arrays', desc: 'Large-scale bifacial panel systems', href: '/products?category=solar-panels', image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=320&q=80' },
+    ],
   },
   {
-    href: '/products?category=battery-storage',
+    slug: 'battery-storage',
     label: 'Battery Storage',
-    desc: 'Home & commercial lithium batteries',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="7" width="16" height="11" rx="2" /><path d="M22 11v3" /><path d="M6 7V4" /><path d="M10 7V4" />
-      </svg>
-    ),
+    href: '/products?category=battery-storage',
+    items: [
+      { label: 'Home Battery Systems', desc: 'Whole-home backup power', href: '/products?category=battery-storage', image: 'https://images.unsplash.com/photo-1548337138-e87d889cc369?w=320&q=80', badge: 'New' },
+      { label: 'Portable Power Stations', desc: 'Take power anywhere you go', href: '/products?category=battery-storage', image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=320&q=80' },
+    ],
   },
   {
-    href: '/products?category=inverters',
+    slug: 'inverters',
     label: 'Inverters & Chargers',
-    desc: 'Hybrid, string & micro inverters',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
-      </svg>
-    ),
+    href: '/products?category=inverters',
+    items: [
+      { label: 'Hybrid Inverters', desc: 'Smart solar + grid + battery control', href: '/products?category=inverters', image: 'https://images.unsplash.com/photo-1581092162384-8987c1d64718?w=320&q=80' },
+      { label: 'String Inverters', desc: 'Reliable grid-connect inverters', href: '/products?category=inverters', image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=320&q=80' },
+    ],
   },
   {
-    href: '/products?category=ev-chargers',
+    slug: 'ev-chargers',
     label: 'EV Chargers',
-    desc: 'Home EV charging stations',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M18 8h1a4 4 0 0 1 0 8h-1" /><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z" /><path d="M6 1v3M10 1v3" />
-      </svg>
-    ),
+    href: '/products?category=ev-chargers',
+    items: [
+      { label: 'Home EV Chargers', desc: 'Fast, solar-compatible home charging', href: '/products?category=ev-chargers', image: 'https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=320&q=80', badge: 'Hot' },
+      { label: 'Smart EV Chargers', desc: 'Auto-schedule with solar production', href: '/products?category=ev-chargers', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=320&q=80' },
+    ],
   },
   {
-    href: '/products?category=accessories',
+    slug: 'accessories',
     label: 'Accessories',
-    desc: 'Cables, mounts & components',
-    icon: (
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
-      </svg>
-    ),
+    href: '/products?category=accessories',
+    items: [
+      { label: 'Mounting Systems', desc: 'Roof & ground mount hardware', href: '/products?category=accessories', image: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=320&q=80' },
+      { label: 'Cables & Connectors', desc: 'MC4 and DC solar cabling kits', href: '/products?category=accessories', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=320&q=80' },
+    ],
   },
 ];
 
-const SOLUTIONS_DROPDOWN = [
-  { href: '/products', label: 'Home Solar Systems', desc: 'Complete solar for your home' },
-  { href: '/products', label: 'Commercial Solar', desc: 'Scalable business solar solutions' },
-  { href: '/products', label: 'Battery Backup', desc: 'Stay powered during outages' },
-  { href: '/products', label: 'Off-Grid Energy', desc: 'Complete grid independence' },
+const SOLUTIONS_SCENE = [
+  { label: 'Home Solar', desc: 'Complete solar systems for your home', href: '/products', image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=400&q=80' },
+  { label: 'Commercial Solar', desc: 'Scalable solutions for your business', href: '/products', image: 'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=400&q=80' },
+  { label: 'Battery Backup', desc: 'Stay powered during any outage', href: '/products', image: 'https://images.unsplash.com/photo-1548337138-e87d889cc369?w=400&q=80' },
+  { label: 'Off-Grid Energy', desc: 'Complete independence from the grid', href: '/products', image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=400&q=80' },
+];
+
+const EXPLORE_COLUMNS = [
+  {
+    title: 'Company',
+    links: [
+      { href: '/about', label: 'About Us' },
+      { href: '/news', label: 'Blog & News' },
+      { href: '/contact', label: 'Contact Us' },
+    ],
+  },
+  {
+    title: 'Support',
+    links: [
+      { href: '/faq', label: 'FAQ' },
+      { href: '/shipping', label: 'Shipping Info' },
+      { href: '/returns', label: 'Returns & Refunds' },
+      { href: '/warranty', label: 'Warranty' },
+    ],
+  },
+  {
+    title: 'Account',
+    links: [
+      { href: '/dashboard', label: 'My Account' },
+      { href: '/wishlist', label: 'Wishlist' },
+      { href: '/cart', label: 'Cart' },
+      { href: '/login', label: 'Login / Register' },
+    ],
+  },
 ];
 import { useAuthStatus, useAuthStore, useUser } from '@/store/auth';
 import { useCart } from '@/hooks/useCart';
@@ -113,25 +137,14 @@ export function SolariseShell({
 // ─── Announcement Bar ─────────────────────────────────────────────────────────
 
 function AnnouncementBar() {
-  const [visible, setVisible] = useState(true);
-  if (!visible) return null;
   return (
-    <div className="solar-announce-bar" role="banner">
-      <div className="solar-announce-bar__items">
-        <span>🚚 Free shipping on orders over $500</span>
-        <span className="solar-announce-bar__divider" aria-hidden="true" />
-        <span>📞 07 3422 6150</span>
-        <span className="solar-announce-bar__divider" aria-hidden="true" />
-        <span>☀️ CEC Approved Retailer &amp; Installer</span>
+    <div className="solar-promo-strip" role="banner">
+      <div className="solar-promo-strip__inner solar-container">
+        <p className="solar-promo-strip__text">
+          ⚡ Summer Sale — Up to 30% off solar panels &amp; power stations &nbsp;|&nbsp; 🚚 Free shipping on orders over $500
+        </p>
+        <Link href="/products" className="solar-promo-strip__cta">Shop Now →</Link>
       </div>
-      <button
-        type="button"
-        className="solar-announce-bar__close"
-        onClick={() => setVisible(false)}
-        aria-label="Dismiss announcement"
-      >
-        ×
-      </button>
     </div>
   );
 }
@@ -141,6 +154,7 @@ function AnnouncementBar() {
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const [mobileExpanded, setMobileExpanded] = useState<string | null>(null);
+  const [activeMegaTab, setActiveMegaTab] = useState('solar-panels');
   const user = useUser();
   const logout = useAuthStore((s) => s.logout);
   const router = useRouter();
@@ -200,53 +214,100 @@ export function SiteHeader() {
         {/* Desktop nav */}
         <nav className="solar-nav solar-nav--desktop" aria-label="Primary">
 
-          {/* Products — mega menu */}
-          <div className="solar-nav__item">
+          {/* Products — left-sidebar tab + right image-card mega menu */}
+          <div className="solar-nav__item" onMouseLeave={() => setActiveMegaTab('solar-panels')}>
             <Link href="/products" className="solar-nav__trigger">
               Products <ChevronIcon />
             </Link>
-            <div className="solar-nav__dropdown solar-nav__dropdown--mega">
-              <div className="solar-nav__mega-inner">
-                <div className="solar-nav__mega-header">
-                  <span>Shop by Category</span>
-                  <Link href="/products" className="solar-nav__view-all">View all products →</Link>
-                </div>
-                <div className="solar-nav__mega-grid">
-                  {PRODUCTS_MEGA.map((item) => (
-                    <Link key={item.label} href={item.href} className="solar-nav__mega-item">
-                      <span className="solar-nav__mega-icon">{item.icon}</span>
-                      <span className="solar-nav__mega-text">
-                        <span className="solar-nav__mega-label">{item.label}</span>
-                        <span className="solar-nav__mega-desc">{item.desc}</span>
-                      </span>
-                    </Link>
+            <div className="solar-nav__dropdown solar-nav__dropdown--products">
+              <div className="solar-mega">
+                {/* Left sidebar */}
+                <div className="solar-mega__sidebar">
+                  <p className="solar-mega__sidebar-label">Shop by Category</p>
+                  {PRODUCTS_CATEGORIES.map((cat) => (
+                    <button
+                      key={cat.slug}
+                      type="button"
+                      className={`solar-mega__tab${activeMegaTab === cat.slug ? ' solar-mega__tab--active' : ''}`}
+                      onMouseEnter={() => setActiveMegaTab(cat.slug)}
+                    >
+                      {cat.label}
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                    </button>
                   ))}
+                  <Link href="/products" className="solar-mega__shop-all" onClick={() => setOpen(false)}>
+                    Shop All Products →
+                  </Link>
+                </div>
+                {/* Right content — image cards for active category */}
+                <div className="solar-mega__content">
+                  {PRODUCTS_CATEGORIES.map((cat) =>
+                    activeMegaTab === cat.slug ? (
+                      <div key={cat.slug} className="solar-mega__cards">
+                        {cat.items.map((item) => (
+                          <Link key={item.label} href={item.href} className="solar-mega__card">
+                            <div className="solar-mega__card-img">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img src={item.image} alt={item.label} loading="lazy" />
+                              {item.badge && <span className="solar-mega__card-badge">{item.badge}</span>}
+                            </div>
+                            <div className="solar-mega__card-text">
+                              <span className="solar-mega__card-label">{item.label}</span>
+                              <span className="solar-mega__card-desc">{item.desc}</span>
+                            </div>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : null
+                  )}
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Solutions — simple dropdown */}
+          {/* Solutions — 2×2 scene-banner image cards */}
           <div className="solar-nav__item">
             <Link href="/products" className="solar-nav__trigger">
               Solutions <ChevronIcon />
             </Link>
-            <div className="solar-nav__dropdown">
-              <div className="solar-nav__drop-inner">
-                {SOLUTIONS_DROPDOWN.map((item) => (
-                  <Link key={item.label} href={item.href} className="solar-nav__drop-link">
-                    <span className="solar-nav__drop-label">{item.label}</span>
-                    <span className="solar-nav__drop-desc">{item.desc}</span>
+            <div className="solar-nav__dropdown solar-nav__dropdown--solutions">
+              <div className="solar-solutions-scene">
+                {SOLUTIONS_SCENE.map((s) => (
+                  <Link key={s.label} href={s.href} className="solar-solutions-scene__card">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={s.image} alt={s.label} loading="lazy" className="solar-solutions-scene__img" />
+                    <div className="solar-solutions-scene__overlay" />
+                    <div className="solar-solutions-scene__text">
+                      <span className="solar-solutions-scene__label">{s.label}</span>
+                      <span className="solar-solutions-scene__desc">{s.desc}</span>
+                      <span className="solar-solutions-scene__cta">Explore →</span>
+                    </div>
                   </Link>
                 ))}
               </div>
             </div>
           </div>
 
-          <Link href="/about" className="solar-nav__link">About</Link>
-          <Link href="/news" className="solar-nav__link">Blog</Link>
-          <Link href="/faq" className="solar-nav__link">FAQ</Link>
-          <Link href="/contact" className="solar-nav__link">Contact</Link>
+          {/* Explore — 3-column plain-text links */}
+          <div className="solar-nav__item">
+            <button type="button" className="solar-nav__trigger">
+              Explore <ChevronIcon />
+            </button>
+            <div className="solar-nav__dropdown solar-nav__dropdown--explore">
+              <div className="solar-explore">
+                {EXPLORE_COLUMNS.map((col) => (
+                  <div key={col.title} className="solar-explore__col">
+                    <p className="solar-explore__col-title">{col.title}</p>
+                    {col.links.map((link) => (
+                      <Link key={link.href} href={link.href} className="solar-explore__link">
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </nav>
 
         {/* Desktop right: search + wishlist + cart + account */}
@@ -274,13 +335,15 @@ export function SiteHeader() {
                   </svg>
                 </Link>
               )}
-              <Link href="/dashboard" className="solar-header__icon-btn" aria-label="My Account">
+              <Link href="/dashboard" className="solar-header__account-pill" aria-label="My Account">
                 <UserIcon />
+                <span>{user.first_name || 'Account'}</span>
               </Link>
             </>
           ) : (
-            <Link href="/login" className="solar-header__icon-btn" aria-label="Login">
+            <Link href="/login" className="solar-header__account-pill" aria-label="Sign In">
               <UserIcon />
+              <span>Sign In</span>
             </Link>
           )}
         </div>
@@ -331,13 +394,13 @@ export function SiteHeader() {
             </button>
             {mobileExpanded === 'products' && (
               <div className="solar-mobile-nav__sub">
-                {PRODUCTS_MEGA.map((item) => (
-                  <Link key={item.label} href={item.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
-                    {item.label}
+                {PRODUCTS_CATEGORIES.map((cat) => (
+                  <Link key={cat.slug} href={cat.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
+                    {cat.label}
                   </Link>
                 ))}
                 <Link href="/products" className="solar-mobile-nav__sub-link solar-mobile-nav__sub-link--all" onClick={() => setOpen(false)}>
-                  View All Products →
+                  Shop All Products →
                 </Link>
               </div>
             )}
@@ -360,19 +423,40 @@ export function SiteHeader() {
             </button>
             {mobileExpanded === 'solutions' && (
               <div className="solar-mobile-nav__sub">
-                {SOLUTIONS_DROPDOWN.map((item) => (
-                  <Link key={item.label} href={item.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
-                    {item.label}
+                {SOLUTIONS_SCENE.map((s) => (
+                  <Link key={s.label} href={s.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
+                    {s.label}
                   </Link>
                 ))}
               </div>
             )}
           </div>
 
-          <Link href="/about" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>About</Link>
-          <Link href="/news" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Blog</Link>
-          <Link href="/faq" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>FAQ</Link>
-          <Link href="/contact" className="solar-mobile-nav__link" onClick={() => setOpen(false)}>Contact</Link>
+          {/* Explore accordion */}
+          <div className="solar-mobile-nav__group">
+            <button
+              type="button"
+              className="solar-mobile-nav__toggle"
+              onClick={() => toggleMobile('explore')}
+              aria-expanded={mobileExpanded === 'explore'}
+            >
+              Explore
+              <span className={cx('solar-mobile-nav__toggle-icon', mobileExpanded === 'explore' && 'solar-mobile-nav__toggle-icon--open')}>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            </button>
+            {mobileExpanded === 'explore' && (
+              <div className="solar-mobile-nav__sub">
+                {EXPLORE_COLUMNS.flatMap((col) => col.links).map((link) => (
+                  <Link key={link.href} href={link.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
+                    {link.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
 
           <div className="solar-mobile-nav__divider" />
 
