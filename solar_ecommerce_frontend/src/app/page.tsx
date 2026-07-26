@@ -7,6 +7,7 @@ import {
   SolariseShell,
   SolariseTestimonial,
 } from '@/components/SolariseSite';
+import { NewsletterForm } from '@/components/NewsletterForm';
 import { TabbedProductsSection } from '@/components/products/TabbedProductsSection';
 import { homeStats, newsCards } from '@/data/solariseContent';
 
@@ -524,10 +525,7 @@ export default function HomePage() {
             <p className="solar-loyalty-card__desc">
               Join thousands of Australians saving on clean energy. Subscribe for exclusive deals, rebate news, and installation tips.
             </p>
-            <form className="solar-loyalty-card__form" onSubmit={(e) => e.preventDefault()}>
-              <input type="email" placeholder="Your email address" className="solar-loyalty-card__input" aria-label="Email address" />
-              <button type="submit" className="solar-loyalty-card__btn">Subscribe</button>
-            </form>
+            <NewsletterForm />
             <p className="solar-loyalty-card__fine">No spam. Unsubscribe any time.</p>
           </div>
           {/* Card 2 — Refer a Friend */}
