@@ -38,6 +38,23 @@ body {
   margin: 0;
   background: var(--solar-bg);
   color: var(--solar-navy);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--solar-navy-deep);
+}
+
+p {
+  margin: 0;
+  line-height: 1.65;
 }
 
 a {
@@ -146,7 +163,7 @@ textarea {
 }
 
 .solar-logo-img {
-  height: 100px;
+  height: 52px;
   width: auto;
   display: block;
 }
@@ -505,7 +522,7 @@ textarea {
 .solar-mega__sidebar {
   width: 168px;
   flex-shrink: 0;
-  background: #f8f9fb;
+  background: #f5f5f7;
   padding: 14px 0 10px;
   display: flex;
   flex-direction: column;
@@ -3898,8 +3915,8 @@ textarea {
 
 /* ── Anker-SOLIX-style: Why Choose ───────────────────────────── */
 .solar-why {
-  background: #f7f9fc;
-  padding: 72px 0 80px;
+  background: #f5f5f7;
+  padding: 96px 0 100px;
 }
 
 .solar-why__inner {
@@ -5230,8 +5247,8 @@ textarea {
 
 /* ── Power Solutions Comparison ─────────────────────────────────────── */
 .solar-compare {
-  background: #eef2f8;
-  padding: 80px 0;
+  background: #f5f5f7;
+  padding: 100px 0;
 }
 .solar-compare__header {
   text-align: center;
@@ -5343,8 +5360,8 @@ textarea {
 
 /* ── How It Works ────────────────────────────────────────────────────── */
 .solar-how {
-  background: var(--solar-bg);
-  padding: 80px 0;
+  background: #ffffff;
+  padding: 100px 0;
 }
 .solar-how__header {
   text-align: center;
@@ -5460,7 +5477,7 @@ textarea {
 
 /* ── Press / As Seen In Bar ──────────────────────────────────────────── */
 .solar-press-bar {
-  background: #f8f9fb;
+  background: #f5f5f7;
   padding: 32px 0;
   border-bottom: 1px solid rgba(0,0,0,0.06);
 }
