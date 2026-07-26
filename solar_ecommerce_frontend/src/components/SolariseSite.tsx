@@ -74,6 +74,12 @@ const SOLUTIONS_SCENE = [
   { label: 'Off-Grid Energy', desc: 'Complete independence from the grid', href: '/products', image: 'https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=400&q=80' },
 ];
 
+const DEALS_LINKS = [
+  { href: '/products?sale=hot', label: 'Hot Sale', icon: '🔥', badge: 'Hot' },
+  { href: '/products?deal=e10', label: 'E10 Deals', icon: '⚡', badge: 'New' },
+  { href: '/products?outlet=true', label: 'Outlet Sale', icon: '🏷️', badge: 'Save' },
+];
+
 const EXPLORE_COLUMNS = [
   {
     title: 'Company',
@@ -288,6 +294,24 @@ export function SiteHeader() {
             </div>
           </div>
 
+          {/* Deals — hot sale, E10 deals, outlet */}
+          <div className="solar-nav__item">
+            <button type="button" className="solar-nav__trigger solar-nav__trigger--deals">
+              🔥 Deals <ChevronIcon />
+            </button>
+            <div className="solar-nav__dropdown">
+              <div className="solar-deals-drop">
+                {DEALS_LINKS.map((d) => (
+                  <Link key={d.href} href={d.href} className="solar-deals-drop__link">
+                    <span className="solar-deals-drop__icon">{d.icon}</span>
+                    <span className="solar-deals-drop__label">{d.label}</span>
+                    <span className="solar-deals-drop__badge">{d.badge}</span>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+
           {/* Explore — 3-column plain-text links */}
           <div className="solar-nav__item">
             <button type="button" className="solar-nav__trigger">
@@ -426,6 +450,32 @@ export function SiteHeader() {
                 {SOLUTIONS_SCENE.map((s) => (
                   <Link key={s.label} href={s.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
                     {s.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Deals accordion */}
+          <div className="solar-mobile-nav__group">
+            <button
+              type="button"
+              className="solar-mobile-nav__toggle solar-mobile-nav__toggle--deals"
+              onClick={() => toggleMobile('deals')}
+              aria-expanded={mobileExpanded === 'deals'}
+            >
+              🔥 Deals
+              <span className={cx('solar-mobile-nav__toggle-icon', mobileExpanded === 'deals' && 'solar-mobile-nav__toggle-icon--open')}>
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            </button>
+            {mobileExpanded === 'deals' && (
+              <div className="solar-mobile-nav__sub">
+                {DEALS_LINKS.map((d) => (
+                  <Link key={d.href} href={d.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
+                    {d.icon} {d.label}
                   </Link>
                 ))}
               </div>

@@ -732,6 +732,55 @@ textarea {
 }
 .solar-explore__link:hover { color: var(--solar-green); }
 
+/* ── Deals dropdown ─ */
+.solar-nav__trigger--deals {
+  color: #e85a0e;
+  font-weight: 600;
+}
+.solar-nav__trigger--deals:hover { color: #c44a08; }
+.solar-deals-drop {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.07);
+  border-radius: 14px;
+  box-shadow: 0 8px 36px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.05);
+  padding: 8px;
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.solar-deals-drop__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 9px;
+  text-decoration: none;
+  transition: background 0.14s;
+}
+.solar-deals-drop__link:hover { background: #fff4ee; }
+.solar-deals-drop__icon {
+  font-size: 18px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.solar-deals-drop__label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--solar-navy-deep);
+  flex: 1;
+}
+.solar-deals-drop__badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  background: #e85a0e;
+  padding: 2px 7px;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+.solar-mobile-nav__toggle--deals { color: #e85a0e; font-weight: 600; }
+
 /* ── Header icon buttons (right side) ─ */
 .solar-header__icon-group {
   display: flex;
