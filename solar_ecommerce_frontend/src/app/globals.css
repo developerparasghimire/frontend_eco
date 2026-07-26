@@ -87,7 +87,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 88px;
+  min-height: 108px;
 }
 
 .solar-nav {
@@ -146,7 +146,7 @@ textarea {
 }
 
 .solar-logo-img {
-  height: 72px;
+  height: 100px;
   width: auto;
   display: block;
 }
@@ -3277,7 +3277,7 @@ textarea {
 
   /* Logo in navbar: slightly smaller on mobile */
   .solar-logo-img {
-    height: 54px;
+    height: 70px;
   }
 
   /* Hide left starburst that overlays hero text on mobile */
