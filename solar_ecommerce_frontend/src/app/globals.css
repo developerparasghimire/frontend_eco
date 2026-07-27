@@ -32,10 +32,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
+  max-width: 100%;
   background: var(--solar-bg);
   color: var(--solar-navy);
   -webkit-font-smoothing: antialiased;
@@ -87,8 +91,12 @@ textarea {
 }
 
 .solar-container {
-  width: min(1780px, calc(100% - 152px));
+  width: 100%;
+  max-width: 1780px;
   margin: 0 auto;
+  padding-left: clamp(16px, 4vw, 76px);
+  padding-right: clamp(16px, 4vw, 76px);
+  box-sizing: border-box;
 }
 
 .solar-header {
@@ -353,6 +361,7 @@ textarea {
   pointer-events: none;
   transition: opacity 0.18s ease, visibility 0.18s ease;
   z-index: 200;
+  max-width: calc(100vw - 32px);
 }
 
 /* invisible bridge: keeps hover active across the 4px gap */
@@ -6464,6 +6473,127 @@ textarea {
 
   .solar-press-bar__logos {
     gap: 12px;
+  }
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   OVERFLOW / HORIZONTAL SCROLL FIX — must be last in file
+═══════════════════════════════════════════════════════════════════════ */
+
+/* Every direct section / wrapper must never exceed viewport width */
+section,
+header,
+footer,
+nav,
+div,
+article,
+aside {
+  max-width: 100%;
+}
+
+/* Hide all mega-menu panels entirely on mobile — they have large min-widths */
+@media (max-width: 860px) {
+  .solar-nav__dropdown,
+  .solar-mega,
+  .solar-solutions-scene,
+  .solar-explore,
+  .solar-deals-drop {
+    display: none !important;
+  }
+
+  /* Container: flush 16px gutters on phones */
+  .solar-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  /* Trust strip: remove fixed min-width on items */
+  .solar-trust-strip__item {
+    min-width: 0;
+  }
+
+  /* Spotlight badge: never overflow */
+  .solar-spotlight__badge {
+    position: static;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* How steps: never overflow */
+  .solar-how__step {
+    width: 100%;
+    box-sizing: border-box;
+    max-width: 100%;
+  }
+
+  /* Spotlight copy / media: full width */
+  .solar-spotlight__copy,
+  .solar-spotlight__media {
+    width: 100%;
+    min-width: 0;
+  }
+
+  /* Loyalty card form inputs */
+  .solar-loyalty-card__input,
+  .solar-loyalty-card__btn {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* News tiles: no fixed min-width */
+  .solar-news-tile,
+  .solar-news-tile img {
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  /* Tabbed products: scroll horizontally inside container */
+  .solar-top-picks__tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    max-width: 100%;
+  }
+  .solar-top-picks__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Why-item icon grid: don't overflow */
+  .solar-why-item__icon {
+    min-width: 44px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .solar-container {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* Stats value: scale down on tiny screens */
+  .solar-stats-bar__value {
+    font-size: 32px;
+  }
+
+  /* Section titles: clamp tighter */
+  .solar-compare__title,
+  .solar-how__title,
+  .solar-why__title,
+  .solar-explore-cards__title,
+  .solar-solutions__title,
+  .solar-spotlight__title,
+  .solar-loyalty-card__title {
+    font-size: clamp(22px, 8vw, 34px);
+  }
+
+  /* Loyalty card: full-width CTA */
+  .solar-loyalty-card__link-btn {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
   }
 }
 
