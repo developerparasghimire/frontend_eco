@@ -798,6 +798,29 @@ textarea {
 }
 .solar-mobile-nav__toggle--deals { color: #e85a0e; font-weight: 600; }
 
+.solar-nav__link--deal {
+  color: #e85a0e !important;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.solar-nav__link--deal:hover { color: #c44a08 !important; }
+.solar-nav__deal-badge {
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  background: #e85a0e;
+  padding: 1px 6px;
+  border-radius: 999px;
+  margin-left: 2px;
+  letter-spacing: 0.02em;
+}
+.solar-mobile-nav__link--deal {
+  color: #e85a0e;
+  font-weight: 600;
+}
+
 /* ── Header icon buttons (right side) ─ */
 .solar-header__icon-group {
   display: flex;

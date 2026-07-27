@@ -294,23 +294,13 @@ export function SiteHeader() {
             </div>
           </div>
 
-          {/* Deals — hot sale, E10 deals, outlet */}
-          <div className="solar-nav__item">
-            <button type="button" className="solar-nav__trigger solar-nav__trigger--deals">
-              🔥 Deals <ChevronIcon />
-            </button>
-            <div className="solar-nav__dropdown">
-              <div className="solar-deals-drop">
-                {DEALS_LINKS.map((d) => (
-                  <Link key={d.href} href={d.href} className="solar-deals-drop__link">
-                    <span className="solar-deals-drop__icon">{d.icon}</span>
-                    <span className="solar-deals-drop__label">{d.label}</span>
-                    <span className="solar-deals-drop__badge">{d.badge}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
+          {/* Deals — direct links in navbar */}
+          {DEALS_LINKS.map((d) => (
+            <Link key={d.href} href={d.href} className="solar-nav__link solar-nav__link--deal">
+              {d.icon} {d.label}
+              <span className="solar-nav__deal-badge">{d.badge}</span>
+            </Link>
+          ))}
 
           {/* Explore — 3-column plain-text links */}
           <div className="solar-nav__item">
@@ -456,31 +446,12 @@ export function SiteHeader() {
             )}
           </div>
 
-          {/* Deals accordion */}
-          <div className="solar-mobile-nav__group">
-            <button
-              type="button"
-              className="solar-mobile-nav__toggle solar-mobile-nav__toggle--deals"
-              onClick={() => toggleMobile('deals')}
-              aria-expanded={mobileExpanded === 'deals'}
-            >
-              🔥 Deals
-              <span className={cx('solar-mobile-nav__toggle-icon', mobileExpanded === 'deals' && 'solar-mobile-nav__toggle-icon--open')}>
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </span>
-            </button>
-            {mobileExpanded === 'deals' && (
-              <div className="solar-mobile-nav__sub">
-                {DEALS_LINKS.map((d) => (
-                  <Link key={d.href} href={d.href} className="solar-mobile-nav__sub-link" onClick={() => setOpen(false)}>
-                    {d.icon} {d.label}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
+          {/* Deals — direct links in mobile drawer */}
+          {DEALS_LINKS.map((d) => (
+            <Link key={d.href} href={d.href} className="solar-mobile-nav__link solar-mobile-nav__link--deal" onClick={() => setOpen(false)}>
+              {d.icon} {d.label}
+            </Link>
+          ))}
 
           {/* Explore accordion */}
           <div className="solar-mobile-nav__group">
