@@ -163,7 +163,7 @@ textarea {
 }
 
 .solar-logo-img {
-  height: 52px;
+  height: 42px;
   width: auto;
   display: block;
 }
@@ -6106,5 +6106,364 @@ textarea {
   .solar-loyalty-card { padding: 32px; }
   .solar-explore-cards { padding: 72px 0; }
   .solar-hero-v2__title { font-size: clamp(44px, 11vw, 72px); }
+}
+
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPREHENSIVE MOBILE FIX — appended last so cascade wins everywhere
+   Breakpoints: 860px (tablet/mobile), 480px (small phone)
+═══════════════════════════════════════════════════════════════════════ */
+@media (max-width: 860px) {
+
+  /* ── Header & Logo ───────────────────────────────────────────── */
+  .solar-header__inner {
+    min-height: 68px;
+    padding: 0;
+  }
+  .solar-logo-img {
+    height: 52px;
+  }
+
+  /* ── Announcement bar ───────────────────────────────────────── */
+  .solar-promo-strip {
+    padding: 8px 12px;
+    font-size: 11.5px;
+  }
+  .solar-promo-strip__text {
+    font-size: 11.5px;
+    text-align: center;
+  }
+
+  /* ── Stats bar ──────────────────────────────────────────────── */
+  .solar-stats-bar {
+    padding: 32px 0;
+  }
+  .solar-stats-bar__inner {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .solar-stats-bar__item {
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    padding: 18px 0;
+  }
+  .solar-stats-bar__item:last-child {
+    border-bottom: none;
+  }
+
+  /* ── Spotlight: stack on mobile ─────────────────────────────── */
+  .solar-spotlight__inner {
+    grid-template-columns: 1fr;
+    padding-top: 56px;
+    padding-bottom: 56px;
+    gap: 32px;
+  }
+  .solar-spotlight__title {
+    font-size: clamp(28px, 8vw, 44px);
+  }
+  .solar-spotlight__badge {
+    position: static;
+    display: inline-flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    border-radius: 12px;
+    margin-top: 16px;
+  }
+  .solar-spotlight__badge-value {
+    font-size: 20px;
+  }
+  .solar-spotlight__badge-sub {
+    max-width: none;
+  }
+
+  /* ── Power Compare ──────────────────────────────────────────── */
+  .solar-compare {
+    padding: 64px 0;
+  }
+  .solar-compare__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .solar-compare-card {
+    padding: 32px 24px;
+  }
+  .solar-compare__title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+
+  /* ── Solutions scene cards ──────────────────────────────────── */
+  .solar-solutions {
+    padding: 64px 0 72px;
+  }
+  .solar-solutions__grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .solar-solutions__title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+  .solar-solution-card {
+    min-height: 240px;
+  }
+
+  /* ── How It Works ───────────────────────────────────────────── */
+  .solar-how {
+    padding: 64px 0;
+  }
+  .solar-how__title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+  .solar-how__steps {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .solar-how__step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 16px;
+    row-gap: 6px;
+    padding: 24px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.07);
+    text-align: left;
+    align-items: start;
+  }
+  .solar-how__step:last-child {
+    border-bottom: none;
+  }
+  .solar-how__step-num {
+    display: none;
+  }
+  .solar-how__step-icon {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    align-self: start;
+    margin-bottom: 0;
+  }
+  .solar-how__step-title {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 16px;
+    margin-bottom: 0;
+  }
+  .solar-how__step-desc {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 13.5px;
+    max-width: none;
+  }
+  .solar-how__connector {
+    display: none;
+  }
+  .solar-how__cta {
+    margin-top: 36px;
+    padding: 0 0;
+  }
+  .solar-how__cta .solar-btn {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* ── Why Choose Us ──────────────────────────────────────────── */
+  .solar-why {
+    padding: 64px 0;
+  }
+  .solar-why__title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+  .solar-why__grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .solar-why-item {
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 16px;
+    align-items: start;
+    border-right: none;
+    border-bottom: 1px solid rgba(0,0,0,0.08);
+    padding: 24px 0;
+    text-align: left;
+  }
+  .solar-why-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+  .solar-why-item__icon {
+    grid-column: 1;
+    grid-row: 1 / 3;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 0;
+    align-self: start;
+  }
+  .solar-why-item h3 {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 15px;
+    margin-bottom: 4px;
+    text-align: left;
+  }
+  .solar-why-item p {
+    grid-column: 2;
+    grid-row: 2;
+    font-size: 13.5px;
+    text-align: left;
+  }
+
+  /* ── Trust Strip ────────────────────────────────────────────── */
+  .solar-trust-strip {
+    padding: 24px 0;
+  }
+  .solar-trust-strip__inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    justify-content: start;
+  }
+  .solar-trust-strip__item {
+    min-width: 0;
+    flex: none;
+  }
+  .solar-trust-strip__label {
+    font-size: 12.5px;
+    white-space: normal;
+  }
+
+  /* ── Press / As Seen In ─────────────────────────────────────── */
+  .solar-press-bar {
+    padding: 24px 0;
+  }
+  .solar-press-bar__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .solar-press-bar__logos {
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .solar-press-bar__logo {
+    font-size: 13px;
+  }
+
+  /* ── Loyalty / Newsletter ───────────────────────────────────── */
+  .solar-loyalty {
+    padding: 64px 0;
+  }
+  .solar-loyalty__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .solar-loyalty-card {
+    padding: 32px 24px;
+    border-radius: 18px;
+  }
+  .solar-loyalty-card__title {
+    font-size: clamp(22px, 6vw, 30px);
+  }
+  .solar-loyalty-card__form {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .solar-loyalty-card__input {
+    width: 100%;
+  }
+  .solar-loyalty-card__btn {
+    width: 100%;
+  }
+
+  /* ── Brand Explore Cards ────────────────────────────────────── */
+  .solar-explore-cards {
+    padding: 64px 0;
+  }
+  .solar-explore-cards__title {
+    font-size: clamp(26px, 7vw, 40px);
+  }
+  .solar-explore-cards__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* ── News tiles ─────────────────────────────────────────────── */
+  .solar-home-news {
+    padding: 48px 0 56px;
+  }
+  .solar-home-news__grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  /* ── Footer: show ALL columns stacked ──────────────────────── */
+  .solar-footer {
+    padding: 48px 0 40px;
+  }
+  .solar-footer__grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .solar-footer__grid > *:nth-child(2),
+  .solar-footer__grid > *:nth-child(3),
+  .solar-footer__grid > *:nth-child(4),
+  .solar-footer__grid > *:nth-child(5),
+  .solar-footer__grid > *:nth-child(6) {
+    display: block;
+  }
+  .solar-footer__brand p {
+    max-width: 100%;
+    font-size: 14px;
+  }
+}
+
+/* ── 480px (small phones) ───────────────────────────────────────────── */
+@media (max-width: 480px) {
+
+  .solar-trust-strip__inner {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .solar-stats-bar__value {
+    font-size: clamp(28px, 9vw, 40px);
+  }
+
+  .solar-hero-v2__title {
+    font-size: clamp(38px, 11vw, 56px);
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .solar-hero-v2__sub {
+    font-size: 15px;
+  }
+
+  .solar-spotlight__title {
+    font-size: clamp(26px, 9vw, 38px);
+  }
+  .solar-spotlight__ctas {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .solar-spotlight__btn-primary {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .solar-compare-card {
+    padding: 24px 20px;
+  }
+
+  .solar-loyalty-card {
+    padding: 28px 20px;
+  }
+
+  .solar-press-bar__logos {
+    gap: 12px;
+  }
 }
 
