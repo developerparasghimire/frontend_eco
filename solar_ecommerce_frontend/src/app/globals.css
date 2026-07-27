@@ -32,14 +32,11 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
-  max-width: 100%;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
-  max-width: 100%;
+  overflow-x: clip;
   background: var(--solar-bg);
   color: var(--solar-navy);
   -webkit-font-smoothing: antialiased;
@@ -112,7 +109,7 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 108px;
+  min-height: 68px;
 }
 
 .solar-nav {
@@ -171,7 +168,7 @@ textarea {
 }
 
 .solar-logo-img {
-  height: 42px;
+  height: 44px;
   width: auto;
   display: block;
 }
@@ -3324,9 +3321,9 @@ textarea {
     gap: 8px;
   }
 
-  /* Logo in navbar: slightly smaller on mobile */
+  /* Logo in navbar: smaller on mobile */
   .solar-logo-img {
-    height: 70px;
+    height: 36px;
   }
 
   /* Hide left starburst that overlays hero text on mobile */
@@ -6131,7 +6128,7 @@ textarea {
     padding: 0;
   }
   .solar-logo-img {
-    height: 52px;
+    height: 36px;
   }
 
   /* ── Announcement bar ───────────────────────────────────────── */
@@ -6482,15 +6479,24 @@ textarea {
    OVERFLOW / HORIZONTAL SCROLL FIX — must be last in file
 ═══════════════════════════════════════════════════════════════════════ */
 
-/* Every direct section / wrapper must never exceed viewport width */
-section,
-header,
-footer,
-nav,
-div,
-article,
-aside {
+/* Sections must never exceed viewport width */
+.solar-container,
+.solar-header,
+.solar-footer,
+.solar-spotlight,
+.solar-compare,
+.solar-how,
+.solar-why,
+.solar-trust-strip,
+.solar-press-bar,
+.solar-loyalty,
+.solar-explore-cards,
+.solar-solutions,
+.solar-home-news,
+.solar-stats-bar,
+.solar-hero-v2 {
   max-width: 100%;
+  box-sizing: border-box;
 }
 
 /* Hide all mega-menu panels entirely on mobile — they have large min-widths */
@@ -6597,3 +6603,42 @@ aside {
   }
 }
 
+
+
+/* ── Navbar hamburger + logo final fix ────────────────────────────────── */
+@media (max-width: 860px) {
+  /* Force hamburger cluster visible — nothing should override this */
+  .solar-header__mobile-right {
+    display: flex !important;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .solar-mobile-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Keep desktop nav hidden */
+  .solar-nav--desktop {
+    display: none !important;
+  }
+
+  /* Header height: Apple-compact on mobile */
+  .solar-header__inner {
+    min-height: 56px;
+    padding: 0;
+  }
+
+  /* Logo: small and clean */
+  .solar-logo-img {
+    height: 36px !important;
+  }
+}
