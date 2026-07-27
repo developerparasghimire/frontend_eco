@@ -550,37 +550,12 @@ export function SiteFooter({ email, phone }: SiteFooterProps) {
         </div>
 
         <FooterColumn title="Company" links={footerCompanyLinks} />
-        <FooterColumn title="Support" links={footerServiceLinks} />
-        <FooterColumn title="Shop" links={footerShopLinks} />
 
         <div className="solar-footer__column">
           <h3>Contact Us</h3>
           <a href={`mailto:${email}`}>{email}</a>
           <a href={`tel:${phone.replace(/[^\d+]/g, '')}`}>{phone}</a>
           <a href="/contact">1/30 Chancellor Village Blvd<br />Sippy Downs QLD 4556</a>
-        </div>
-
-        <div className="solar-footer__column">
-          <h3>Subscribe for any updates</h3>
-          {nState === 'ok' ? (
-            <p style={{ color: '#22c55e', fontSize: 14 }}>Thank you for subscribing!</p>
-          ) : (
-            <div className="solar-subscribe-row" role="group" aria-label="Subscribe for updates">
-              <input
-                type="email"
-                placeholder="Your Email"
-                aria-label="Email address"
-                value={nEmail}
-                onChange={(e) => setNEmail(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSubscribe()}
-                disabled={nState === 'loading'}
-              />
-              <button type="button" onClick={handleSubscribe} disabled={nState === 'loading'}>
-                {nState === 'loading' ? '...' : 'Subscribe'}
-              </button>
-            </div>
-          )}
-          {nState === 'err' && <p style={{ color: '#ef4444', fontSize: 12, marginTop: 4 }}>Something went wrong. Try again.</p>}
         </div>
       </div>
 
