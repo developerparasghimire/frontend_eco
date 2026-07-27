@@ -297,7 +297,7 @@ export function SiteHeader() {
           {/* Deals — direct links in navbar */}
           {DEALS_LINKS.map((d) => (
             <Link key={d.href} href={d.href} className="solar-nav__link solar-nav__link--deal">
-              {d.icon} {d.label}
+              {d.label}
               <span className="solar-nav__deal-badge">{d.badge}</span>
             </Link>
           ))}
@@ -449,7 +449,7 @@ export function SiteHeader() {
           {/* Deals — direct links in mobile drawer */}
           {DEALS_LINKS.map((d) => (
             <Link key={d.href} href={d.href} className="solar-mobile-nav__link solar-mobile-nav__link--deal" onClick={() => setOpen(false)}>
-              {d.icon} {d.label}
+              {d.label}
             </Link>
           ))}
 
