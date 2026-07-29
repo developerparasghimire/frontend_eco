@@ -7144,3 +7144,207 @@ textarea {
   .solar-explore-cards { padding: 56px 0; }
   .solar-home-news { padding: 48px 0; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   DESIGN POLISH — remove AI-template feel, footer brand colors
+   ════════════════════════════════════════════════════════════════ */
+
+/* ── Footer column titles → brand green ─────────────────────── */
+.solar-footer__column h3 {
+  color: var(--solar-green) !important;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* ── Why Us → editorial left-aligned, no box template feel ──── */
+.solar-why {
+  background: #fff;
+  padding: 96px 0;
+}
+.solar-why__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: rgba(39,70,124,0.08);
+  border: 1px solid rgba(39,70,124,0.08);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.solar-why-item {
+  background: #fff;
+  border-radius: 0;
+  border: none;
+  padding: 40px 32px;
+  align-items: flex-start;
+  text-align: left;
+  transition: background 0.22s;
+  box-shadow: none;
+}
+.solar-why-item:hover {
+  background: var(--solar-bg);
+  box-shadow: none;
+  transform: none;
+  border-color: transparent;
+}
+.solar-why-item__icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  background: rgba(8,168,74,0.1);
+  color: var(--solar-green);
+  box-shadow: none;
+  margin-bottom: 18px;
+}
+.solar-why-item__icon svg { width: 24px; height: 24px; }
+.solar-why-item h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--solar-navy-deep);
+  margin: 0 0 8px;
+}
+.solar-why-item p {
+  font-size: 13.5px;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* ── Compare cards → cleaner, no bold left border decoration ─── */
+.solar-compare-card {
+  border-left: none;
+  border: 1px solid rgba(39,70,124,0.1);
+  border-radius: 16px;
+}
+.solar-compare-card:hover {
+  border-color: rgba(8,168,74,0.25);
+  box-shadow: 0 8px 32px rgba(39,70,124,0.1);
+  transform: translateY(-3px);
+}
+.solar-compare-card__icon {
+  background: rgba(39,70,124,0.07);
+  color: var(--solar-navy);
+  box-shadow: none;
+  border-radius: 12px;
+}
+
+/* ── Explore cards → back to clean white on light bg ─────────── */
+.solar-explore-cards {
+  background: var(--solar-bg);
+  padding: 88px 0;
+}
+.solar-explore-cards__title { color: var(--solar-navy-deep); }
+.solar-explore-card {
+  background: #fff;
+  border: 1px solid rgba(39,70,124,0.08);
+  border-radius: 14px;
+  transition: box-shadow 0.22s, transform 0.22s;
+}
+.solar-explore-card:hover {
+  box-shadow: 0 10px 32px rgba(39,70,124,0.12);
+  transform: translateY(-4px);
+  border-color: rgba(8,168,74,0.2);
+}
+.solar-explore-card__body {
+  background: #fff;
+}
+.solar-explore-card__title {
+  color: var(--solar-navy-deep);
+  font-size: 16px;
+}
+.solar-explore-card__desc { color: #555; }
+.solar-explore-card__cta { color: var(--solar-green); }
+
+/* ── News section → back to light so page isn't all dark ─────── */
+.solar-home-news {
+  background: #fff;
+  padding: 72px 0;
+}
+.solar-home-news .solar-section-header__title { color: var(--solar-navy-deep); }
+.solar-home-news .solar-section-header__eyebrow { color: var(--solar-green); }
+.solar-home-news .solar-section-header__btn {
+  border-color: rgba(39,70,124,0.25);
+  color: var(--solar-navy);
+}
+.solar-home-news .solar-section-header__btn:hover {
+  background: var(--solar-navy);
+  color: #fff;
+}
+
+/* ── Loyalty light card → simpler, no gimmicky top border ───── */
+.solar-loyalty-card--light {
+  background: var(--solar-bg);
+  border: 1px solid rgba(39,70,124,0.1);
+  border-top: none;
+}
+.solar-loyalty-card--dark::before { display: none; }
+
+/* ── How It Works → remove the pseudo-line, cleaner steps ───── */
+.solar-how__steps::before { display: none; }
+.solar-how__step-num {
+  font-size: 11px;
+  font-weight: 800;
+  width: 28px;
+  height: 28px;
+}
+.solar-how__step-icon {
+  background: rgba(39,70,124,0.07);
+  color: var(--solar-navy);
+  box-shadow: none;
+  border: 2px solid rgba(39,70,124,0.15);
+  width: 68px;
+  height: 68px;
+}
+
+/* ── Spotlight badge cleaner ─────────────────────────────────── */
+.solar-spotlight::before { display: none; }
+.solar-spotlight__eyebrow {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ── Mobile fixes for above overrides ───────────────────────── */
+@media (max-width: 860px) {
+  .solar-why__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+  }
+  .solar-why-item { padding: 28px 20px; }
+}
+@media (max-width: 540px) {
+  .solar-why__grid { grid-template-columns: 1fr; }
+}
+
+/* ── Navbar logo smaller + brand name bold text ──────────────── */
+.solar-logo-img {
+  height: 26px !important;
+  width: auto;
+}
+.solar-header__brand-name {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--solar-navy-deep);
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  line-height: 1;
+}
+.solar-header__logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+.solar-nav__link,
+.solar-nav__trigger {
+  font-weight: 600 !important;
+}
+@media (max-width: 768px) {
+  .solar-header__brand-name { font-size: 13px; }
+  .solar-logo-img { height: 22px !important; }
+}

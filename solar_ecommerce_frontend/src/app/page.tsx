@@ -245,9 +245,6 @@ const TRUST_ITEMS = [
   },
 ];
 
-const PRESS_OUTLETS = [
-  'ABC News', 'The Guardian', 'Choice', 'SBS', 'RenewEconomy', 'Solar Choice',
-];
 
 const EXPLORE_CARDS = [
   {
@@ -495,18 +492,6 @@ export default function HomePage() {
               <span className="solar-trust-strip__label">{t.label}</span>
             </div>
           ))}
-        </div>
-      </div>
-
-      {/* ── 10. As Seen In / Press Bar ────────────────── */}
-      <div className="solar-press-bar">
-        <div className="solar-container solar-press-bar__inner">
-          <span className="solar-press-bar__heading">As seen in</span>
-          <div className="solar-press-bar__logos">
-            {PRESS_OUTLETS.map((name) => (
-              <span key={name} className="solar-press-bar__logo">{name}</span>
-            ))}
-          </div>
         </div>
       </div>
 

@@ -212,7 +212,8 @@ export function SiteHeader() {
         {/* Logo */}
         <Link href="/" className="solar-header__logo" aria-label="Eco Planet Solar home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/logoonly.png" alt="Eco Planet Solar" className="solar-logo-img" />
+          <img src="/logoonly.png" alt="" className="solar-logo-img" />
+          <span className="solar-header__brand-name">Eco Planet Solar</span>
         </Link>
 
         {/* Desktop nav */}
