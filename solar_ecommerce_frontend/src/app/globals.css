@@ -115,19 +115,23 @@ textarea {
 .solar-nav {
   display: flex;
   align-items: stretch;
-  gap: 8px;
+  gap: 2px;
+  white-space: nowrap;
+  flex-shrink: 1;
+  min-width: 0;
 }
 
 .solar-nav__link {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 0 12px;
+  gap: 6px;
+  padding: 0 9px;
   color: var(--solar-navy-deep);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
   transition: color 0.18s;
+  white-space: nowrap;
 }
 
 /* Focus-visible always works (keyboard nav) */
@@ -168,7 +172,7 @@ textarea {
 }
 
 .solar-logo-img {
-  height: 44px;
+  height: 32px;
   width: auto;
   display: block;
 }
@@ -276,7 +280,7 @@ textarea {
   align-items: center;
   gap: 6px;
   padding: 0 14px 0 10px;
-  height: 36px;
+  height: 28px;
   border-radius: 999px;
   background: var(--solar-navy);
   color: #fff;
@@ -318,14 +322,14 @@ textarea {
 .solar-nav__trigger {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   color: var(--solar-navy-deep);
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
   background: none;
   border: none;
-  padding: 0 12px;
+  padding: 0 9px;
   cursor: pointer;
   white-space: nowrap;
   transition: color 0.18s;
@@ -958,7 +962,7 @@ textarea {
 
 .solar-btn__icon {
   width: 36px;
-  height: 36px;
+  height: 28px;
   flex: 0 0 auto;
   border-radius: 999px;
   background: #ffffff;
@@ -1674,7 +1678,7 @@ textarea {
 
 .solar-testimonial__arrow {
   width: 36px;
-  height: 36px;
+  height: 28px;
   border-radius: 50%;
   border: 1.5px solid var(--solar-line);
   background: transparent;
@@ -3113,7 +3117,7 @@ textarea {
   }
 
   .solar-footer__logo {
-    height: 36px;
+    height: 28px;
   }
 
   .solar-footer__socials {
@@ -3324,7 +3328,7 @@ textarea {
 
   /* Logo in navbar: smaller on mobile */
   .solar-logo-img {
-    height: 36px;
+    height: 28px;
   }
 
   /* Hide left starburst that overlays hero text on mobile */
@@ -3773,7 +3777,7 @@ textarea {
 }
 
 .solar-top-picks__tab {
-  height: 36px;
+  height: 28px;
   border-radius: 999px;
   padding: 0 18px;
   font-size: 13px;
@@ -6129,7 +6133,7 @@ textarea {
     padding: 0;
   }
   .solar-logo-img {
-    height: 36px;
+    height: 28px;
   }
 
   /* ── Announcement bar ───────────────────────────────────────── */
@@ -6636,6 +6640,6 @@ textarea {
 
   /* Logo: small and clean */
   .solar-logo-img {
-    height: 36px !important;
+    height: 28px !important;
   }
 }
