@@ -7341,10 +7341,45 @@ textarea {
   text-decoration: none;
 }
 .solar-nav__link,
-.solar-nav__trigger {
-  font-weight: 600 !important;
+.solar-nav__trigger,
+.solar-nav__link--deal {
+  font-weight: 700 !important;
 }
 @media (max-width: 768px) {
   .solar-header__brand-name { font-size: 13px; }
   .solar-logo-img { height: 22px !important; }
+}
+
+/* ── Navbar menu: brand green color + larger size ─────────────── */
+.solar-nav__link,
+.solar-nav__trigger {
+  color: var(--solar-green) !important;
+  font-size: 15px !important;
+}
+.solar-nav__link:hover,
+.solar-nav__trigger:hover {
+  color: var(--solar-navy-deep) !important;
+}
+
+/* ── Fix: mega menu stays within viewport ────────────────────── */
+/* Make products nav item non-positioned so dropdown anchors to
+   .solar-header__inner (position:relative) instead of the small
+   nav item — prevents left/right overflow on the 680px panel   */
+.solar-nav__item:has(.solar-nav__dropdown--products) {
+  position: static;
+}
+.solar-nav__dropdown--products {
+  left: 0;
+  transform: none;
+  width: min(760px, calc(100vw - 32px));
+  top: 100%;
+}
+
+/* Solutions and Explore: clamp so they never overflow right edge */
+.solar-nav__dropdown--solutions,
+.solar-nav__dropdown--explore,
+.solar-nav__dropdown--deals {
+  left: auto;
+  right: 0;
+  transform: none;
 }

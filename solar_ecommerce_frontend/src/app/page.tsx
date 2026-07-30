@@ -306,12 +306,7 @@ export default function HomePage() {
             </Link>
           </div>
         </div>
-        <div className="solar-hero-v2__scroll" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="6 9 12 15 18 9" />
-          </svg>
-          Scroll
-        </div>
+      
       </section>
 
       {/* ── 2. Stats Bar ─────────────────────────────── */}

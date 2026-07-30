@@ -43,6 +43,20 @@ function ProductsView() {
   const ordering = (search.get('ordering') as Sort) ?? '-created_at';
   const page = Number(search.get('page') ?? '1') || 1;
 
+  // Special promo URLs: ?sale=hot, ?deal=e10, ?outlet=true → show featured products
+  const isFeaturedView = Boolean(
+    search.get('sale') || search.get('deal') || search.get('outlet')
+  );
+
+  const PROMO_LABELS: Record<string, string> = {
+    hot: 'Hot Sale',
+    e10: 'E10 Deals',
+  };
+  const promoLabel =
+    PROMO_LABELS[search.get('sale') ?? ''] ||
+    PROMO_LABELS[search.get('deal') ?? ''] ||
+    (search.get('outlet') ? 'Outlet Sale' : '');
+
   const updateParams = (updates: Record<string, string | undefined>) => {
     const params = new URLSearchParams(search.toString());
     for (const [k, v] of Object.entries(updates)) {
@@ -65,8 +79,9 @@ function ProductsView() {
       category__slug: category || undefined,
       ordering,
       page,
+      ...(isFeaturedView ? { is_featured: true } : {}),
     }),
-    [debouncedQuery, category, ordering, page],
+    [debouncedQuery, category, ordering, page, isFeaturedView],
   );
 
   const productsQuery = useProducts(params);
@@ -86,7 +101,7 @@ function ProductsView() {
       <div className="shop-page-banner">
         <div className="shop-page-banner__inner">
           <p className="shop-page-banner__eyebrow">ECO PLANET SOLAR</p>
-          <h1>{category && categoryName ? categoryName : 'Solar Shop'}</h1>
+          <h1>{promoLabel || (category && categoryName ? categoryName : 'Solar Shop')}</h1>
           <p className="shop-page-banner__sub">
             Premium solar panels, batteries &amp; inverters — engineered for Australian conditions.
             {!productsQuery.isLoading && totalResults > 0 && (
