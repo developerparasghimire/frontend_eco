@@ -110,6 +110,7 @@ export default function AdminOrderDetailPage() {
           </Section>
 
           <TrackingForm order={order} onDone={invalidate} />
+          <CodMarkPaidSection order={order} onDone={invalidate} />
           <RefundForm order={order} onDone={invalidate} />
         </div>
 
@@ -215,11 +216,33 @@ function TrackingForm({ order, onDone }: { order: Order; onDone: () => void }) {
   );
 }
 
+function CodMarkPaidSection({ order, onDone }: { order: Order; onDone: () => void }) {
+  const mut = useMutation({
+    mutationFn: () => ordersApi.codMarkPaid(order.id),
+    onSuccess: () => { toast.success('Order marked as paid'); onDone(); },
+    onError: (e) => toast.error(formatApiError(e, 'Could not mark as paid.')),
+  });
+
+  if (order.payment_method !== 'cod' || order.payment_status === 'paid') return null;
+  return (
+    <Section title="Cash on Delivery">
+      <p className="mb-3 text-sm text-slate-600">
+        Once you have collected the cash payment from the customer, mark this order as paid.
+      </p>
+      <Button loading={mut.isPending} onClick={() => mut.mutate()}>
+        Mark as Paid (COD collected)
+      </Button>
+    </Section>
+  );
+}
+
 function RefundForm({ order, onDone }: { order: Order; onDone: () => void }) {
   const [amount, setAmount] = useState('');
   const [reason, setReason] = useState('');
-  const refundable =
-    order.payment_status === 'paid' && order.payment_method !== 'cod';
+  const isPaid = order.payment_status === 'paid';
+  const isCod = order.payment_method === 'cod';
+  const refundable = isPaid && !isCod;
+
   const mut = useMutation({
     mutationFn: () =>
       ordersApi.refund(order.id, {
@@ -235,6 +258,19 @@ function RefundForm({ order, onDone }: { order: Order; onDone: () => void }) {
     onError: (e) => toast.error(formatApiError(e, 'Refund failed.')),
   });
 
+  if (!isPaid) return null;
+  if (isCod) {
+    return (
+      <Section title="Refund">
+        <p className="text-sm text-slate-500">
+          This is a Cash on Delivery order. To refund, return the cash directly to the customer and record the reason below for your records.
+        </p>
+        <div className="mt-3">
+          <Input label="Refund note (internal record)" value={reason} onChange={setReason} />
+        </div>
+      </Section>
+    );
+  }
   if (!refundable) return null;
   return (
     <Section title="Refund">

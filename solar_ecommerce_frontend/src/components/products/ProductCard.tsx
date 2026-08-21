@@ -119,6 +119,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
               alt={product.name}
               loading="lazy"
               className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.05]"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-slate-100 to-slate-200 text-xs uppercase tracking-wide text-slate-400">

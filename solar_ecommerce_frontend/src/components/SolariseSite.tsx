@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import type {
   FeatureItem,
   FooterLink,
@@ -166,12 +167,14 @@ export function SiteHeader() {
   const cart = useCart();
   const wishlist = useWishlist();
   const guestCartCount = useGuestCartStore((s) => s.lines.reduce((sum, l) => sum + l.quantity, 0));
+  const queryClient = useQueryClient();
 
   const cartCount = status === 'authenticated' ? (cart.data?.total_items ?? 0) : guestCartCount;
   const wishCount = wishlist.data?.count ?? 0;
 
   const handleLogout = async () => {
     await logout();
+    queryClient.clear();
     router.push('/');
   };
 

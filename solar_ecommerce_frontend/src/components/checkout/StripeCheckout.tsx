@@ -49,11 +49,12 @@ function PaymentForm({ order, onPaid, guestToken }: StripeCheckoutProps) {
     setSubmitting(true);
     setError(null);
     try {
+      const returnUrl = guestToken
+        ? `${window.location.origin}/orders/guest/${order.order_number}?token=${encodeURIComponent(guestToken)}`
+        : `${window.location.origin}/orders/${order.id}/confirmation`;
       const { error: stripeError } = await stripe.confirmPayment({
         elements,
-        confirmParams: {
-          return_url: `${window.location.origin}/orders/${order.id}/confirmation`,
-        },
+        confirmParams: { return_url: returnUrl },
         redirect: 'if_required',
       });
       if (stripeError) {

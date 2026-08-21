@@ -42,8 +42,8 @@ const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string
 function CheckoutSteps({ current }: { current: 1 | 2 | 3 }) {
   const steps = [
     { n: 1, label: 'Cart', icon: <ShoppingCart size={14} /> },
-    { n: 2, label: 'Details', icon: <MapPin size={14} /> },
-    { n: 3, label: 'Payment', icon: <Wallet size={14} /> },
+    { n: 2, label: 'Checkout', icon: <MapPin size={14} /> },
+    { n: 3, label: 'Confirmed', icon: <Wallet size={14} /> },
   ];
   return (
     <nav className="flex items-center gap-1 text-xs font-medium mb-8">

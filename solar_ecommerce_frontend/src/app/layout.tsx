@@ -11,7 +11,7 @@ const inter = Inter({
   variable: '--font-inter',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ecoplanet.eco';
 
 export const metadata: Metadata = {
   title: {

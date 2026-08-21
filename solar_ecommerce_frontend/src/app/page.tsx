@@ -11,7 +11,7 @@ import { NewsletterForm } from '@/components/NewsletterForm';
 import { TabbedProductsSection } from '@/components/products/TabbedProductsSection';
 import { homeStats, newsCards } from '@/data/solariseContent';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://ecoplanet.eco';
 
 export const metadata: Metadata = {
   title: 'Eco Planet Solar — Harness the Power of the Sun',

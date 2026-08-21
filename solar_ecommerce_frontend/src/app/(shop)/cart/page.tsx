@@ -446,6 +446,9 @@ function GuestCartView() {
           >
             Sign in for faster checkout
           </Link>
+          <p className="rounded-lg bg-amber-50 border border-amber-200 px-3 py-2 text-xs text-amber-700">
+            Your cart is saved for this session only. Signing in won&apos;t transfer these items — check out as guest or add them again after login.
+          </p>
           <Link
             href="/products"
             className="block text-center text-xs text-slate-500 hover:text-slate-700 transition-colors"

@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 import { productsApi } from '@/services/api/products';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://ecoplanet.eco';
 
 export const revalidate = 3600;
 

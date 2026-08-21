@@ -1,0 +1,21 @@
+{
+  "name": "Eco Planet Solar",
+  "short_name": "EcoPlanet",
+  "description": "Premium solar panels, inverters and installation packages",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f7f4",
+  "theme_color": "#08a84a",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}

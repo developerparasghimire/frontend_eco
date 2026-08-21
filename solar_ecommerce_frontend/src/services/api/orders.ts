@@ -68,6 +68,9 @@ export const ordersApi = {
     }),
 
   // ── Admin actions ──────────────────────────
+  codMarkPaid: (id: string) =>
+    request<Order>({ method: 'POST', url: `/api/orders/list/${id}/payments/cod/mark-paid/` }),
+
   refund: (id: string, data: { amount?: string; reason?: string; note?: string }) =>
     request<Order>({ method: 'POST', url: `/api/orders/list/${id}/refund/`, data }),
 

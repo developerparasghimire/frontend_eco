@@ -85,6 +85,7 @@ function OrderDetailInner() {
   const { data: order, isLoading, error: loadError, refetch } = useOrder(id);
   const cancel = useCancelOrder();
   const [actionError, setActionError] = useState<string | null>(null);
+  const [confirmCancel, setConfirmCancel] = useState(false);
 
   if (isLoading) {
     return <div className="container py-12 text-sm text-slate-500">Loading order…</div>;
@@ -101,10 +102,10 @@ function OrderDetailInner() {
   }
 
   const handleCancel = async () => {
-    if (!confirm('Cancel this order? Stock will be restored.')) return;
     setActionError(null);
     try {
       await cancel.mutateAsync({ id: order.id, reason: 'Cancelled by customer' });
+      setConfirmCancel(false);
     } catch (err) {
       setActionError(formatApiError(err, 'Could not cancel order.'));
     }
@@ -307,15 +308,27 @@ function OrderDetailInner() {
             {order.paid_at ? <p>Paid on {formatDate(order.paid_at)}</p> : null}
           </div>
 
-          {order.status === 'pending' ? (
+          {order.status === 'pending' && !confirmCancel ? (
             <Button
               variant="outline"
               block
-              onClick={handleCancel}
-              loading={cancel.isPending}
+              onClick={() => setConfirmCancel(true)}
             >
               Cancel order
             </Button>
+          ) : null}
+          {order.status === 'pending' && confirmCancel ? (
+            <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-800">
+              <p className="mb-3 font-medium">Cancel this order? Stock will be restored.</p>
+              <div className="flex gap-2">
+                <Button size="sm" variant="outline" onClick={() => setConfirmCancel(false)} disabled={cancel.isPending}>
+                  Keep order
+                </Button>
+                <Button size="sm" onClick={handleCancel} loading={cancel.isPending}>
+                  Yes, cancel
+                </Button>
+              </div>
+            </div>
           ) : null}
           {actionError ? <p className="text-sm text-red-600">{actionError}</p> : null}
 
