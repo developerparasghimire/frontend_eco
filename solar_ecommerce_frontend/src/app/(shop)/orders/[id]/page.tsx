@@ -304,7 +304,7 @@ function OrderDetailInner() {
           </dl>
 
           <div className="border-t border-slate-200 pt-4 text-xs text-slate-500">
-            <p>Payment: {order.payment_method.toUpperCase()}</p>
+            <p>Payment: {order.payment_method?.toUpperCase()}</p>
             {order.paid_at ? <p>Paid on {formatDate(order.paid_at)}</p> : null}
           </div>
 
@@ -341,7 +341,7 @@ function OrderDetailInner() {
           <InvoiceDownloadButton orderNumber={order.order_number} />
           {order.status === 'delivered' ? (
             <Link
-              href={`/dashboard/orders/${order.id}/return`}
+              href={`/orders/${order.id}/return`}
               className="block text-center text-sm text-brand-600 hover:underline"
             >
               Request a return

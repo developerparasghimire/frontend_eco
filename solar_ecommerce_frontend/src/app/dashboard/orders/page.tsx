@@ -27,11 +27,25 @@ const STATUS_BADGE: Record<OrderStatus, string> = {
   cancelled: 'bg-slate-200 text-slate-700',
 };
 
+const STATUS_LABEL: Record<OrderStatus, string> = {
+  pending: 'Pending',
+  confirmed: 'Confirmed',
+  processing: 'Processing',
+  shipped: 'Shipped',
+  delivered: 'Delivered',
+  cancelled: 'Cancelled',
+};
+
 function OrdersList() {
-  const { data, isLoading } = useOrders();
+  const { data, isLoading, isError } = useOrders();
   const [filter, setFilter] = useState<OrderStatus | 'all'>('all');
 
   if (isLoading) return <p className="text-sm text-slate-500">Loading orders…</p>;
+  if (isError) return (
+    <div className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+      Failed to load orders. Please refresh the page.
+    </div>
+  );
 
   const all = data?.results ?? [];
   const filtered = filter === 'all' ? all : all.filter((o) => o.status === filter);
@@ -94,7 +108,7 @@ function OrdersList() {
                   </div>
                   <div className="flex items-center gap-2">
                     <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${STATUS_BADGE[o.status]}`}>
-                      {o.status}
+                      {STATUS_LABEL[o.status]}
                     </span>
                     <p className="text-base font-semibold text-slate-900">
                       {formatPrice(o.grand_total)}
