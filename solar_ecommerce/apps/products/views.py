@@ -25,11 +25,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
     POST /api/products/categories/          – create (admin)
     GET  /api/products/categories/<id>/     – detail (public)
     """
-    queryset = Category.objects.filter(is_active=True, parent__isnull=True)
     serializer_class = CategorySerializer
     permission_classes = [IsAdminOrReadOnly]
     lookup_field = 'slug'
     search_fields = ['name']
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated and self.request.user.is_staff:
+            return Category.objects.all()
+        return Category.objects.filter(is_active=True, parent__isnull=True)
 
 
 class ProductViewSet(viewsets.ModelViewSet):

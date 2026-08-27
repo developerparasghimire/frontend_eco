@@ -306,7 +306,7 @@ class CheckoutQuoteSerializer(serializers.Serializer):
             'shipping_eta_min': ship['eta_min'],
             'shipping_eta_max': ship['eta_max'],
             'grand_total': str(max(Decimal('0'), grand)),
-            'currency': 'INR',
+            'currency': 'AUD',
         }
 
 
@@ -340,7 +340,7 @@ class GuestCheckoutSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=100)
     state = serializers.CharField(max_length=100)
     postal_code = serializers.CharField(max_length=20)
-    country = serializers.CharField(max_length=100, default='India')
+    country = serializers.CharField(max_length=100, default='Australia')
 
     payment_method = serializers.ChoiceField(choices=Order.PaymentMethod.choices)
     coupon_code = serializers.CharField(required=False, default='', allow_blank=True)

@@ -48,7 +48,7 @@ class ApplyCouponView(APIView):
 
         if discount == 0:
             return Response(
-                {'detail': f'Minimum order amount is ₹{coupon.min_order_amount}.'},
+                {'detail': f'Minimum order amount is ${coupon.min_order_amount}.'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 

@@ -330,7 +330,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        qs = Order.objects.prefetch_related('items')
+        qs = Order.objects.select_related('user').prefetch_related('items')
         if self.request.user.is_staff:
             return qs  # Admin sees all orders
         return qs.filter(user=self.request.user)
@@ -372,10 +372,16 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        order.status = new_status
-        if new_status == Order.Status.CANCELLED:
-            order.cancelled_at = timezone.now()
-        order.save(update_fields=['status', 'cancelled_at'] if new_status == Order.Status.CANCELLED else ['status'])
+        with transaction.atomic():
+            if new_status == Order.Status.CANCELLED:
+                # Restore stock when admin cancels
+                for item in order.items.select_related('product'):
+                    Product.objects.filter(pk=item.product_id).update(
+                        stock=F('stock') + item.quantity,
+                    )
+                order.cancelled_at = timezone.now()
+            order.status = new_status
+            order.save(update_fields=['status', 'cancelled_at'] if new_status == Order.Status.CANCELLED else ['status'])
         return Response(OrderSerializer(order).data)
 
     @action(detail=True, methods=['post'], url_path='cancel')

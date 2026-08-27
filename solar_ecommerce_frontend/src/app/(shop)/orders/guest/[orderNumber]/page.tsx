@@ -18,18 +18,21 @@ export default function GuestOrderPage() {
   // Token may come from URL or sessionStorage (set by guest checkout flow).
   const tokenFromUrl = search.get('token') ?? '';
   const [token, setToken] = useState(tokenFromUrl);
+  const [tokenChecked, setTokenChecked] = useState(!!tokenFromUrl);
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!token && typeof window !== 'undefined') {
+    if (!tokenFromUrl && typeof window !== 'undefined') {
       const stored = sessionStorage.getItem(`guest_order_${orderNumber}`);
       if (stored) setToken(stored);
     }
-  }, [orderNumber, token]);
+    setTokenChecked(true);
+  }, [orderNumber, tokenFromUrl]);
 
   useEffect(() => {
+    if (!tokenChecked) return;
     if (!token || !orderNumber) {
       setLoading(false);
       return;
@@ -53,8 +56,11 @@ export default function GuestOrderPage() {
     return () => {
       cancelled = true;
     };
-  }, [orderNumber, token]);
+  }, [orderNumber, token, tokenChecked]);
 
+  if (!tokenChecked || loading) {
+    return <div className="container py-12 text-sm text-slate-500">Loading order…</div>;
+  }
   if (!token) {
     return (
       <div className="container max-w-3xl py-16 text-center">
@@ -64,9 +70,6 @@ export default function GuestOrderPage() {
         </p>
       </div>
     );
-  }
-  if (loading) {
-    return <div className="container py-12 text-sm text-slate-500">Loading order…</div>;
   }
   if (error || !order) {
     return (

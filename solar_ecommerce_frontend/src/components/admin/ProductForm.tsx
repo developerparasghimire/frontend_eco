@@ -243,7 +243,7 @@ export function ProductForm({ initial }: Props) {
             />
             Installation service available
           </label>
-          <Field label="Installation fee (₹)">
+          <Field label="Installation fee (A$)">
             <input
               type="number"
               step="0.01"

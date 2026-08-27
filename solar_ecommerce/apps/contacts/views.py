@@ -61,10 +61,8 @@ class NewsletterUnsubscribeView(APIView):
         email = request.data.get('email', '').strip().lower()
         if not email:
             return Response({'detail': 'Email is required.'}, status=status.HTTP_400_BAD_REQUEST)
-        updated = NewsletterSubscriber.objects.filter(email__iexact=email, is_active=True).update(is_active=False)
-        if updated:
-            return Response({'detail': 'You have been unsubscribed.'})
-        return Response({'detail': 'Email not found.'}, status=status.HTTP_404_NOT_FOUND)
+        NewsletterSubscriber.objects.filter(email__iexact=email, is_active=True).update(is_active=False)
+        return Response({'detail': 'If this email is subscribed, it has been removed.'})
 
 
 class NewsletterAdminViewSet(

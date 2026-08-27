@@ -14,7 +14,7 @@ class CategorySerializer(serializers.ModelSerializer):
 
     def get_children(self, obj):
         qs = obj.children.filter(is_active=True)
-        return CategorySerializer(qs, many=True).data if qs.exists() else []
+        return CategorySerializer(qs, many=True).data
 
 
 class ProductImageSerializer(serializers.ModelSerializer):
@@ -58,7 +58,9 @@ class ProductListSerializer(serializers.ModelSerializer):
         )
 
     def get_primary_image(self, obj):
-        img = obj.images.filter(is_primary=True).first()
+        img = next((i for i in obj.images.all() if i.is_primary), None)
+        if img is None:
+            img = next(iter(obj.images.all()), None)
         if img:
             request = self.context.get('request')
             return request.build_absolute_uri(img.image.url) if request else img.image.url
