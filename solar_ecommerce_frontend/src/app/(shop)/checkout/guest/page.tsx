@@ -20,8 +20,8 @@ import type { PaymentMethod } from '@/types/order';
 const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string; icon: React.ReactNode }> = [
   {
     value: 'stripe',
-    label: 'Card / Stripe',
-    hint: 'Visa, Mastercard, Amex, PayPal',
+    label: 'Card',
+    hint: 'Visa, Mastercard, Amex',
     icon: <CreditCard size={18} className="text-brand-600" />,
   },
   {

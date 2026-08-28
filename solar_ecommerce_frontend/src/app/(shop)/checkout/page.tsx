@@ -14,23 +14,28 @@ import { useAddresses } from '@/hooks/useAddresses';
 import { useCheckout } from '@/hooks/useOrders';
 import { formatApiError } from '@/lib/errors';
 import { formatPrice } from '@/lib/format';
+import { env } from '@/lib/env';
 import { ordersApi } from '@/services/api/orders';
 import type { CheckoutQuote, PaymentMethod } from '@/types/order';
 import type { CouponPreview } from '@/types/coupon';
 
+// PayPal is only offered when a client ID is actually configured — otherwise
+// choosing it would take the customer into a flow the backend cannot complete.
 const PAYMENT_OPTIONS: Array<{ value: PaymentMethod; label: string; hint: string; icon: React.ReactNode }> = [
   {
     value: 'stripe',
-    label: 'Card / Stripe',
-    hint: 'Visa, Mastercard, Amex, PayPal',
+    label: 'Card',
+    hint: 'Visa, Mastercard, Amex',
     icon: <CreditCard size={18} className="text-brand-600" />,
   },
-  {
-    value: 'paypal',
-    label: 'PayPal',
-    hint: 'Secure checkout with PayPal',
-    icon: <Wallet size={18} className="text-blue-500" />,
-  },
+  ...(env.paypalClientId
+    ? [{
+        value: 'paypal' as PaymentMethod,
+        label: 'PayPal',
+        hint: 'Secure checkout with PayPal',
+        icon: <Wallet size={18} className="text-blue-500" />,
+      }]
+    : []),
   {
     value: 'cod',
     label: 'Cash on delivery',
@@ -200,7 +205,7 @@ function CheckoutInner() {
               <span className="flex h-6 w-6 items-center justify-center rounded-full bg-brand-600 text-xs font-bold text-white">2</span>
               Payment method
             </h2>
-            <ul className="grid gap-3 sm:grid-cols-3">
+            <ul className={`grid gap-3 ${PAYMENT_OPTIONS.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-3'}`}>
               {PAYMENT_OPTIONS.map((opt) => (
                 <li key={opt.value}>
                   <label
