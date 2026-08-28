@@ -709,22 +709,32 @@ _webhook_logger = logging.getLogger(__name__)
 
 
 def _resolve_order_paid(order_id, payment_id, gateway: str):
+    # Stripe and PayPal both deliver webhooks at least once, so the same event
+    # can arrive twice (or race the client-side confirm endpoint). Read the
+    # payment status under a row lock inside the transaction so only the first
+    # caller through actually applies the transition.
     try:
-        order = Order.objects.get(pk=order_id)
+        with transaction.atomic():
+            try:
+                order = Order.objects.select_for_update().get(pk=order_id)
+            except (Order.DoesNotExist, ValueError):
+                _webhook_logger.warning('%s webhook: order %s not found', gateway, order_id)
+                return None
+
+            if order.payment_status == 'paid':
+                return order
+
+            order.payment_status = 'paid'
+            order.payment_id = payment_id or order.payment_id
+            order.paid_at = timezone.now()
+            update_fields = ['payment_status', 'payment_id', 'paid_at']
+            if order.status == Order.Status.PENDING:
+                order.status = Order.Status.CONFIRMED
+                update_fields.append('status')
+            order.save(update_fields=update_fields)
     except (Order.DoesNotExist, ValueError):
         _webhook_logger.warning('%s webhook: order %s not found', gateway, order_id)
         return None
-    if order.payment_status == 'paid':
-        return order
-    with transaction.atomic():
-        order.payment_status = 'paid'
-        order.payment_id = payment_id or order.payment_id
-        order.paid_at = timezone.now()
-        update_fields = ['payment_status', 'payment_id', 'paid_at']
-        if order.status == Order.Status.PENDING:
-            order.status = Order.Status.CONFIRMED
-            update_fields.append('status')
-        order.save(update_fields=update_fields)
     return order
 
 

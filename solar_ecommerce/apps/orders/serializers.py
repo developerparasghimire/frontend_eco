@@ -141,11 +141,26 @@ class CheckoutSerializer(serializers.Serializer):
         if not cart.items.exists():
             raise serializers.ValidationError({'cart': 'Cart is empty.'})
 
-        # Check stock
-        for ci in cart.items.all():
-            if ci.quantity > ci.product.stock:
+        # Lock the product rows before checking stock. Without the lock two
+        # concurrent checkouts can both read the same stock figure, both pass
+        # the check below, and both decrement — overselling the product. The
+        # guest checkout path already locks this way.
+        cart_items = list(cart.items.select_related('product'))
+        locked = {
+            p.pk: p for p in Product.objects
+            .select_for_update()
+            .filter(pk__in=[ci.product_id for ci in cart_items])
+        }
+
+        for ci in cart_items:
+            product = locked.get(ci.product_id)
+            if product is None or not product.is_active:
                 raise serializers.ValidationError(
-                    {'stock': f'"{ci.product.name}" only has {ci.product.stock} in stock.'}
+                    {'items': f'"{ci.product.name}" is no longer available.'}
+                )
+            if ci.quantity > product.stock:
+                raise serializers.ValidationError(
+                    {'stock': f'"{product.name}" only has {product.stock} in stock.'}
                 )
 
         # Resolve coupon
@@ -200,19 +215,20 @@ class CheckoutSerializer(serializers.Serializer):
         )
 
         order_items = []
-        for ci in cart.items.select_related('product'):
+        for ci in cart_items:
+            product = locked[ci.product_id]
             order_items.append(OrderItem(
                 order=order,
-                product=ci.product,
-                product_name=ci.product.name,
-                sku=ci.product.sku,
-                unit_price=ci.product.discounted_price,
+                product=product,
+                product_name=product.name,
+                sku=product.sku,
+                unit_price=product.discounted_price,
                 quantity=ci.quantity,
                 include_installation=ci.include_installation,
-                installation_fee=ci.product.installation_fee if ci.include_installation else 0,
+                installation_fee=product.installation_fee if ci.include_installation else 0,
             ))
-            # Atomic stock decrement – prevents race conditions
-            Product.objects.filter(pk=ci.product.pk).update(
+            # Safe under the select_for_update lock taken above.
+            Product.objects.filter(pk=product.pk).update(
                 stock=F('stock') - ci.quantity,
             )
 
@@ -284,7 +300,11 @@ class CheckoutQuoteSerializer(serializers.Serializer):
         if coupon_code:
             coupon = Coupon.objects.filter(code__iexact=coupon_code).first()
             if coupon and coupon.is_valid:
-                discount = Decimal(coupon.calculate_discount(subtotal))
+                # Mirror the per-user check the real checkout applies, so the
+                # quote can't promise a discount that checkout then refuses.
+                used = CouponUsage.objects.filter(coupon=coupon, user=user).count()
+                if coupon.per_user_limit <= 0 or used < coupon.per_user_limit:
+                    discount = Decimal(coupon.calculate_discount(subtotal))
 
         ship = quote_for_address(
             state=address.state, country=address.country, subtotal=subtotal,
@@ -395,10 +415,11 @@ class GuestCheckoutSerializer(serializers.Serializer):
                 raise serializers.ValidationError({'coupon_code': 'Invalid or expired coupon.'})
             # Enforce per-user limit for guests using their email as identity.
             if coupon.per_user_limit > 0:
+                # A cancelled order shouldn't burn the customer's allowance.
                 prior_uses = Order.objects.filter(
                     guest_email__iexact=validated_data['email'],
                     coupon_code__iexact=coupon.code,
-                ).count()
+                ).exclude(status=Order.Status.CANCELLED).count()
                 if prior_uses >= coupon.per_user_limit:
                     raise serializers.ValidationError(
                         {'coupon_code': 'You have already used this coupon the maximum number of times.'}

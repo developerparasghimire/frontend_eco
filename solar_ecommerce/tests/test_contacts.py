@@ -106,9 +106,23 @@ class TestNewsletter:
         sub = NewsletterSubscriber.objects.get(email='unsub@test.com')
         assert sub.is_active is False
 
-    def test_unsubscribe_nonexistent(self):
+    def test_unsubscribe_nonexistent_is_indistinguishable(self):
+        """
+        Unsubscribing an address that was never subscribed must look exactly
+        like unsubscribing one that was. Returning 404 here would let anyone
+        enumerate which addresses are on the list.
+        """
         client = APIClient()
-        resp = client.post('/api/contacts/newsletter/unsubscribe/', {
+        NewsletterSubscriberFactory(email='real@test.com')
+
+        ghost = client.post('/api/contacts/newsletter/unsubscribe/', {
             'email': 'ghost@test.com',
         }, format='json')
-        assert resp.status_code == status.HTTP_404_NOT_FOUND
+        real = client.post('/api/contacts/newsletter/unsubscribe/', {
+            'email': 'real@test.com',
+        }, format='json')
+
+        assert ghost.status_code == status.HTTP_200_OK
+        assert ghost.status_code == real.status_code
+        assert ghost.json() == real.json()
+        assert not NewsletterSubscriber.objects.filter(email='ghost@test.com').exists()

@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from apps.orders.models import Cart
 from apps.permissions import IsAdminOrReadOnly
 
-from .models import Coupon
+from .models import Coupon, CouponUsage
 from .serializers import ApplyCouponSerializer, CouponPublicSerializer, CouponSerializer
 
 
@@ -42,6 +42,16 @@ class ApplyCouponView(APIView):
         cart = Cart.objects.prefetch_related('items__product').filter(user=request.user).first()
         if not cart or not cart.items.exists():
             return Response({'detail': 'Cart is empty.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Checkout enforces this too; checking here stops the UI from showing a
+        # discount the customer can no longer actually use.
+        if coupon.per_user_limit > 0:
+            used = CouponUsage.objects.filter(coupon=coupon, user=request.user).count()
+            if used >= coupon.per_user_limit:
+                return Response(
+                    {'detail': 'You have already used this coupon.'},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
         subtotal = cart.subtotal
         discount = coupon.calculate_discount(subtotal)
