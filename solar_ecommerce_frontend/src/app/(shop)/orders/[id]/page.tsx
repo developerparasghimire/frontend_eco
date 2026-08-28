@@ -341,7 +341,7 @@ function OrderDetailInner() {
           <InvoiceDownloadButton orderNumber={order.order_number} />
           {order.status === 'delivered' ? (
             <Link
-              href={`/orders/${order.id}/return`}
+              href={`/dashboard/orders/${order.id}/return`}
               className="block text-center text-sm text-brand-600 hover:underline"
             >
               Request a return

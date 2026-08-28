@@ -23,7 +23,7 @@ class ShippingZone(TimeStampedModel):
     states = models.TextField(
         help_text='Comma-separated state names this zone covers (case-insensitive).',
     )
-    country = models.CharField(max_length=100, default='India')
+    country = models.CharField(max_length=100, default='Australia')
     rate = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     free_above = models.DecimalField(
         max_digits=10, decimal_places=2, null=True, blank=True,
@@ -37,7 +37,7 @@ class ShippingZone(TimeStampedModel):
         ordering = ['name']
 
     def __str__(self):
-        return f'{self.name} (₹{self.rate})'
+        return f'{self.name} (${self.rate})'
 
     def covers(self, state: str) -> bool:
         target = (state or '').strip().lower()

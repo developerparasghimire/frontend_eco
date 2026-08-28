@@ -28,12 +28,12 @@ class ShippingZoneAdmin(admin.ModelAdmin):
     def rate_display(self, obj):
         if obj.rate == 0:
             return format_html('<span style="color:#22c55e;font-weight:bold;">Free</span>')
-        return f'₹{obj.rate}'
+        return f'${obj.rate}'
     rate_display.short_description = 'Rate'
 
     def free_above_display(self, obj):
         if obj.free_above:
-            return f'₹{obj.free_above}'
+            return f'${obj.free_above}'
         return '—'
     free_above_display.short_description = 'Free Above'
 

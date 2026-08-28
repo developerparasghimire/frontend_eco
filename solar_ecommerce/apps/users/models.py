@@ -49,7 +49,7 @@ class Address(TimeStampedModel):
     city = models.CharField(max_length=100)
     state = models.CharField(max_length=100)
     postal_code = models.CharField(max_length=20)
-    country = models.CharField(max_length=100, default='India')
+    country = models.CharField(max_length=100, default='Australia')
     is_default = models.BooleanField(default=False)
 
     class Meta(TimeStampedModel.Meta):

@@ -331,7 +331,7 @@ PAYPAL_BASE_URL = (
     'https://api-m.paypal.com' if PAYPAL_MODE == 'live'
     else 'https://api-m.sandbox.paypal.com'
 )
-PAYPAL_CURRENCY = os.environ.get('PAYPAL_CURRENCY', 'USD')
+PAYPAL_CURRENCY = os.environ.get('PAYPAL_CURRENCY', 'AUD')
 PAYPAL_REQUEST_TIMEOUT = int(os.environ.get('PAYPAL_REQUEST_TIMEOUT', '20'))
 # Required for webhook signature verification (Developer Dashboard → Webhook ID)
 PAYPAL_WEBHOOK_ID = os.environ.get('PAYPAL_WEBHOOK_ID', '')
@@ -342,7 +342,7 @@ PAYPAL_WEBHOOK_ID = os.environ.get('PAYPAL_WEBHOOK_ID', '')
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET', '')
-STRIPE_CURRENCY = os.environ.get('STRIPE_CURRENCY', 'inr').lower()
+STRIPE_CURRENCY = os.environ.get('STRIPE_CURRENCY', 'aud').lower()
 # Smallest-unit multiplier (paise/cents). Override for zero-decimal currencies (jpy, krw).
 STRIPE_AMOUNT_MULTIPLIER = int(os.environ.get('STRIPE_AMOUNT_MULTIPLIER', '100'))
 
@@ -350,9 +350,14 @@ STRIPE_AMOUNT_MULTIPLIER = int(os.environ.get('STRIPE_AMOUNT_MULTIPLIER', '100')
 # Tax & shipping defaults
 # ──────────────────────────────────────────────
 from decimal import Decimal as _Dec
-TAX_RATE_PERCENT = _Dec(os.environ.get('TAX_RATE_PERCENT', '18'))   # GST 18% default
+# Australian retail prices are displayed GST-inclusive (Australian Consumer Law),
+# so no tax is added on top at checkout. The GST component of a GST-inclusive
+# total is total / 11 — see GST_DIVISOR below, used for tax invoices.
+TAX_RATE_PERCENT = _Dec(os.environ.get('TAX_RATE_PERCENT', '0'))
+GST_RATE_PERCENT = _Dec(os.environ.get('GST_RATE_PERCENT', '10'))  # AU GST, already in prices
+GST_DIVISOR = _Dec('11')  # GST component of a GST-inclusive amount = amount / 11
 DEFAULT_SHIPPING_RATE = _Dec(os.environ.get('DEFAULT_SHIPPING_RATE', '0'))
-FREE_SHIPPING_ABOVE = _Dec(os.environ.get('FREE_SHIPPING_ABOVE', '50000'))
+FREE_SHIPPING_ABOVE = _Dec(os.environ.get('FREE_SHIPPING_ABOVE', '500'))
 
 # ──────────────────────────────────────────────
 # Admin alerts

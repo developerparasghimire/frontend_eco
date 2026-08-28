@@ -106,7 +106,7 @@ class Order(TimeStampedModel):
     shipping_city = models.CharField(max_length=100)
     shipping_state = models.CharField(max_length=100)
     shipping_postal_code = models.CharField(max_length=20)
-    shipping_country = models.CharField(max_length=100, default='India')
+    shipping_country = models.CharField(max_length=100, default='Australia')
 
     subtotal = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     installation_total = models.DecimalField(max_digits=12, decimal_places=2, default=0)

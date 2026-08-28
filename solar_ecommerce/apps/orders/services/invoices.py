@@ -19,7 +19,7 @@ from reportlab.platypus import (
 )
 
 
-def _money(value, currency: str = '₹') -> str:
+def _money(value, currency: str = '$') -> str:
     return f'{currency}{Decimal(value or 0):,.2f}'
 
 

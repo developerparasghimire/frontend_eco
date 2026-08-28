@@ -76,10 +76,10 @@ class ProductAdmin(admin.ModelAdmin):
     def price_display(self, obj):
         if obj.discount_percent:
             return format_html(
-                '₹{} <small style="color:#888;text-decoration:line-through;">₹{}</small>',
+                '${} <small style="color:#888;text-decoration:line-through;">${}</small>',
                 obj.discounted_price, obj.price,
             )
-        return f'₹{obj.price}'
+        return f'${obj.price}'
     price_display.short_description = 'Price'
 
     def stock_display(self, obj):
@@ -91,7 +91,7 @@ class ProductAdmin(admin.ModelAdmin):
     stock_display.short_description = 'Stock'
 
     def discounted_price_display(self, obj):
-        return f'₹{obj.discounted_price}'
+        return f'${obj.discounted_price}'
     discounted_price_display.short_description = 'Sale price (calculated)'
 
     @admin.action(description='Mark selected as Featured')

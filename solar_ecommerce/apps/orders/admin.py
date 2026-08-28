@@ -120,7 +120,7 @@ class OrderAdmin(admin.ModelAdmin):
     payment_badge.short_description = 'Payment'
 
     def grand_total_display(self, obj):
-        return format_html('<b>₹{}</b>', obj.grand_total)
+        return format_html('<b>${}</b>', obj.grand_total)
     grand_total_display.short_description = 'Total'
 
     @admin.action(description='Mark selected as Confirmed')

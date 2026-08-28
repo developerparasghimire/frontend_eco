@@ -55,7 +55,7 @@ class ReturnRequestAdmin(admin.ModelAdmin):
 
     def refund_amount_display(self, obj):
         if obj.refund_amount:
-            return f'₹{obj.refund_amount}'
+            return f'${obj.refund_amount}'
         return '—'
     refund_amount_display.short_description = 'Refund'
 

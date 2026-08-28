@@ -37,9 +37,9 @@ class CouponAdmin(admin.ModelAdmin):
         if obj.discount_type == 'percentage':
             val = f'{obj.discount_value}% off'
             if obj.max_discount_amount:
-                val += f' (max ₹{obj.max_discount_amount})'
+                val += f' (max ${obj.max_discount_amount})'
         else:
-            val = f'₹{obj.discount_value} off'
+            val = f'${obj.discount_value} off'
         return val
     discount_display.short_description = 'Discount'
 
@@ -50,7 +50,7 @@ class CouponAdmin(admin.ModelAdmin):
 
     def min_order_display(self, obj):
         if obj.min_order_amount:
-            return f'₹{obj.min_order_amount}'
+            return f'${obj.min_order_amount}'
         return '—'
     min_order_display.short_description = 'Min Order'
 
